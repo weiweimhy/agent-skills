@@ -5,7 +5,7 @@ description: 发布新版本到 GitHub，包括版本号选择、Release Notes �
 
 # 发布版本 Skill
 
-发布 go-utils 库的新版本到 GitHub，遵循语义化版本规范。
+发布当前项目的新版本到 GitHub，遵循语义化版本规范。
 
 ## 🔍 Source Mapping
 
@@ -104,7 +104,7 @@ git tag --list --sort=-v:refname | Select-Object -First 5
 - 更新了 README 关于 X 功能的说明
 
 ---
-**Full Changelog**: https://github.com/weiweimhy/go-utils/compare/vOLD...vNEW
+**Full Changelog**: <REPO_URL>/compare/vOLD...vNEW
 
 ## 📦 Distribution & Artifacts
 
@@ -133,13 +133,13 @@ git log <LAST_TAG>..HEAD --oneline --no-decorate
 - 确保主标题版本号和日期正确。
 - 合并重复或过细的提交项，使其阅读体验更佳。
 
-### 步骤 2：确认 go.mod 版本路径
+### 步骤 2：确认 go.mod 版本路径 (仅 Go 项目)
 
-对于 v2+ 版本，确保 `go.mod` 中的 module 路径包含版本后缀：
+对于 Go 项目的 v2+ 版本，确保 `go.mod` 中的 module 路径包含版本后缀：
 
 ```go
 // v3.x 版本应该是：
-module github.com/weiweimhy/go-utils/v3
+module <MODULE_PATH>/v3
 ```
 
 ### 步骤 3：创建 Git 标签
@@ -167,7 +167,7 @@ git push origin <VERSION>
 git ls-remote --tags origin | Select-String "<VERSION>"
 ```
 
-等待几分钟后，在 [pkg.go.dev](https://pkg.go.dev/github.com/weiweimhy/go-utils/v3) 验证新版本是否可用。
+对于 Go 项目，等待几分钟后在 [pkg.go.dev](https://pkg.go.dev) 验证新版本是否可用。
 
 ## 发布后清理
 
@@ -175,8 +175,8 @@ git ls-remote --tags origin | Select-String "<VERSION>"
 
 ```powershell
 # turbo
-# 请求代理更新（替换 <VERSION>）
-$env:GOPROXY="https://proxy.golang.org,direct"; go list -m github.com/weiweimhy/go-utils/v3@<VERSION>
+# 请求代理更新（替换 <MODULE_PATH> 和 <VERSION>）
+$env:GOPROXY="https://proxy.golang.org,direct"; go list -m <MODULE_PATH>@<VERSION>
 ```
 
 ## 常见问题
