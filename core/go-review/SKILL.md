@@ -1,6 +1,28 @@
 ---
+slug: go-review
 name: Go 代码审查
 description: 针对 Go 语言代码的专家级审查，遵循 Effective Go 及官方 Code Review Comments 准则
+category: language
+role: specialist
+triggers:
+  - Go 代码审查
+  - 并发安全检查
+  - Go 性能或风格评估
+inputs:
+  - .go 文件或 diff
+  - 业务背景与并发上下文
+  - 测试或基准信息
+outputs:
+  - Go 审查报告
+  - 性能与并发改进建议
+related_skills:
+  - code-review
+  - api-design
+  - backend-patterns
+constraints:
+  - 优先保持对标准库和常规 Go 工具链的兼容性
+  - 不重复指出 gofmt 和 goimports 可自动修复的问题
+  - 并发、panic 和资源泄漏风险应优先于风格争议
 ---
 
 # Skill: Go Review
@@ -43,7 +65,7 @@ description: 针对 Go 语言代码的专家级审查，遵循 Effective Go 及�
 
 当以下情况发生时调用：
 
-- 作为 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 流程的第二阶段，针对 Go 代码进行深度评估。
+- 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 Go 代码进行深度评估。
 - 提交 Go 代码 PR 前进行的自我审查或交叉审查。
 - 自动化流水线捕获到 Lint 或 Staticcheck 异常时。
 - 针对高性能或高并发模块的代码审阅。
@@ -55,7 +77,7 @@ description: 针对 Go 语言代码的专家级审查，遵循 Effective Go 及�
 
 ## 📤 Output
 
-结构化的 Go 审查报告（参见 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 的 Output 格式），并增加：
+结构化的 Go 审查报告（参见 [code-review](../code-review/SKILL.md) 的 Output 格式），并增加：
 
 - **Idiomatic Examples**: 展示如何用更地道的方式重写非 Go 风格的代码。
 - **Optimization Suggestions**: 具体的代码性能优化建议。
@@ -85,6 +107,6 @@ description: 针对 Go 语言代码的专家级审查，遵循 Effective Go 及�
 
 ## 🔗 Related Skills
 
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 基础审查哲学与流程。
-- [api-design](file:///e:/go/go-utils/.agent/skills/core/backend/api-design/SKILL.md): 涉及 API 层面的设计审查。
-- [backend-patterns](file:///e:/go/go-utils/.agent/skills/core/backend/backend-patterns/SKILL.md): 涉及后端架构层面的设计审查。
+- [code-review](../code-review/SKILL.md): 基础审查哲学与流程。
+- [api-design](../backend/api-design/SKILL.md): 涉及 API 层面的设计审查。
+- [backend-patterns](../backend/backend-patterns/SKILL.md): 涉及后端架构层面的设计审查。

@@ -1,6 +1,29 @@
 ---
+slug: architecture-consultant
 name: 架构顾问
 description: 系统级架构咨询能力，提供架构决策支持、技术选型分析及 ADR 文档生成
+category: ai
+role: specialist
+triggers:
+  - 架构设计
+  - 技术选型
+  - ADR 生成
+inputs:
+  - 业务目标与约束
+  - 当前系统结构或模块边界
+  - 非功能需求与演进压力
+outputs:
+  - 架构方案与权衡说明
+  - ADR 草稿或决策建议
+related_skills:
+  - product-manager
+  - backend-patterns
+  - api-design
+  - doc-generator
+constraints:
+  - 不在缺乏上下文时直接给出唯一架构方案
+  - 必须明确说明主要权衡、风险和适用边界
+  - 区分短期可交付方案与长期演进方案
 ---
 
 # Skill: Architecture Consultant

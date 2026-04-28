@@ -1,0 +1,27 @@
+name: skills-quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate index
+        shell: pwsh
+        run: ./scripts/generate-skills-index.ps1
+
+      - name: Validate skills
+        shell: pwsh
+        run: ./scripts/validate-skills.ps1
+
+      - name: Ensure generated files are committed
+        shell: pwsh
+        run: git diff --exit-code

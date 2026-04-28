@@ -1,6 +1,28 @@
 ---
+slug: validation-lint
 name: 后端校验与 Lint
 description: 专注于后端参数设计、接口一致性以及配置文件格式的校验能力
+category: backend
+role: specialist
+triggers:
+  - 参数校验设计
+  - DTO 或响应结构检查
+  - 配置文件格式校验
+inputs:
+  - 接口定义或结构体声明
+  - 配置文件内容
+  - 现有契约与规范
+outputs:
+  - 校验问题清单
+  - 修正建议与一致性报告
+related_skills:
+  - api-design
+  - backend-patterns
+  - code-review
+constraints:
+  - 所有输入参数都应有明确边界与校验语义
+  - 配置语法错误和关键契约不一致应视为阻断问题
+  - 接口约束需要与 api-design 规范保持一致
 ---
 
 # Skill: Validation Lint
@@ -80,5 +102,5 @@ description: 专注于后端参数设计、接口一致性以及配置文件格�
 
 ## 🔗 Related Skills
 
-- [api-design](file:///e:/go/go-utils/.agent/skills/core/backend/api-design/SKILL.md)
-- [backend-patterns](file:///e:/go/go-utils/.agent/skills/core/backend/backend-patterns/SKILL.md)
+- [api-design](../api-design/SKILL.md)
+- [backend-patterns](../backend-patterns/SKILL.md)

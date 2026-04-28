@@ -8,18 +8,23 @@
 - 🔗 **易于集成** - 通过 git submodule 轻松引入项目
 - 🌐 **多语言支持** - 覆盖 Go、Python、TypeScript、C#、Lua 等
 - 📚 **文档完善** - 每个技能包含详细的 SKILL.md 定义
+- 🧭 **机器可读 Schema** - 统一 frontmatter，便于自动发现、路由与校验
+- 🤖 **自动化索引** - `SKILLS.md` 由脚本生成，减少人工维护漂移
+- ✅ **CI 守门** - 本地和 PR 中都会自动执行一致性检查
 
 ## 📂 目录结构
 
-```
+```text
 agent-skills/
 ├── SKILLS.md              # 技能索引
+├── .github/workflows/     # CI 校验
 ├── core/                  # 核心技能
 │   ├── ai/                # AI 辅助技能
 │   ├── backend/           # 后端开发技能
 │   ├── frontend/          # 前端开发技能
 │   ├── *-review/          # 语言审查技能
 │   └── ...                # 其他通用技能
+├── scripts/               # 校验与索引生成脚本
 └── skill-builder/         # 技能构建工具
 ```
 
@@ -28,8 +33,8 @@ agent-skills/
 ### 作为 Git Submodule 引入
 
 ```bash
-# 添加为 submodule（推荐路径：.agent/skills）
-git submodule add <repo-url> .agent/skills
+# 添加为 submodule（示例路径，可按所用 AI 助手调整）
+git submodule add <repo-url> .codex/skills
 
 # 更新 submodule
 git submodule update --remote
@@ -43,69 +48,65 @@ git submodule update --remote
 |---------|-------------|
 | Antigravity | `.agent/skills/` |
 | Claude Code | `.claude/skills/` |
+| Codex | `.codex/skills/` |
 | 其他 | 自定义路径 |
 
 ```bash
-# 示例：引入到 .agent/skills
-git submodule add <repo-url> .agent/skills
+# 示例：引入到 Codex 项目目录
+git submodule add <repo-url> .codex/skills
 ```
 
 ## 📋 技能清单
 
-### 🧠 Core Skills（通用）
+完整技能目录由 [SKILLS.md](SKILLS.md) 自动生成，请不要手动维护索引内容。
 
-| 技能 | 描述 |
-|------|------|
-| [git-commit](core/git-commit/SKILL.md) | 生成规范化 Git Commit Message |
-| [git-workflow](core/git-workflow/SKILL.md) | 规范化 Git 提交全流程引导 |
-| [release](core/release/SKILL.md) | 生成版本说明 / 更新日志 |
-| [code-review](core/code-review/SKILL.md) | 通用代码审查哲学与流程 |
+## 🧱 Frontmatter Schema
 
-### 🧩 Project Skills（项目相关）
+每个 `SKILL.md` 顶部都必须包含统一 frontmatter：
 
-| 技能 | 描述 |
-|------|------|
-| [api-design](core/backend/api-design/SKILL.md) | API 命名与 RESTful 设计规范 |
-| [backend-patterns](core/backend/backend-patterns/SKILL.md) | 后端架构与模块拆分 |
-| [validation-lint](core/backend/validation-lint/SKILL.md) | 参数与接口校验 |
-| [mongodb-master](core/backend/mongodb-master/SKILL.md) | MongoDB 专家级设计 |
-| [vue](core/frontend/vue/SKILL.md) | Vue 3 / Composition API |
-| [react](core/frontend/react/SKILL.md) | React 18/19 & Hooks |
+```yaml
+---
+slug: example-skill
+name: 示例技能
+description: 一句话描述这个技能
+category: utility
+role: specialist
+triggers:
+  - 触发词 1
+inputs:
+  - 输入类型 1
+outputs:
+  - 输出类型 1
+related_skills:
+  - another-skill
+constraints:
+  - 约束 1
+  - 约束 2
+---
+```
 
-### 🐹 Language Skills（语言相关）
+字段说明：
 
-| 技能 | 描述 |
-|------|------|
-| [go-review](core/go-review/SKILL.md) | Go 语言专家级代码审查 |
-| [python-review](core/python-review/SKILL.md) | Python 语言专家级代码审查 |
-| [typescript-review](core/typescript-review/SKILL.md) | TypeScript 专家级代码审查 |
-| [csharp-review](core/csharp-review/SKILL.md) | C# 语言专家级代码审查 |
-| [lua-review](core/lua-review/SKILL.md) | Lua 语言专家级代码审查 |
+- `slug`: skill 的稳定标识，使用 kebab-case。
+- `category`: `workflow|backend|frontend|language|ai|utility` 之一。
+- `role`: `entrypoint|workflow|specialist` 之一，用于明确职责边界。
+- `triggers / inputs / outputs / related_skills / constraints`: 统一使用列表，便于索引和自动路由。
 
-### 🤖 AI Skills（AI 辅助）
+## 🛠 脚本
 
-| 技能 | 描述 |
-|------|------|
-| [prompt-design](core/ai/prompt-design/SKILL.md) | Prompt 编写规范与结构设计 |
-| [doc-generator](core/ai/doc-generator/SKILL.md) | API 文档 / 注释 / README 生成 |
-| [product-manager](core/ai/product-manager/SKILL.md) | 人话转译与需求拆解 |
-| [architecture-consultant](core/ai/architecture-consultant/SKILL.md) | 系统架构咨询与 ADR 生成 |
-
-### 🔧 Utility Skills（工具）
-
-| 技能 | 描述 |
-|------|------|
-| [markdown](core/markdown/SKILL.md) | Markdown 编写规范与 Lint |
-| [skill-builder](skill-builder/SKILL.md) | 帮助创建新的 Skill 定义 |
+- `pwsh ./scripts/generate-skills-index.ps1`: 重新生成 `SKILLS.md`
+- `pwsh ./scripts/validate-skills.ps1`: 校验 schema、章节、关联关系与索引一致性
 
 ## 🤝 贡献指南
 
 1. Fork 本仓库
 2. 创建特性分支 (`git checkout -b feature/new-skill`)
 3. 使用 [skill-builder](skill-builder/SKILL.md) 创建新技能
-4. 提交变更 (`git commit -m 'feat: add new skill'`)
-5. 推送分支 (`git push origin feature/new-skill`)
-6. 创建 Pull Request
+4. 生成索引：`pwsh ./scripts/generate-skills-index.ps1`
+5. 运行校验：`pwsh ./scripts/validate-skills.ps1`
+6. 提交变更 (`git commit -m 'feat: add new skill'`)
+7. 推送分支 (`git push origin feature/new-skill`)
+8. 创建 Pull Request
 
 ## 📄 许可证
 

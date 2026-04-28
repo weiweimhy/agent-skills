@@ -1,6 +1,28 @@
 ---
+slug: mongodb-master
 name: MongoDB Master
 description: MongoDB 专家级技能，涵盖 Schema 设计、索引优化、聚合管道、分片策略、安全加固与运维监控
+category: backend
+role: specialist
+triggers:
+  - MongoDB Schema 设计
+  - 索引优化
+  - 聚合或分片策略评估
+inputs:
+  - 集合结构与查询模式
+  - 性能瓶颈或容量问题
+  - 运维与安全要求
+outputs:
+  - Schema 与索引建议
+  - 聚合、扩展和运维方案
+related_skills:
+  - backend-patterns
+  - validation-lint
+  - api-design
+constraints:
+  - 索引设计必须基于真实查询模式和排序需求
+  - Schema 调整要同步评估迁移成本与兼容性
+  - 未经证据支持时不默认建议分片或复杂聚合
 ---
 
 # Skill: MongoDB Master

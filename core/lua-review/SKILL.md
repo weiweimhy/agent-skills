@@ -1,6 +1,26 @@
 ---
+slug: lua-review
 name: Lua 代码审查
 description: 针对 Lua 代码的专家级审查，遵循地道的 Lua 编程风格及其在不同环境（如 Love2D, Roblox）下的最佳实践
+category: language
+role: specialist
+triggers:
+  - Lua 代码审查
+  - Luau 或 LuaJIT 差异评估
+  - 脚本性能与资源检查
+inputs:
+  - .lua 文件或 diff
+  - 运行时环境说明
+  - 性能或行为问题描述
+outputs:
+  - Lua 审查报告
+  - 环境相关优化建议
+related_skills:
+  - code-review
+constraints:
+  - 避免无边界的全局状态和过深表结构
+  - 资源释放、元表行为和环境差异需要重点核查
+  - 对不明确的脚本运行环境先确认再给建议
 ---
 
 # Skill: Lua Review
@@ -44,7 +64,7 @@ description: 针对 Lua 代码的专家级审查，遵循地道的 Lua 编程风
 
 当以下情况发生时调用：
 
-- 作为 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 流程的第二阶段，针对 Lua 代码进行深度评估。
+- 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 Lua 代码进行深度评估。
 - 自动化工具（如 LuaCheck）报告异常时进行人工复审。
 - 涉及复杂脚本逻辑或核心库开发时。
 
@@ -55,7 +75,7 @@ description: 针对 Lua 代码的专家级审查，遵循地道的 Lua 编程风
 
 ## 📤 Output
 
-结构化的效果报告（参见 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 的标准格式），并增加：
+结构化的效果报告（参见 [code-review](../code-review/SKILL.md) 的标准格式），并增加：
 
 - **Memory Efficiency Tips**: 针对 Lua GC 特性的内存分配优化建议。
 - **Metatable Analysis**: 对复杂元表逻辑的安全性评估。
@@ -86,4 +106,4 @@ description: 针对 Lua 代码的专家级审查，遵循地道的 Lua 编程风
 
 ## 🔗 Related Skills
 
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 基础审查哲学与流程。
+- [code-review](../code-review/SKILL.md): 基础审查哲学与流程。

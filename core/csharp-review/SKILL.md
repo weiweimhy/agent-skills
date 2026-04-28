@@ -1,6 +1,27 @@
 ---
+slug: csharp-review
 name: C# 代码审查
 description: 针对 C# 代码的专家级审查，遵循 .NET 8/9、ASP.NET Core 最佳实践及现代 C# 12/13 地道语法
+category: language
+role: specialist
+triggers:
+  - C# 代码审查
+  - .NET 升级评估
+  - 异步与性能问题检查
+inputs:
+  - .cs 文件或 diff
+  - 目标 .NET 版本
+  - 关键性能或并发上下文
+outputs:
+  - C# 审查报告
+  - 现代化与性能建议
+related_skills:
+  - code-review
+  - backend-patterns
+constraints:
+  - 禁止忽略同步阻塞异步调用带来的死锁风险
+  - 避免以 dynamic 或 Service Locator 规避类型和依赖边界
+  - 性能优化建议应优先基于热点路径和证据
 ---
 
 # Skill: CSharp Review
@@ -46,7 +67,7 @@ description: 针对 C# 代码的专家级审查，遵循 .NET 8/9、ASP.NET Core
 
 当以下情况发生时调用：
 
-- 作为 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 流程的第二阶段，针对 C# (.NET) 代码进行深度评估。
+- 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 C# (.NET) 代码进行深度评估。
 - 使用分析器 (Analyzers) 捕获到架构规约违背时进行复审。
 - 升级旧版 .NET 代码至现代 .NET 8/9 平台时。
 
@@ -57,7 +78,7 @@ description: 针对 C# 代码的专家级审查，遵循 .NET 8/9、ASP.NET Core
 
 ## 📤 Output
 
-结构化的效果报告（参见 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 的标准格式），并增加：
+结构化的效果报告（参见 [code-review](../code-review/SKILL.md) 的标准格式），并增加：
 
 - **Modernization Suggestions**: 指出可以利用现代 C# 新特性进行简化的代码块。
 - **Memory Allocation Profile**: 对潜在代码分派点（Allocations）的风险预警。
@@ -86,4 +107,4 @@ description: 针对 C# 代码的专家级审查，遵循 .NET 8/9、ASP.NET Core
 
 ## 🔗 Related Skills
 
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 基础审查哲学与流程。
+- [code-review](../code-review/SKILL.md): 基础审查哲学与流程。

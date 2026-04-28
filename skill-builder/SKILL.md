@@ -1,11 +1,61 @@
 ---
+slug: skill-builder
 name: Skill 生成器
 description: 帮助创建新的 Skill 定义，优先复用已有能力，避免重复造轮子
+category: utility
+role: entrypoint
+triggers:
+  - 创建新 skill
+  - 能力是否值得抽成 skill
+  - skill 拆分与复用设计
+inputs:
+  - 用户目标与使用场景
+  - 已有 skill 列表
+  - 外部对标或参考能力
+outputs:
+  - skill 设计草案
+  - 复用分析与索引更新建议
+related_skills:
+  - prompt-design
+  - markdown
+  - code-review
+constraints:
+  - 创建前必须先检索现有 skill 和可复用能力
+  - 新 skill 必须职责单一并维护 SKILLS.md 索引
+  - 禁止产出与现有 skill 高度重叠的万能型技能
 ---
 
 # Skill: Skill Builder（技能生成器）
 
 帮助创建新的 Skill 定义，在创建前会进行能力拆解、已有技能检索、复用策略分析。
+
+## 🎯 Purpose
+
+帮助把一个模糊的“想做某种能力”请求，转成边界清晰、可复用、可维护的 skill 设计。
+
+## 🧩 Capabilities
+
+- 拆解需求并判断是否值得抽成 skill。
+- 检索已有能力并给出复用或组合方案。
+- 生成符合仓库规范的 skill 模板与索引更新建议。
+
+## 🧠 Usage
+
+- 在准备新增或重构 skill 时使用。
+- 在怀疑能力是否重复、过大或职责不清时使用。
+- 在需要对齐仓库规范和索引结构时使用。
+
+## 📥 Input
+
+- 用户目标、场景和期望输出。
+- 当前技能库中已存在的相关 skill。
+- 外部对标能力或参考实现。
+
+## 📤 Output
+
+- 新 skill 的结构化设计草案。
+- 复用分析、拆分建议和相关 skill 关系。
+- 需要同步更新的索引与文档项。
 
 ## 🎯 触发条件
 
@@ -35,12 +85,12 @@ description: 帮助创建新的 Skill 定义，优先复用已有能力，避免
 
 **检索顺序**（优先本地）：
 
-1️⃣ **本地 skills 目录**（最优先）
+1️⃣ **本地 skills 目录**（最优先，按当前 AI 助手目录约定）
 
 ```powershell
 # turbo
-# 查看当前项目已有的 Skills
-Get-ChildItem -Path ".agent/skills" -Recurse -Filter "SKILL.md" | ForEach-Object { $_.FullName }
+# 查看当前项目已有的 Skills（将 <skills-root> 替换为实际目录，如 .codex/skills）
+Get-ChildItem -Path "<skills-root>" -Recurse -Filter "SKILL.md" | ForEach-Object { $_.FullName }
 ```
 
 2️⃣ **antigravity-awesome-skills**
@@ -53,8 +103,8 @@ Get-ChildItem -Path ".agent/skills" -Recurse -Filter "SKILL.md" | ForEach-Object
 > 使用本项目自带的脚本访问网页：
 >
 > ```powershell
-> # 使用配套脚本访问交互式网页
-> python .agent/skills/skill-builder/scripts/web_access.py --url <URL>
+> # 使用配套脚本访问交互式网页（将 <skills-root> 替换为实际目录）
+> python <skills-root>/skill-builder/scripts/web_access.py --url <URL>
 > ```
 
 **检索判断与整合**：
@@ -98,8 +148,25 @@ Get-ChildItem -Path ".agent/skills" -Recurse -Filter "SKILL.md" | ForEach-Object
 
 ```markdown
 ---
+slug: <kebab-case-slug>
 name: <中文名称>
 description: <一句话描述>
+category: <workflow|backend|frontend|language|ai|utility>
+role: <entrypoint|workflow|specialist>
+triggers:
+  - <触发词 1>
+  - <触发词 2>
+inputs:
+  - <输入 1>
+  - <输入 2>
+outputs:
+  - <输出 1>
+  - <输出 2>
+related_skills:
+  - <相关 skill slug>
+constraints:
+  - <约束 1>
+  - <约束 2>
 ---
 
 # Skill: <skill-name>
@@ -141,20 +208,6 @@ description: <一句话描述>
 - 参考项 1：<URL 或 技能名称>
 - 参考项 2：<URL 或 技能名称>
 
-## 🔍 能力溯源 (Source Mapping)
-
-| 能力 | 来源 | 说明 |
-| :--- | :--- | :--- |
-| 流程设计 | `antigravity-system-prompt` | ✅ 遵循 Agent 核心协作哲学 |
-| 复用策略 | `dreyfus-model-skill` | ✅ 参考 Dreyfus 技能习得模型 |
-| 规范化输出 | `skill-marketplace-standard` | ✅ 对标外部技能市场规范 |
-
-## 📚 参考资料 (References)
-
-- [Antigravity Awesome Skills Guide](https://github.com/sickn33/antigravity-awesome-skills)
-- [Prompt Engineering Guide](https://www.promptingguide.ai/)
-- [The Dreyfus Model of Skill Acquisition](https://en.wikipedia.org/wiki/Dreyfus_model_of_skill_acquisition)
-
 ## ⚠️ Constraints
 
 （使用限制 / 不做什么）
@@ -166,7 +219,7 @@ description: <一句话描述>
 
 ### Step 6：更新 SKILLS 清单
 
-更新 `skills/SKILLS.md` 文件，将新创建的 Skill 添加到清单中。
+运行 `pwsh ./scripts/generate-skills-index.ps1`，重新生成仓库根目录的 `SKILLS.md`。
 
 ## 📌 设计原则 Checklist
 
@@ -184,3 +237,20 @@ description: <一句话描述>
 - ❌ 创建功能与现有 Skill 重叠的 Skill
 - ❌ 创建职责不清晰的"万能 Skill"
 - ❌ 忽略本地已有 Skills 只看外部来源
+
+## 📚 References
+
+- [Prompt Engineering Guide](https://www.promptingguide.ai/)
+- [Antigravity Awesome Skills Guide](https://github.com/sickn33/antigravity-awesome-skills)
+
+## ⚠️ Constraints
+
+- 创建前必须先检索本地与外部可复用能力。
+- 不输出职责混杂、边界模糊的万能型 skill。
+- 新 skill 必须同步维护 frontmatter 和索引信息。
+
+## 🔗 Related Skills
+
+- [prompt-design](../core/ai/prompt-design/SKILL.md): 可帮助优化 skill 的提示与输出结构。
+- [markdown](../core/markdown/SKILL.md): 可帮助新 skill 文档符合统一文档规范。
+- [code-review](../core/code-review/SKILL.md): 可用来审查新增 skill 是否清晰、可维护。

@@ -1,6 +1,28 @@
 ---
+slug: react
 name: React 开发
 description: 专注于 React 18/19、Hooks、Server Components 及现代状态管理的专家级开发能力
+category: frontend
+role: specialist
+triggers:
+  - React 组件设计
+  - Hooks 重构
+  - RSC 或状态管理方案
+inputs:
+  - UI 需求或组件结构
+  - 现有 JSX 或 TSX 代码
+  - React 版本与框架上下文
+outputs:
+  - React 组件或 Hook 方案
+  - 性能与边界建议
+related_skills:
+  - typescript-review
+  - api-design
+  - backend-patterns
+constraints:
+  - 不在渲染阶段产生可观测副作用或直接改状态
+  - 复杂副作用与状态协调逻辑应收敛到 Hook 或边界层
+  - 类型、数据流和服务端/客户端边界必须清晰
 ---
 
 # Skill: React Development
@@ -79,5 +101,5 @@ description: 专注于 React 18/19、Hooks、Server Components 及现代状态�
 
 ## 🔗 Related Skills
 
-- [typescript-review](file:///e:/go/go-utils/.agent/skills/core/typescript-review/SKILL.md): 涉及 TSX 中的类型安全审计。
-- [backend-patterns](file:///e:/go/go-utils/.agent/skills/core/backend/backend-patterns/SKILL.md): 在全栈开发（如 Next.js）中涉及的架构模式。
+- [typescript-review](../../typescript-review/SKILL.md): 涉及 TSX 中的类型安全审计。
+- [backend-patterns](../../backend/backend-patterns/SKILL.md): 在全栈开发（如 Next.js）中涉及的架构模式。

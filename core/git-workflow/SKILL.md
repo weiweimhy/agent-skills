@@ -1,6 +1,28 @@
 ---
+slug: git-workflow
 name: Git 规范工作流
 description: 帮助开发者生成规范、清晰、可维护的 Git 提交记录的全流程引导
+category: workflow
+role: entrypoint
+triggers:
+  - 开始提交流程
+  - diff 总结
+  - 提交拆分建议
+inputs:
+  - 当前 diff 或变更集合
+  - 开发者的改动意图
+  - 目标分支或发布上下文
+outputs:
+  - 提交工作流建议
+  - 变更总结与拆分方案
+related_skills:
+  - git-commit
+  - code-review
+  - release
+constraints:
+  - 不在未经确认的情况下直接改写提交历史
+  - 提交流程建议必须基于实际 diff 和改动边界
+  - 大体量混合改动要优先输出拆分方案
 ---
 
 # Skill: git-workflow
@@ -69,6 +91,6 @@ description: 帮助开发者生成规范、清晰、可维护的 Git 提交记�
 
 ## 🔗 Related Skills
 
-- [git-commit](file:///e:/go/go-utils/.agent/skills/core/git-commit/SKILL.md)
-- [release](file:///e:/go/go-utils/.agent/skills/core/release/SKILL.md)
+- [git-commit](../git-commit/SKILL.md)
+- [release](../release/SKILL.md)
 - [codex-review](https://github.com/sickn33/antigravity-awesome-skills/tree/main/skills/codex-review)

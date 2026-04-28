@@ -1,6 +1,27 @@
 ---
+slug: markdown
 name: Markdown 规范
 description: Markdown 编写规范与 Lint 规则，确保文档格式一致、可读性强
+category: utility
+role: specialist
+triggers:
+  - Markdown 格式检查
+  - Markdown 排版修正
+  - 文档规范咨询
+inputs:
+  - Markdown 文档内容
+  - 目标平台或 lint 规则
+  - 需要修正的样例
+outputs:
+  - 格式化建议
+  - 规则解释与示例
+related_skills:
+  - doc-generator
+  - code-review
+constraints:
+  - 必须遵循 markdownlint 规则和统一排版风格
+  - 代码块应声明语言，链接应避免裸 URL
+  - 文档结构要优先服务于可读性与可扫描性
 ---
 
 # Skill: Markdown
@@ -28,6 +49,24 @@ Markdown 编写规范和最佳实践，确保所有 Markdown 文件符合 markdo
 - **文档结构规范**：标题层级、段落组织
 - **组件规范**：表格、代码块、链接、列表的正确写法
 - **格式化最佳实践**：空行、缩进、换行规则
+
+## 🧠 Usage
+
+- 在编写或审阅 Markdown 文档时使用。
+- 在 README、设计文档或说明文档出现格式漂移时使用。
+- 在需要解释 markdownlint 规则或规范示例时使用。
+
+## 📥 Input
+
+- Markdown 文件内容或片段。
+- 目标平台和 lint 规范要求。
+- 需要修复的格式问题或错误提示。
+
+## 📤 Output
+
+- 格式化建议与修复方向。
+- 可直接复用的表格、代码块和链接示例。
+- 文档结构与可读性改进建议。
 
 ## 📏 Markdownlint 核心规则
 
@@ -145,6 +184,12 @@ func main() {
 | 连续多个空行 | 最多一个空行 |
 | 裸 URL | 使用链接语法包裹 |
 
+## ⚠️ Constraints
+
+- 不牺牲可读性去机械迎合格式。
+- 不使用与仓库约定冲突的标题、列表或代码块风格。
+- 不把无法解释的排版规则当成黑盒结论。
+
 ## 🔍 能力溯源 (Source Mapping)
 
 | 能力 | 来源 | 说明 |
@@ -161,5 +206,5 @@ func main() {
 
 ## 🔗 Related Skills
 
-- [doc-generator](file:///e:/go/go-utils/.agent/skills/core/ai/doc-generator/SKILL.md): 文档生成时应遵循本规范
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 代码审查包含文档质量检查
+- [doc-generator](../ai/doc-generator/SKILL.md): 文档生成时应遵循本规范
+- [code-review](../code-review/SKILL.md): 代码审查包含文档质量检查

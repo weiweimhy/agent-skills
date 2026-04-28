@@ -1,6 +1,29 @@
 ---
+slug: backend-patterns
 name: 后端架构模式
 description: 专注于项目结构、模块拆分及服务边界设计的架构级能力
+category: backend
+role: specialist
+triggers:
+  - 模块拆分
+  - 服务边界设计
+  - 后端架构重构
+inputs:
+  - 当前项目结构
+  - 领域模型与依赖关系
+  - 扩展性或维护性痛点
+outputs:
+  - 架构调整建议
+  - 模块划分与边界方案
+related_skills:
+  - api-design
+  - validation-lint
+  - architecture-consultant
+  - mongodb-master
+constraints:
+  - 优先追求清晰边界和单一职责，避免模式堆砌
+  - 不为抽象而抽象，复杂度必须与问题规模匹配
+  - 设计建议要兼顾当前交付成本与后续维护成本
 ---
 
 # Skill: Backend Patterns
@@ -86,3 +109,9 @@ description: 专注于项目结构、模块拆分及服务边界设计的架构�
 - ✅ **防御性设计**：必须包含错误重试逻辑或明确的错误处理边界。
 - ✅ **权限最小化**：所有敏感接口必须经过鉴权与权限校验。
 - ✅ **结构化响应规范**：跨模块调用时必须遵循统一的 Error/Result 包装模式。
+
+## 🔗 Related Skills
+
+- [api-design](../api-design/SKILL.md): 外部接口边界通常受内部架构边界约束。
+- [validation-lint](../validation-lint/SKILL.md): 架构边界落地后还需要在 DTO 和配置层保持一致。
+- [architecture-consultant](../../ai/architecture-consultant/SKILL.md): 涉及系统级权衡时可上升到架构咨询层面。

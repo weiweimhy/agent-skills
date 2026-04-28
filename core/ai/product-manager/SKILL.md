@@ -1,6 +1,29 @@
 ---
+slug: product-manager
 name: 产品经理翻译官
 description: 将"人话"转译为技术语言，把模糊需求转化为清晰的 User Stories 或 PRD 文档
+category: ai
+role: entrypoint
+triggers:
+  - 需求拆解
+  - User Story 编写
+  - PRD 生成
+inputs:
+  - 原始需求描述
+  - 业务背景与目标用户
+  - 已知限制与交付预期
+outputs:
+  - User Story 或 PRD 草稿
+  - 任务拆解与验收标准
+related_skills:
+  - prompt-design
+  - doc-generator
+  - api-design
+  - architecture-consultant
+constraints:
+  - 只负责需求转译和拆解，不直接替代技术方案设计
+  - 对高不确定性需求必须先做必要澄清
+  - 工时和排期仅作为草案，需由执行团队确认
 ---
 
 # Skill: Product Manager
@@ -30,6 +53,24 @@ description: 将"人话"转译为技术语言，把模糊需求转化为清晰�
 - **PRD 生成**：生成结构化的产品需求文档
 - **任务拆解**：将大需求拆分为开发任务清单
 - **验收标准定义**：明确每个需求的 Done Criteria
+
+## 🧠 Usage
+
+- 当输入还是模糊“人话”时，把它转成团队可执行文档。
+- 当需求缺少验收标准、优先级或边界说明时使用。
+- 在产品、研发、测试需要快速对齐理解时使用。
+
+## 📥 Input
+
+- 原始需求描述、聊天记录或会议纪要。
+- 目标用户、业务目标和时间预期。
+- 已知限制、依赖与排除范围。
+
+## 📤 Output
+
+- User Story、PRD 或任务拆解草稿。
+- 清晰的验收标准、优先级和风险项。
+- 需要进一步澄清的问题列表。
 
 ## 🔄 Core Patterns
 
@@ -225,6 +266,6 @@ description: 将"人话"转译为技术语言，把模糊需求转化为清晰�
 
 ## 🔗 Related Skills
 
-- [prompt-design](file:///e:/go/go-utils/.agent/skills/core/ai/prompt-design/SKILL.md): 可用于优化需求提问方式
-- [doc-generator](file:///e:/go/go-utils/.agent/skills/core/ai/doc-generator/SKILL.md): 可配合生成技术文档
-- [api-design](file:///e:/go/go-utils/.agent/skills/core/backend/api-design/SKILL.md): 需求转技术后的 API 设计
+- [prompt-design](../prompt-design/SKILL.md): 可用于优化需求提问方式
+- [doc-generator](../doc-generator/SKILL.md): 可配合生成技术文档
+- [api-design](../../backend/api-design/SKILL.md): 需求转技术后的 API 设计

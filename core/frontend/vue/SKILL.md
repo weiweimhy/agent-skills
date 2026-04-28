@@ -1,6 +1,27 @@
 ---
+slug: vue
 name: Vue 开发
 description: 专注于 Vue 3、Composition API、Pinia 及 Vite 生态的专家级开发能力
+category: frontend
+role: specialist
+triggers:
+  - Vue 组件设计
+  - Composable 拆分
+  - Pinia 状态管理优化
+inputs:
+  - UI 需求或组件代码
+  - 技术栈信息
+  - 响应式或 SSR 场景说明
+outputs:
+  - Vue 组件与 Composable 方案
+  - Store 与性能优化建议
+related_skills:
+  - typescript-review
+  - api-design
+constraints:
+  - 新代码优先采用 Composition API 与 script setup
+  - 禁止以 Mixins 或隐式共享状态替代 Composables
+  - 必须考虑 SSR 环境下的运行边界
 ---
 
 # Skill: Vue Development
@@ -82,5 +103,5 @@ description: 专注于 Vue 3、Composition API、Pinia 及 Vite 生态的专家�
 
 ## 🔗 Related Skills
 
-- [typescript-review](file:///e:/go/go-utils/.agent/skills/core/typescript-review/SKILL.md): 涉及 Vue 中的 TS 类型审计。
-- [api-design](file:///e:/go/go-utils/.agent/skills/core/backend/api-design/SKILL.md): 涉及前端与后端接口的集成规范。
+- [typescript-review](../../typescript-review/SKILL.md): 涉及 Vue 中的 TS 类型审计。
+- [api-design](../../backend/api-design/SKILL.md): 涉及前端与后端接口的集成规范。

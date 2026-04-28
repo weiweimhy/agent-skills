@@ -1,6 +1,30 @@
 ---
+slug: typescript-review
 name: TypeScript 代码审查
 description: 针对 TypeScript 代码的专家级审查，遵循 TS 5.x 特性、地道模式及现代 Web 开发最佳实践
+category: language
+role: specialist
+triggers:
+  - TypeScript 代码审查
+  - 泛型与类型收窄评估
+  - TSX 类型安全检查
+inputs:
+  - .ts 或 .tsx 文件
+  - tsconfig 关键配置
+  - 运行时边界或 API 背景
+outputs:
+  - TypeScript 审查报告
+  - 类型安全与重构建议
+related_skills:
+  - code-review
+  - api-design
+  - backend-patterns
+  - react
+  - vue
+constraints:
+  - 禁止让 any 在公开边界和核心路径中扩散
+  - 类型体操复杂度必须服从可维护性和可解释性
+  - 类型安全建议要与运行时校验能力保持一致
 ---
 
 # Skill: TypeScript Review
@@ -44,7 +68,7 @@ description: 针对 TypeScript 代码的专家级审查，遵循 TS 5.x 特性�
 
 当以下情况发生时调用：
 
-- 作为 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 流程的第二阶段，针对 TypeScript 代码进行深度评估。
+- 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 TypeScript 代码进行深度评估。
 - 在前端或 Node.js 环境中，对复杂的业务逻辑或工具库进行质量审计。
 - 当开发者遇到复杂的“类型体操”问题，需要简化建议时。
 
@@ -55,12 +79,17 @@ description: 针对 TypeScript 代码的专家级审查，遵循 TS 5.x 特性�
 
 ## 📤 Output
 
-结构化的效果报告（参见 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 的标准格式），并增加：
+结构化的效果报告（参见 [code-review](../code-review/SKILL.md) 的标准格式），并增加：
 
 - **Type Safety Score**: 针对代码类型覆盖率与严密性的主观评分。
 - **Refactoring to Idiomatic TS**: 提供具体的代码示例，展示如何将 JavaScript 风格的代码转化为地道的 TypeScript。
 
-- ✅ **保持类型简洁**：过于复杂的递归类型应考虑拆解或简化。
+## ⚠️ Constraints
+
+- ❌ **严禁扩散 `any`**：如无法立即精确建模，优先收敛为 `unknown` 再逐步收窄。
+- ❌ **避免类型体操过度设计**：复杂递归类型应拆解或回退到更易维护的结构。
+- ✅ **优先保证 API 类型边界清晰**：公开类型定义应稳定、可读、易推断。
+- ✅ **类型与运行时一致**：不得只在类型层面“看起来安全”，运行时校验也要对齐。
 
 ## 🔍 能力溯源 (Source Mapping)
 
@@ -79,6 +108,6 @@ description: 针对 TypeScript 代码的专家级审查，遵循 TS 5.x 特性�
 
 ## 🔗 Related Skills
 
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 基础审查哲学与流程。
-- [api-design](file:///e:/go/go-utils/.agent/skills/core/backend/api-design/SKILL.md): 涉及 API 层面的设计审查。
-- [backend-patterns](file:///e:/go/go-utils/.agent/skills/core/backend/backend-patterns/SKILL.md): 涉及后端架构层面的架构审计。
+- [code-review](../code-review/SKILL.md): 基础审查哲学与流程。
+- [api-design](../backend/api-design/SKILL.md): 涉及 API 层面的设计审查。
+- [backend-patterns](../backend/backend-patterns/SKILL.md): 涉及后端架构层面的架构审计。

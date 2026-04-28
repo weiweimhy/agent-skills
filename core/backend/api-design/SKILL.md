@@ -1,6 +1,28 @@
 ---
+slug: api-design
 name: API 设计
 description: 专注于 API 命名、RESTful 结构、返回格式及错误码设计的专项能力
+category: backend
+role: specialist
+triggers:
+  - RESTful 接口设计
+  - API 路径规范化
+  - 错误码与响应格式设计
+inputs:
+  - 业务资源模型
+  - 交互流程与客户端需求
+  - 兼容性或版本约束
+outputs:
+  - API 路径与方法设计
+  - 响应和错误格式建议
+related_skills:
+  - backend-patterns
+  - validation-lint
+  - doc-generator
+constraints:
+  - 必须遵循资源导向命名，避免路径动词化
+  - 列表类接口默认需要分页与筛选规范
+  - 任何 Breaking Change 都要显式标记和评估影响
 ---
 
 # Skill: API Design
@@ -71,3 +93,9 @@ description: 专注于 API 命名、RESTful 结构、返回格式及错误码设
 - ✅ **分页必选**：对于可能返回列表的接口，必须设计分页参数。
 - ✅ 错误码必须全局唯一且有明确分类。
 - ✅ **破坏性变更显式化**：任何 Breaking Change 必须在变更描述中明确标记。
+
+## 🔗 Related Skills
+
+- [backend-patterns](../backend-patterns/SKILL.md): API 边界通常需要和模块边界一起设计。
+- [validation-lint](../validation-lint/SKILL.md): 参数与响应结构落地后需要继续做一致性校验。
+- [doc-generator](../../ai/doc-generator/SKILL.md): 接口设计完成后可继续生成文档与示例。

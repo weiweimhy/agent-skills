@@ -1,6 +1,28 @@
 ---
+slug: git-commit
 name: Git 提交
 description: 规范化提交代码到 Git 仓库，包括状态检查、文件暂存、生成符合规范的提交信息并推送
+category: workflow
+role: workflow
+triggers:
+  - 提交代码
+  - Commit Message 生成
+  - 暂存并提交变更
+inputs:
+  - 当前工作区或暂存区 diff
+  - 提交目标与模块范围
+  - 推送策略或分支约束
+outputs:
+  - Conventional Commit 建议
+  - 提交拆分与执行顺序
+related_skills:
+  - git-workflow
+  - code-review
+  - release
+constraints:
+  - 未经确认不直接执行 commit、push、amend 或 reset
+  - 多个不相关改动必须优先建议拆分提交
+  - 不能为追求格式好看而牺牲提交语义准确性
 ---
 
 # Git 提交 Skill
@@ -30,6 +52,34 @@ description: 规范化提交代码到 Git 仓库，包括状态检查、文件�
 
 - [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/)
 - [Git Commit Best Practices Guide](https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project)
+
+## 🎯 Purpose
+
+规范化提交代码变更到 Git 仓库，产出清晰、可追踪、可发布的提交历史。
+
+## 🧩 Capabilities
+
+- 根据 diff 总结提交意图并生成 Conventional Commit。
+- 判断改动是否需要拆分为多个独立提交。
+- 为提交前检查、暂存和推送提供顺序化建议。
+
+## 🧠 Usage
+
+- 在准备提交本地变更前使用。
+- 当需要根据 diff 生成规范化 Commit Message 时使用。
+- 当变更较大、需要判断是否拆分提交时使用。
+
+## 📥 Input
+
+- 当前工作区或暂存区的 diff。
+- 本次改动的目标、范围与是否包含 breaking change。
+- 目标分支或推送策略（如是否允许推送到主分支）。
+
+## 📤 Output
+
+- 推荐的 Conventional Commit 提交信息。
+- 是否需要拆分提交的建议。
+- 提交前检查项与执行顺序。
 
 ## 前置条件检查
 
@@ -206,6 +256,19 @@ git commit --amend --no-edit
 - ❌ 单次提交包含多个不相关改动
 - ❌ 提交未测试的代码
 - ❌ 直接推送到 main/master 分支（除非确认）
+
+## ⚠️ Constraints
+
+- ❌ 不在未经用户确认的情况下直接执行 `git commit`、`git push` 或改写历史。
+- ❌ 不建议使用 `git commit --amend`、`git reset` 等会改写历史的命令，除非用户明确要求。
+- ✅ 优先保证提交语义准确，再考虑句式是否“好看”。
+- ✅ 如检测到多个不相关改动，必须优先建议拆分提交。
+
+## 🔗 Related Skills
+
+- [git-workflow](../git-workflow/SKILL.md): 适合作为更完整的提交流程入口。
+- [code-review](../code-review/SKILL.md): 提交前可先完成风险检查与反馈收敛。
+- [release](../release/SKILL.md): 规范化提交历史会直接影响发版说明质量。
 
 ## 问题处理
 

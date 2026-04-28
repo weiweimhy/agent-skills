@@ -1,6 +1,30 @@
 ---
+slug: code-review
 name: 通用代码审查
 description: 定义跨语言的代码审查哲学、流程及核心检查单，侧重于可维护性、逻辑正确性及团队协作
+category: workflow
+role: entrypoint
+triggers:
+  - 代码审查
+  - review 反馈整理
+  - 逻辑正确性检查
+inputs:
+  - 代码片段、文件或 diff
+  - 变更背景与目标
+  - 测试、日志或复现信息
+outputs:
+  - 结构化审查意见
+  - 风险等级与后续建议
+related_skills:
+  - go-review
+  - python-review
+  - typescript-review
+  - csharp-review
+  - lua-review
+constraints:
+  - 审查聚焦代码与行为风险，不针对个人
+  - 风格类问题应尽量交给自动化工具处理
+  - 对意图不明确的实现先提问再下结论
 ---
 
 # Skill: Code Review
@@ -43,7 +67,7 @@ description: 定义跨语言的代码审查哲学、流程及核心检查单，�
 1. **通用评估**：使用本 Skill 的 Checklist 对逻辑、可读性、安全性进行初步扫描。
 2. **语言识别**：根据输入内容识别编程语言。
 3. **专项深挖**：
-   - 如果是 **Go**：必须紧接着调用 [go-review](file:///e:/go/go-utils/.agent/skills/core/go-review/SKILL.md) 进行深度地道性审查。
+   - 如果是 **Go**：必须紧接着调用 [go-review](../go-review/SKILL.md) 进行深度地道性审查。
    - 如果是 **Python**：寻找并调用 `python-review`（如果存在），否则维持通用审查标准。
    - 其他语言以此类推。
 4. **综述汇总**：整合通用建议与专项建议，给出最终报告。
@@ -90,5 +114,5 @@ description: 定义跨语言的代码审查哲学、流程及核心检查单，�
 
 ## 🔗 Related Skills
 
-- [go-review](file:///e:/go/go-utils/.agent/skills/core/go-review/SKILL.md): 针对 Go 语言的深度代码审查。
-- [git-workflow](file:///e:/go/go-utils/.agent/skills/core/git-workflow/SKILL.md): 在提交流程中集成代码审查。
+- [go-review](../go-review/SKILL.md): 针对 Go 语言的深度代码审查。
+- [git-workflow](../git-workflow/SKILL.md): 在提交流程中集成代码审查。

@@ -1,6 +1,29 @@
 ---
+slug: prompt-design
 name: Prompt 设计与优化
 description: 帮助设计和优化 LLM Prompts，涵盖结构设计、Few-Shot Learning、Chain-of-Thought 等核心技术
+category: ai
+role: specialist
+triggers:
+  - 设计 prompt
+  - 优化 system prompt
+  - Few-shot 或推理链设计
+inputs:
+  - 目标任务与期望输出
+  - 当前 prompt 或失败案例
+  - 约束条件与评测方式
+outputs:
+  - 优化后的 prompt 方案
+  - 风险点与评测建议
+related_skills:
+  - product-manager
+  - doc-generator
+  - code-review
+  - skill-builder
+constraints:
+  - 优先从简单提示词开始，再逐步增加复杂度
+  - 任何优化建议都应考虑评测方法和注入风险
+  - 未经验证的 Prompt 不应直接作为生产最佳实践
 ---
 
 # Skill: Prompt Design
@@ -31,6 +54,24 @@ description: 帮助设计和优化 LLM Prompts，涵盖结构设计、Few-Shot L
 - **Template Systems**：构建可复用的 Prompt 模板
 - **System Prompt 架构**：设计持久化的全局行为约束
 - **Progressive Disclosure**：渐进式增加 Prompt 复杂度
+
+## 🧠 Usage
+
+- 在模型输出不稳定、格式跑偏或理解不准时使用。
+- 在设计 system prompt、任务模板或 few-shot 示例时使用。
+- 在需要把 prompt 变成可评估、可迭代资产时使用。
+
+## 📥 Input
+
+- 当前 prompt、任务目标和失败样例。
+- 期望输出格式、限制条件和评测方法。
+- 所用模型能力、安全要求和上下文限制。
+
+## 📤 Output
+
+- 优化后的 prompt 结构与示例。
+- 风险点、评测方案和迭代建议。
+- 是否需要拆成多层提示的判断。
 
 ## 🔄 Core Patterns
 
@@ -133,6 +174,12 @@ Bug: "昨天部署缓存更新后，用户无法保存草稿"
 - **指令歧义**：留有多种解释的空间
 - **忽视边缘情况**：未在异常或边界输入上测试
 
+## ⚠️ Constraints
+
+- 不把未评估的提示词直接当成生产方案。
+- 不忽视 prompt 注入、格式逃逸和示例偏置风险。
+- 不为了“看起来聪明”而增加无证据的复杂度。
+
 ## 🔍 能力溯源 (Source Mapping)
 
 | 能力 | 来源 | 说明 |
@@ -154,5 +201,5 @@ Bug: "昨天部署缓存更新后，用户无法保存草稿"
 
 ## 🔗 Related Skills
 
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 可用 Prompt 设计优化审查反馈格式
-- [skill-builder](file:///e:/go/go-utils/.agent/skills/skill-builder/SKILL.md): 创建新 Skill 时可参考 Prompt 设计原则
+- [code-review](../../code-review/SKILL.md): 可用 Prompt 设计优化审查反馈格式
+- [skill-builder](../../../skill-builder/SKILL.md): 创建新 Skill 时可参考 Prompt 设计原则

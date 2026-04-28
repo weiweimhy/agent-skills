@@ -1,6 +1,29 @@
 ---
+slug: doc-generator
 name: 文档生成器
 description: 自动生成项目文档，包括 API 接口文档、代码注释、README、Changelog 等
+category: ai
+role: workflow
+triggers:
+  - 生成 API 文档
+  - 写注释或 README
+  - 更新 Changelog
+inputs:
+  - 代码、接口定义或项目结构
+  - 目标文档类型与受众
+  - 现有文档或模板
+outputs:
+  - 结构化文档草稿
+  - 注释、示例与维护建议
+related_skills:
+  - api-design
+  - markdown
+  - release
+  - code-review
+constraints:
+  - 生成内容必须与当前代码和事实保持一致
+  - 示例、命令和配置片段应尽量可直接运行
+  - 不能用模板化废话代替关键行为说明
 ---
 
 # Skill: Doc Generator
@@ -30,6 +53,24 @@ description: 自动生成项目文档，包括 API 接口文档、代码注释�
 - **README 生成**：项目说明文档，包含 Quick Start、Features、Configuration
 - **Changelog 生成**：版本变更日志，遵循 Keep a Changelog 规范
 - **ADR 生成**：架构决策记录 (Architecture Decision Record)
+
+## 🧠 Usage
+
+- 在准备补齐或重写项目文档时使用。
+- 在代码完成后同步输出 API、README、注释或 Changelog 时使用。
+- 在对外交付、发版或交接前整理文档资产时使用。
+
+## 📥 Input
+
+- 代码、接口定义或项目结构。
+- 目标文档类型、受众和格式要求。
+- 已有文档、模板或术语约定。
+
+## 📤 Output
+
+- 可继续编辑的结构化文档草稿。
+- 与代码一致的注释、示例和说明结构。
+- 文档缺口、风险点和维护建议。
 
 ## 🔄 文档类型与模板
 
@@ -165,6 +206,12 @@ MIT
 | 示例无法运行 | 使用真实可测试的示例 |
 | 参数要求不清晰 | 明确标注 required/optional 和校验规则 |
 
+## ⚠️ Constraints
+
+- 不用空泛描述替代真实行为说明。
+- 不输出与当前代码状态不一致的接口、参数或命令。
+- 不省略错误路径、前置条件或兼容性说明。
+
 ## 🔍 能力溯源 (Source Mapping)
 
 | 能力 | 来源 | 说明 |
@@ -185,6 +232,6 @@ MIT
 
 ## 🔗 Related Skills
 
-- [release](file:///e:/go/go-utils/.agent/skills/core/release/SKILL.md): Release Notes 生成
-- [api-design](file:///e:/go/go-utils/.agent/skills/core/backend/api-design/SKILL.md): API 设计规范
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 代码审查（含注释检查）
+- [release](../../release/SKILL.md): Release Notes 生成
+- [api-design](../../backend/api-design/SKILL.md): API 设计规范
+- [code-review](../../code-review/SKILL.md): 代码审查（含注释检查）

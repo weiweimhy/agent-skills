@@ -1,0 +1,163 @@
+param(
+    [string]$Root = "."
+)
+
+$ErrorActionPreference = "Stop"
+
+$repoRoot = (Resolve-Path $Root).Path
+$issues = New-Object System.Collections.Generic.List[string]
+. (Join-Path $repoRoot "scripts/skills-lib.ps1")
+
+$skillFiles = Get-SkillFiles -RepoRoot $repoRoot
+$indexFile = Join-Path $repoRoot "SKILLS.md"
+$requiredKeys = @("slug", "name", "description", "category", "role", "triggers", "inputs", "outputs", "related_skills", "constraints")
+$arrayKeys = @("triggers", "inputs", "outputs", "related_skills", "constraints")
+$allowedCategories = @("workflow", "backend", "frontend", "language", "ai", "utility")
+$allowedRoles = @("entrypoint", "workflow", "specialist")
+$categoryOrder = Get-SkillCategoryOrder
+$requiredSections = @(
+    "## 🎯 触发条件",
+    "## 🎯 Purpose",
+    "## 🧩 Capabilities",
+    "## 🧠 Usage",
+    "## 📥 Input",
+    "## 📤 Output",
+    "## ⚠️ Constraints",
+    "## 🔗 Related Skills"
+)
+
+$skills = foreach ($file in $skillFiles) {
+    try {
+        Get-SkillFrontmatter -Path $file.FullName -RepoRoot $repoRoot
+    } catch {
+        $issues.Add($_.Exception.Message)
+    }
+}
+
+$slugSet = @{}
+foreach ($skill in $skills) {
+    if ($slugSet.ContainsKey($skill.Slug)) {
+        $issues.Add("$($skill.RelativePath): duplicated slug '$($skill.Slug)'")
+    } else {
+        $slugSet[$skill.Slug] = $true
+    }
+}
+
+foreach ($skill in $skills) {
+    $content = $skill.Body
+    $relative = $skill.RelativePath
+    $frontmatter = $skill.Frontmatter
+
+    foreach ($requiredKey in $requiredKeys) {
+        if (-not $frontmatter.Contains($requiredKey)) {
+            $issues.Add("${relative}: missing frontmatter key '$requiredKey'")
+        }
+    }
+
+    $expectedDirSlug = Split-Path (Split-Path $skill.Path -Parent) -Leaf
+    if ($skill.Slug -ne $expectedDirSlug) {
+        $issues.Add("${relative}: slug '$($skill.Slug)' must match directory name '$expectedDirSlug'")
+    }
+
+    if ([string]::IsNullOrWhiteSpace($frontmatter["description"]) -or $frontmatter["description"].Length -gt 120) {
+        $issues.Add("${relative}: description must be 1-120 characters")
+    }
+
+    if ($frontmatter.Contains("category") -and $frontmatter["category"] -notin $allowedCategories) {
+        $issues.Add("${relative}: invalid category '$($frontmatter["category"])'")
+    }
+
+    if ($frontmatter.Contains("role") -and $frontmatter["role"] -notin $allowedRoles) {
+        $issues.Add("${relative}: invalid role '$($frontmatter["role"])'")
+    }
+
+    foreach ($arrayKey in $arrayKeys) {
+        if (-not $frontmatter.Contains($arrayKey)) {
+            continue
+        }
+        $items = @($frontmatter[$arrayKey]) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+        if ($items.Count -lt 1) {
+            $issues.Add("${relative}: frontmatter key '$arrayKey' must contain at least one item")
+        }
+        if (($items | Sort-Object -Unique).Count -ne $items.Count) {
+            $issues.Add("${relative}: frontmatter key '$arrayKey' contains duplicate items")
+        }
+        if ($arrayKey -eq "constraints" -and ($items.Count -lt 2 -or $items.Count -gt 5)) {
+            $issues.Add("${relative}: frontmatter constraints should contain 2-5 items")
+        }
+        if ($arrayKey -eq "related_skills" -and $items.Count -gt 6) {
+            $issues.Add("${relative}: related_skills should contain at most 6 items")
+        }
+    }
+
+    foreach ($relatedSlug in @($frontmatter["related_skills"])) {
+        if ($relatedSlug -eq $skill.Slug) {
+            $issues.Add("${relative}: related_skills must not reference itself")
+        } elseif (-not $slugSet.ContainsKey($relatedSlug)) {
+            $issues.Add("${relative}: related skill '$relatedSlug' does not exist")
+        }
+    }
+
+    foreach ($section in $requiredSections) {
+        if ($skill.StrippedBody -notmatch [regex]::Escape($section)) {
+            $issues.Add("${relative}: missing required section '$section'")
+        }
+    }
+
+    if ($content -match "file:///") {
+        $issues.Add("${relative}: contains absolute file:/// links")
+    }
+
+    if ($content -notmatch '(?m)^# ') {
+        $issues.Add("${relative}: missing top-level H1 title")
+    }
+
+    $sourceMappingCount = ([regex]::Matches(
+        $skill.StrippedBody,
+        "^## .*(Source Mapping|能力溯源)",
+        [System.Text.RegularExpressions.RegexOptions]::Multiline
+    )).Count
+    if ($sourceMappingCount -gt 1) {
+        $issues.Add("${relative}: contains duplicated Source Mapping sections")
+    }
+
+    $referencesCount = ([regex]::Matches(
+        $skill.StrippedBody,
+        "^## .*(References|参考资料)",
+        [System.Text.RegularExpressions.RegexOptions]::Multiline
+    )).Count
+    if ($referencesCount -gt 1) {
+        $issues.Add("${relative}: contains duplicated References sections")
+    }
+}
+
+if (-not (Test-Path $indexFile)) {
+    $issues.Add("SKILLS.md: file not found")
+} else {
+    $indexContent = Get-Content $indexFile -Raw
+    if ($indexContent -notmatch [regex]::Escape('Auto-generated by `scripts/generate-skills-index.ps1`')) {
+        $issues.Add("SKILLS.md missing generated-file marker")
+    }
+    foreach ($category in $categoryOrder) {
+        $group = $skills | Where-Object { $_.Frontmatter["category"] -eq $category }
+        if ($group.Count -gt 0) {
+            $meta = Get-SkillCategoryMeta -Category $category
+            if (-not $indexContent.Contains($meta.Title)) {
+                $issues.Add("SKILLS.md: missing category section '$($meta.Title)'")
+            }
+        }
+    }
+    foreach ($skill in $skills) {
+        if (-not $indexContent.Contains($skill.RelativePath)) {
+            $issues.Add("SKILLS.md: missing index entry for $($skill.RelativePath)")
+        }
+    }
+}
+
+if ($issues.Count -gt 0) {
+    Write-Output "Skill validation failed:"
+    $issues | ForEach-Object { Write-Output "- $_" }
+    exit 1
+}
+
+Write-Output "Skill validation passed ($($skillFiles.Count) files checked)."

@@ -1,6 +1,27 @@
 ---
+slug: python-review
 name: Python 代码审查
 description: 针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of Python 及 2024-2025 现代 Python 最佳实践
+category: language
+role: specialist
+triggers:
+  - Python 代码审查
+  - Pythonic 重构建议
+  - 异步阻塞检查
+inputs:
+  - .py 文件或代码片段
+  - 依赖环境描述
+  - 关键错误或重构目标
+outputs:
+  - Python 审查报告
+  - Pythonic 重构建议
+related_skills:
+  - code-review
+  - prompt-design
+constraints:
+  - 避免宽泛异常捕获和过时语法惯性
+  - 优先保证可读性与显式语义，而非技巧性写法
+  - 异步路径中的阻塞调用和资源管理要重点审查
 ---
 
 # Skill: Python Review
@@ -45,7 +66,7 @@ description: 针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of 
 
 当以下情况发生时调用：
 
-- 作为 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 流程的第二阶段，针对 Python 代码进行深度评估。
+- 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 Python 代码进行深度评估。
 - 提交 Python 项目 PR 前进行的代码质量检查。
 - 重构旧版 Python (2.x/3.6) 代码至现代 Python 架构时。
 
@@ -56,7 +77,7 @@ description: 针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of 
 
 ## 📤 Output
 
-结构化的效果报告（参见 [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md) 的建议格式），特别增加：
+结构化的效果报告（参见 [code-review](../code-review/SKILL.md) 的建议格式），特别增加：
 
 - **Pythonic Refactoring**: 具体的代码重构对比，展示如何将“普通的”代码转化为“Pythonic”代码。
 - **Linter Recommendations**: 建议使用的特定 Linter 规则（如 Black, Ruff, MyPy 指令）。
@@ -86,4 +107,4 @@ description: 针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of 
 
 ## 🔗 Related Skills
 
-- [code-review](file:///e:/go/go-utils/.agent/skills/core/code-review/SKILL.md): 基础审查哲学与流程。
+- [code-review](../code-review/SKILL.md): 基础审查哲学与流程。
