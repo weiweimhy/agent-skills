@@ -6,155 +6,87 @@ $ErrorActionPreference = "Stop"
 
 $repoRoot = (Resolve-Path $Root).Path
 $issues = New-Object System.Collections.Generic.List[string]
-. (Join-Path $repoRoot "scripts/skills-lib.ps1")
+$reservedDirs = @(".git", ".github", ".agents", ".codex", "scripts")
+$skillFiles = Get-ChildItem -Path $repoRoot -Recurse -Filter "SKILL.md" | Sort-Object FullName
 
-$skillFiles = Get-SkillFiles -RepoRoot $repoRoot
-$indexFile = Join-Path $repoRoot "SKILLS.md"
-$requiredKeys = @("slug", "name", "description", "category", "role", "triggers", "inputs", "outputs", "related_skills", "constraints")
-$arrayKeys = @("triggers", "inputs", "outputs", "related_skills", "constraints")
-$allowedCategories = @("workflow", "backend", "frontend", "language", "ai", "utility")
-$allowedRoles = @("entrypoint", "workflow", "specialist")
-$categoryOrder = Get-SkillCategoryOrder
-$requiredSections = @(
-    "## 🎯 触发条件",
-    "## 🎯 Purpose",
-    "## 🧩 Capabilities",
-    "## 🧠 Usage",
-    "## 📥 Input",
-    "## 📤 Output",
-    "## ⚠️ Constraints",
-    "## 🔗 Related Skills"
-)
-
-$skills = foreach ($file in $skillFiles) {
-    try {
-        Get-SkillFrontmatter -Path $file.FullName -RepoRoot $repoRoot
-    } catch {
-        $issues.Add($_.Exception.Message)
-    }
+if ($skillFiles.Count -eq 0) {
+    $issues.Add("No SKILL.md files found.")
 }
 
-$slugSet = @{}
-foreach ($skill in $skills) {
-    if ($slugSet.ContainsKey($skill.Slug)) {
-        $issues.Add("$($skill.RelativePath): duplicated slug '$($skill.Slug)'")
-    } else {
-        $slugSet[$skill.Slug] = $true
-    }
-}
+foreach ($file in $skillFiles) {
+    $content = Get-Content -LiteralPath $file.FullName -Raw
+    $relative = $file.FullName.Substring($repoRoot.Length + 1).Replace("\", "/")
+    $parent = Split-Path $file.FullName -Parent
+    $skillName = Split-Path $parent -Leaf
 
-foreach ($skill in $skills) {
-    $content = $skill.Body
-    $relative = $skill.RelativePath
-    $frontmatter = $skill.Frontmatter
-
-    foreach ($requiredKey in $requiredKeys) {
-        if (-not $frontmatter.Contains($requiredKey)) {
-            $issues.Add("${relative}: missing frontmatter key '$requiredKey'")
-        }
+    if ((Split-Path $parent -Parent) -ne $repoRoot) {
+        $issues.Add("${relative}: skill must live at <skill-name>/SKILL.md")
     }
 
-    $expectedDirSlug = Split-Path (Split-Path $skill.Path -Parent) -Leaf
-    if ($skill.Slug -ne $expectedDirSlug) {
-        $issues.Add("${relative}: slug '$($skill.Slug)' must match directory name '$expectedDirSlug'")
+    if ($reservedDirs -contains $skillName) {
+        $issues.Add("${relative}: skill directory uses reserved name '$skillName'")
     }
 
-    if ([string]::IsNullOrWhiteSpace($frontmatter["description"]) -or $frontmatter["description"].Length -gt 120) {
-        $issues.Add("${relative}: description must be 1-120 characters")
+    $match = [regex]::Match($content, '(?s)^---\r?\n(.*?)\r?\n---\r?\n?')
+    if (-not $match.Success) {
+        $issues.Add("${relative}: missing YAML frontmatter")
+        continue
     }
 
-    if ($frontmatter.Contains("category") -and $frontmatter["category"] -notin $allowedCategories) {
-        $issues.Add("${relative}: invalid category '$($frontmatter["category"])'")
-    }
+    $frontmatterText = $match.Groups[1].Value
+    $keys = New-Object System.Collections.Generic.List[string]
+    $values = @{}
 
-    if ($frontmatter.Contains("role") -and $frontmatter["role"] -notin $allowedRoles) {
-        $issues.Add("${relative}: invalid role '$($frontmatter["role"])'")
-    }
-
-    foreach ($arrayKey in $arrayKeys) {
-        if (-not $frontmatter.Contains($arrayKey)) {
+    foreach ($line in ($frontmatterText -split '\r?\n')) {
+        if ([string]::IsNullOrWhiteSpace($line)) {
             continue
         }
-        $items = @($frontmatter[$arrayKey]) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
-        if ($items.Count -lt 1) {
-            $issues.Add("${relative}: frontmatter key '$arrayKey' must contain at least one item")
+        if ($line -notmatch '^([A-Za-z_][A-Za-z0-9_-]*):\s*(.*)$') {
+            $issues.Add("${relative}: unsupported frontmatter line '$line'")
+            continue
         }
-        if (($items | Sort-Object -Unique).Count -ne $items.Count) {
-            $issues.Add("${relative}: frontmatter key '$arrayKey' contains duplicate items")
-        }
-        if ($arrayKey -eq "constraints" -and ($items.Count -lt 2 -or $items.Count -gt 5)) {
-            $issues.Add("${relative}: frontmatter constraints should contain 2-5 items")
-        }
-        if ($arrayKey -eq "related_skills" -and $items.Count -gt 6) {
-            $issues.Add("${relative}: related_skills should contain at most 6 items")
-        }
+        $key = $Matches[1]
+        $value = $Matches[2].Trim()
+        $keys.Add($key)
+        $values[$key] = $value
     }
 
-    foreach ($relatedSlug in @($frontmatter["related_skills"])) {
-        if ($relatedSlug -eq $skill.Slug) {
-            $issues.Add("${relative}: related_skills must not reference itself")
-        } elseif (-not $slugSet.ContainsKey($relatedSlug)) {
-            $issues.Add("${relative}: related skill '$relatedSlug' does not exist")
+    foreach ($required in @("name", "description")) {
+        if (-not $values.ContainsKey($required) -or [string]::IsNullOrWhiteSpace($values[$required])) {
+            $issues.Add("${relative}: missing required frontmatter key '$required'")
         }
     }
 
-    foreach ($section in $requiredSections) {
-        if ($skill.StrippedBody -notmatch [regex]::Escape($section)) {
-            $issues.Add("${relative}: missing required section '$section'")
+    foreach ($key in $keys) {
+        if ($key -notin @("name", "description")) {
+            $issues.Add("${relative}: unsupported frontmatter key '$key'; official skills should only use name and description")
         }
     }
 
-    if ($content -match "file:///") {
-        $issues.Add("${relative}: contains absolute file:/// links")
+    if ($values.ContainsKey("name") -and $values["name"] -ne $skillName) {
+        $issues.Add("${relative}: name '$($values["name"])' must match directory '$skillName'")
     }
 
-    if ($content -notmatch '(?m)^# ') {
-        $issues.Add("${relative}: missing top-level H1 title")
+    if ($values.ContainsKey("name") -and $values["name"] -notmatch '^[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$') {
+        $issues.Add("${relative}: name must be kebab-case and under 64 characters")
     }
 
-    $sourceMappingCount = ([regex]::Matches(
-        $skill.StrippedBody,
-        "^## .*(Source Mapping|能力溯源)",
-        [System.Text.RegularExpressions.RegexOptions]::Multiline
-    )).Count
-    if ($sourceMappingCount -gt 1) {
-        $issues.Add("${relative}: contains duplicated Source Mapping sections")
+    if ($values.ContainsKey("description") -and $values["description"].Length -lt 80) {
+        $issues.Add("${relative}: description should be specific enough for Codex routing")
     }
 
-    $referencesCount = ([regex]::Matches(
-        $skill.StrippedBody,
-        "^## .*(References|参考资料)",
-        [System.Text.RegularExpressions.RegexOptions]::Multiline
-    )).Count
-    if ($referencesCount -gt 1) {
-        $issues.Add("${relative}: contains duplicated References sections")
+    if ($content.Substring($match.Length) -notmatch '(?m)^#\s+') {
+        $issues.Add("${relative}: missing top-level heading")
     }
 }
 
-if (-not (Test-Path $indexFile)) {
-    $issues.Add("SKILLS.md: file not found")
-} else {
-    $indexContent = Get-Content $indexFile -Raw
-    if ($indexContent -notmatch [regex]::Escape('Auto-generated by `scripts/generate-skills-index.ps1`')) {
-        $issues.Add("SKILLS.md missing generated-file marker")
-    }
-    $expectedIndexContent = New-SkillIndexContent -Skills $skills
-    if ($indexContent -ne $expectedIndexContent) {
-        $issues.Add("SKILLS.md is out of date; run pwsh ./scripts/generate-skills-index.ps1")
-    }
-    foreach ($category in $categoryOrder) {
-        $group = $skills | Where-Object { $_.Frontmatter["category"] -eq $category }
-        if ($group.Count -gt 0) {
-            $meta = Get-SkillCategoryMeta -Category $category
-            if (-not $indexContent.Contains($meta.Title)) {
-                $issues.Add("SKILLS.md: missing category section '$($meta.Title)'")
-            }
-        }
-    }
-    foreach ($skill in $skills) {
-        if (-not $indexContent.Contains($skill.RelativePath)) {
-            $issues.Add("SKILLS.md: missing index entry for $($skill.RelativePath)")
-        }
+$topLevelSkillDirs = Get-ChildItem -Path $repoRoot -Directory |
+    Where-Object { $reservedDirs -notcontains $_.Name } |
+    Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName "SKILL.md") }
+
+foreach ($dir in $topLevelSkillDirs) {
+    if ($dir.Name -notmatch '^[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$') {
+        $issues.Add("$($dir.Name): skill directory must be kebab-case and under 64 characters")
     }
 }
 
