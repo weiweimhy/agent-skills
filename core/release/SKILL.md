@@ -167,7 +167,7 @@ git tag --list --sort=-v:refname | Select-Object -First 5
 - 更新了 README 关于 X 功能的说明
 
 ---
-**Full Changelog**: <REPOSITORY_COMPARE_URL>
+**Full Changelog**: <REPO_URL>/compare/vOLD...vNEW
 
 ## 📦 Distribution & Artifacts
 
