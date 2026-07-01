@@ -1,7 +1,7 @@
 ---
 slug: react
 name: React 开发
-description: 专注于 React 18/19、Hooks、Server Components 及现代状态管理的专家级开发能力
+description: 专注于现代 React、Hooks、Server Components 及状态管理的专家级开发能力
 category: frontend
 role: specialist
 triggers:
@@ -83,7 +83,7 @@ constraints:
 
 - 组件层级图或功能需求。
 - 现有的 React JSX/TSX 代码。
-- 目标 React 版本（18 或 19）。
+- 目标 React 版本与框架版本。
 
 ## 📤 Output
 

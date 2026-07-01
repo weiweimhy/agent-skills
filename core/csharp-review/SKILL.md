@@ -1,7 +1,7 @@
 ---
 slug: csharp-review
 name: C# 代码审查
-description: 针对 C# 代码的专家级审查，遵循 .NET 8/9、ASP.NET Core 最佳实践及现代 C# 12/13 地道语法
+description: 针对 C# 代码的专家级审查，遵循目标 .NET 版本、ASP.NET Core 最佳实践及现代 C# 地道语法
 category: language
 role: specialist
 triggers:
@@ -33,9 +33,9 @@ constraints:
 当以下情况发生时启用：
 
 - "审查这段 C# 代码"
-- "这段代码符合 .NET 8/9 最佳实践吗？"
+- "这段代码符合当前目标 .NET 版本的最佳实践吗？"
 - "检查这段异步代码是否有潜在死锁"
-- "利用 C# 12/13 的新特性改进这段代码"
+- "利用现代 C# 的新特性改进这段代码"
 
 👉 自动启用本 Skill
 
@@ -45,7 +45,7 @@ constraints:
 
 ## 🧩 Capabilities
 
-- **现代语法特性审查 (C# 12/13)**：
+- **现代语法特性审查**：
   - **主构造函数 (Primary Constructors)**：在类和结构中建议使用更简洁的构造函数语法。
   - **集合表达式 (Collection Expressions)**：推荐使用 `[]` 代替旧有的 `new[]` 或 `new List<T>` 初始化。
   - **切片与范围 (Index & Range)**：审查是否利用了更优雅的切片语法进行数组/集合操作。
@@ -69,7 +69,7 @@ constraints:
 
 - 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 C# (.NET) 代码进行深度评估。
 - 使用分析器 (Analyzers) 捕获到架构规约违背时进行复审。
-- 升级旧版 .NET 代码至现代 .NET 8/9 平台时。
+- 升级旧版 .NET 代码至当前项目目标运行时平台时。
 
 ## 📥 Input
 
@@ -94,7 +94,7 @@ constraints:
 
 | 能力 | 来源 | 类型 |
 | :--- | :--- | :--- |
-| 现代语法 (12/13) | `csharp-language-design` | ✅ 语言官方最新演进 |
+| 现代语法 | `csharp-language-design` | ✅ 语言官方演进 |
 | 异步编程规范 | `dotnet-runtime-guidelines` | ✅ 官方异步避坑指南 |
 | 性能与内存优化 | `benchmark-dotnet-patterns` | ✅ 高性能开发实践 |
 | 架构与 DI | `aspnetcore-best-practices` | ✅ 框架官方架构指南 |
@@ -102,7 +102,7 @@ constraints:
 ## 📚 参考资料 (References)
 
 - [Microsoft C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-- [Official .NET 8/9 Performance Benchmarks](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-9/)
+- [Official .NET Performance Blog](https://devblogs.microsoft.com/dotnet/category/performance/)
 - [C# Language Reference (latest)](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/latest)
 
 ## 🔗 Related Skills

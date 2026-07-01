@@ -64,7 +64,7 @@
 - 角色：流程
 - 触发：发版准备 / Release Notes 生成 / Git 标签发布
 - 关联：git-commit / git-workflow / doc-generator
-- 约束：不把会改工作区的命令当作只读检查步骤 / 版本号、模块主版本路径和发布校验地址必须一致
+- 约束：不把会改工作区的命令当作只读检查步骤 / 版本号、包名或模块路径和发布校验地址必须一致
 - 路径：core/release/SKILL.md
 
 ---
@@ -122,7 +122,7 @@
 ### react
 
 - 名称：React 开发
-- 描述：专注于 React 18/19、Hooks、Server Components 及现代状态管理的专家级开发能力
+- 描述：专注于现代 React、Hooks、Server Components 及状态管理的专家级开发能力
 - 角色：专项
 - 触发：React 组件设计 / Hooks 重构 / RSC 或状态管理方案
 - 关联：typescript-review / api-design / backend-patterns
@@ -148,7 +148,7 @@
 ### csharp-review
 
 - 名称：C# 代码审查
-- 描述：针对 C# 代码的专家级审查，遵循 .NET 8/9、ASP.NET Core 最佳实践及现代 C# 12/13 地道语法
+- 描述：针对 C# 代码的专家级审查，遵循目标 .NET 版本、ASP.NET Core 最佳实践及现代 C# 地道语法
 - 角色：专项
 - 触发：C# 代码审查 / .NET 升级评估 / 异步与性能问题检查
 - 关联：code-review / backend-patterns
@@ -178,7 +178,7 @@
 ### python-review
 
 - 名称：Python 代码审查
-- 描述：针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of Python 及 2024-2025 现代 Python 最佳实践
+- 描述：针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of Python 及现代 Python 最佳实践
 - 角色：专项
 - 触发：Python 代码审查 / Pythonic 重构建议 / 异步阻塞检查
 - 关联：code-review / prompt-design
@@ -188,7 +188,7 @@
 ### typescript-review
 
 - 名称：TypeScript 代码审查
-- 描述：针对 TypeScript 代码的专家级审查，遵循 TS 5.x 特性、地道模式及现代 Web 开发最佳实践
+- 描述：针对 TypeScript 代码的专家级审查，遵循目标 TS 版本、地道模式及现代 Web 开发最佳实践
 - 角色：专项
 - 触发：TypeScript 代码审查 / 泛型与类型收窄评估 / TSX 类型安全检查
 - 关联：code-review / api-design / backend-patterns / react

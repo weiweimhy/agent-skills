@@ -1,7 +1,7 @@
 ---
 slug: typescript-review
 name: TypeScript 代码审查
-description: 针对 TypeScript 代码的专家级审查，遵循 TS 5.x 特性、地道模式及现代 Web 开发最佳实践
+description: 针对 TypeScript 代码的专家级审查，遵循目标 TS 版本、地道模式及现代 Web 开发最佳实践
 category: language
 role: specialist
 triggers:
@@ -52,7 +52,7 @@ constraints:
   - **严禁滥用 `any`**：强制审查是否可以使用 `unknown`, 泛型或更精确的接口替代 `any`。
   - **类型收窄 (Narrowing)**：审查是否利用了 `typeof`, `instanceof`, 判别式联合 (Discriminated Unions) 或类型谓词 (Type Predicates) 进行安全的类型转换。
   - **泛型应用**：评估泛型约束 (`extends`) 和默认值的使用，确保代码的可复用性与类型安全性。
-- **现代特性审查 (TS 5.x)**：
+- **现代特性审查**：
   - **Const 型参数**：审查是否利用了 `const` 类型参数来保留字面量类型的精度。
   - **装饰器 (Decorators)**：针对新版标准装饰器的合法性与性能影响进行评估。
 - **地道惯用法校验**：
@@ -96,7 +96,7 @@ constraints:
 | 能力 | 来源 | 类型 |
 | :--- | :--- | :--- |
 | 类型安全审计 | `google-typescript-style` | ✅ 行业标准安全规范 |
-| 现代特性 (5.x) | `typescript-official-blog` | ✅ 语言最新特性集成 |
+| 现代特性 | `typescript-official-blog` | ✅ 语言特性演进 |
 | 地道惯用法校验 | `airbnb-javascript-style` | ✅ 社区主流编程风格 |
 | 类型收窄与泛型 | `typescript-handbook` | ✅ 官方类型体操规范 |
 
@@ -104,7 +104,7 @@ constraints:
 
 - [Google TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html)
 - [Airbnb JavaScript Style Guide (TS Version)](https://github.com/airbnb/javascript)
-- [TypeScript 5.x Release Notes](https://devblogs.microsoft.com/typescript/)
+- [TypeScript Release Notes](https://devblogs.microsoft.com/typescript/)
 
 ## 🔗 Related Skills
 

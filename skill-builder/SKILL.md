@@ -81,7 +81,7 @@ constraints:
 > [!TIP]
 > 将复杂能力拆分成多个原子能力，有助于后续复用判断
 
-### Step 2：检索已有技能（必须执行）
+### Step 2：检索已有技能（本地必须执行，外部按环境可用性执行）
 
 **检索顺序**（优先本地）：
 
@@ -93,10 +93,10 @@ constraints:
 Get-ChildItem -Path "<skills-root>" -Recurse -Filter "SKILL.md" | ForEach-Object { $_.FullName }
 ```
 
-2️⃣ **antigravity-awesome-skills**
+2️⃣ **antigravity-awesome-skills**（网络可用时）
 👉 <https://github.com/sickn33/antigravity-awesome-skills/tree/main>
 
-3️⃣ **Skill Marketplace**
+3️⃣ **Skill Marketplace**（网络可用时）
 👉 <https://skillsmp.com/zh>
 
 > [!TIP]
@@ -113,8 +113,9 @@ Get-ChildItem -Path "<skills-root>" -Recurse -Filter "SKILL.md" | ForEach-Object
 - 是否存在功能相同但命名不同的 Skill？
 - 是否可以通过多个 Skill 组合实现？
 - **外部能力对标**：对比外部优质 Skill（如 `antigravity-awesome-skills` 和 `Skill Marketplace`）中的功能点。
-  - ✅ **必须整合**：如果外部 Skill 包含本地缺失的高价值能力（如数据库优化、安全实践等），必须将其整合进新 Skill 的设计中。
-  - ❌ **严禁闭门造车**：禁止在明知有更全面的外部实现时，创建一个功能简陋的本地版本。
+  - ✅ **优先整合**：如果外部 Skill 可访问且包含本地缺失的高价值能力（如数据库优化、安全实践等），应整合进新 Skill 的设计中。
+  - ⚠️ **离线 fallback**：如果网络、权限或外部站点不可用，应记录不可用原因，并基于本地 skill 与用户上下文继续设计。
+  - ❌ **避免闭门造车**：禁止在已知存在更全面实现且可访问时，创建一个功能简陋的本地版本。
 
 ### Step 3：复用策略分析（非常重要）
 
@@ -225,7 +226,7 @@ constraints:
 
 每次创建 Skill 前，必须确认以下原则：
 
-- [ ] ❌ 不重复造轮子 —— 已检索本地和外部技能库
+- [ ] ❌ 不重复造轮子 —— 已检索本地技能库，并在环境允许时检索外部技能库
 - [ ] ✅ 优先组合已有 skill —— 复用策略分析已完成
 - [ ] ✅ 一个 skill 只做一件事 —— 职责单一，可用一句话描述
 - [ ] ❌ 不写"万能型 skill" —— 没有包含多个不相关能力
@@ -233,7 +234,7 @@ constraints:
 
 ## ⚠️ 禁止事项
 
-- ❌ 跳过检索直接创建新 Skill
+- ❌ 跳过本地检索直接创建新 Skill
 - ❌ 创建功能与现有 Skill 重叠的 Skill
 - ❌ 创建职责不清晰的"万能 Skill"
 - ❌ 忽略本地已有 Skills 只看外部来源
@@ -245,7 +246,7 @@ constraints:
 
 ## ⚠️ Constraints
 
-- 创建前必须先检索本地与外部可复用能力。
+- 创建前必须先检索本地可复用能力；外部能力应在网络和权限允许时检索。
 - 不输出职责混杂、边界模糊的万能型 skill。
 - 新 skill 必须同步维护 frontmatter 和索引信息。
 

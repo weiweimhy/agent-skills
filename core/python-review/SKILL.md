@@ -1,7 +1,7 @@
 ---
 slug: python-review
 name: Python 代码审查
-description: 针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of Python 及 2024-2025 现代 Python 最佳实践
+description: 针对 Python 代码的专家级审查，遵循 PEP 8、The Zen of Python 及现代 Python 最佳实践
 category: language
 role: specialist
 triggers:

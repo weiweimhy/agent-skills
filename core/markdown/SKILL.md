@@ -114,9 +114,9 @@ Markdown 编写规范和最佳实践，确保所有 Markdown 文件符合 markdo
 
 | 规则 | 说明 | 示例 |
 | :--- | :--- | :--- |
-| MD034 | URL 应使用链接语法 | `[link](url)` 而非裸 URL |
+| MD034 | URL 应使用链接语法 | `[link](https://example.com)` 而非裸 URL |
 | MD042 | 链接不能为空 | `[text]()` ❌ |
-| MD045 | 图片需有 alt 文本 | `![alt](img.png)` |
+| MD045 | 图片需有 alt 文本 | `![alt text](https://example.com/img.png)` |
 
 ## 📝 组件规范写法
 
@@ -148,7 +148,7 @@ func main() {
 
 ```markdown
 [显示文本](https://example.com)
-[相对路径](./docs/api.md)
+[相对路径](../../README.md)
 [锚点链接](#section-name)
 ```
 
@@ -170,7 +170,7 @@ func main() {
 3. **空行分隔**：标题、代码块、列表前后各留一空行
 4. **一致风格**：全文统一使用 `-` 作为无序列表符号
 5. **代码语言**：所有代码块都指定语言
-6. **链接格式**：避免裸 URL，使用 `[text](url)` 格式
+6. **链接格式**：避免裸 URL，使用 `[text](https://example.com)` 格式
 7. **行长控制**：建议每行不超过 80-120 字符
 
 ## ❌ Common Mistakes

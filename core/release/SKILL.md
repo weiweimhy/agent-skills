@@ -11,7 +11,7 @@ triggers:
 inputs:
   - 版本范围内的提交记录
   - 目标版本号
-  - 模块主版本与发布渠道
+  - 包名或模块路径与发布渠道
 outputs:
   - 版本建议与 Release Notes
   - 发布检查清单与执行步骤
@@ -21,13 +21,13 @@ related_skills:
   - doc-generator
 constraints:
   - 不把会改工作区的命令当作只读检查步骤
-  - 版本号、模块主版本路径和发布校验地址必须一致
+  - 版本号、包名或模块路径和发布校验地址必须一致
   - 未确认工作区状态前不直接打标签或发版
 ---
 
 # 发布版本 Skill
 
-发布 go-utils 库的新版本到 GitHub，遵循语义化版本规范。
+发布项目新版本到 GitHub 或其他发布渠道，遵循语义化版本规范。
 
 ## 🎯 触发条件
 
@@ -52,15 +52,15 @@ constraints:
 
 ## 🧠 Usage
 
-- 在准备为 `go-utils` 打版本标签并发布时使用。
+- 在准备为项目打版本标签并发布时使用。
 - 当需要根据提交历史整理 Release Notes 时使用。
-- 当需要检查 Go 模块版本路径、标签格式与发布后可见性时使用。
+- 当需要检查包名或模块路径、标签格式与发布后可见性时使用。
 
 ## 📥 Input
 
 - 自上个版本以来的提交记录或 diff 范围。
 - 拟发布版本号与是否包含 breaking change。
-- 当前模块主版本信息与目标发布渠道（GitHub Release、pkg.go.dev 等）。
+- 当前包名或模块路径与目标发布渠道（GitHub Release、包管理平台、镜像仓库等）。
 
 ## 📤 Output
 
@@ -91,19 +91,19 @@ constraints:
 git status
 
 # turbo
-# 2. 确保所有测试通过
-go test ./...
+# 2. 确保项目测试通过（替换为项目实际命令）
+<TEST_COMMAND>
 
 # turbo
-# 3. 确保代码可以正常构建
-go build ./...
+# 3. 确保项目可以正常构建或打包（替换为项目实际命令）
+<BUILD_COMMAND>
 
 # turbo
-# 4. 检查模块文件是否已处于预期状态
-git diff -- go.mod go.sum
+# 4. 检查版本、依赖或锁文件是否已处于预期状态
+git diff -- <VERSION_OR_LOCK_FILES>
 ```
 
-如果 `go.mod` 或 `go.sum` 需要整理，再单独执行 `go mod tidy`，并确认改动符合预期后再继续发布。
+如果依赖清单或锁文件需要整理，再单独执行对应命令，并确认改动符合预期后再继续发布。
 
 ## 版本号确定
 
@@ -167,13 +167,13 @@ git tag --list --sort=-v:refname | Select-Object -First 5
 - 更新了 README 关于 X 功能的说明
 
 ---
-**Full Changelog**: https://github.com/weiweimhy/go-utils/compare/vOLD...vNEW
+**Full Changelog**: <REPOSITORY_COMPARE_URL>
 
 ## 📦 Distribution & Artifacts
 
-- **GitHub Actions**: 每次发布标签后，必须触发自动化的 `Go Releaser` 或 `Build` 流水线。
-- **二进制发布**：如果是工具类项目，需在 Release 页面提供主流平台的二进制文件。
-- **Docker 镜像**：如果涉及服务端应用，需同步发布版本化的 Docker 镜像。
+- **CI/CD**: 如果项目配置了发布流水线，确认标签或 release 事件会触发对应任务。
+- **二进制发布**：如果是工具类项目，确认 Release 页面或制品仓库包含目标平台产物。
+- **Docker 镜像**：如果涉及服务端应用，确认版本化镜像标签与 release 版本一致。
 ```
 
 ## 发布流程
@@ -196,13 +196,13 @@ git log <LAST_TAG>..HEAD --oneline --no-decorate
 - 确保主标题版本号和日期正确。
 - 合并重复或过细的提交项，使其阅读体验更佳。
 
-### 步骤 2：确认 go.mod 版本路径
+### 步骤 2：确认包或模块版本路径
 
-对于 v2+ 版本，确保 `go.mod` 中的 module 路径包含版本后缀：
+确认包名、模块路径、版本字段和发布目标一致。对于 Go v2+ 模块，`go.mod` 中的 module 路径还应包含版本后缀：
 
 ```go
-// 当前 v4.x 版本应该是：
-module github.com/weiweimhy/go-utils/v4
+// 示例：当前 v2.x 版本应该带 /v2 后缀。
+module github.com/example/project/v2
 ```
 
 ### 步骤 3：创建 Git 标签
@@ -230,16 +230,16 @@ git push origin <VERSION>
 git ls-remote --tags origin | Select-String "<VERSION>"
 ```
 
-等待几分钟后，在 [pkg.go.dev](https://pkg.go.dev/github.com/weiweimhy/go-utils/v4) 验证新版本是否可用。
+等待几分钟后，在对应发布渠道验证新版本是否可用，例如 GitHub Release、包管理平台、Docker Registry 或内部制品仓库。
 
 ## 发布后清理
 
-如果需要强制 Go 模块代理更新缓存：
+如果发布渠道存在缓存或索引延迟，按对应生态执行刷新或验证命令。例如 Go 模块代理：
 
 ```powershell
 # turbo
-# 请求代理更新（替换 <VERSION>）
-$env:GOPROXY="https://proxy.golang.org,direct"; go list -m github.com/weiweimhy/go-utils/v4@<VERSION>
+# Go 模块示例：请求代理更新（替换 <MODULE_PATH> 和 <VERSION>）
+$env:GOPROXY="https://proxy.golang.org,direct"; go list -m <MODULE_PATH>@<VERSION>
 ```
 
 ## 常见问题
@@ -267,18 +267,19 @@ $VERSION = "v3.3.0"
 $MESSAGE = "feat: 添加新功能描述"
 
 git status
-go test ./...
-go build ./...
-go mod tidy
+<TEST_COMMAND>
+<BUILD_COMMAND>
 git tag -a $VERSION -m $MESSAGE
 git push origin $VERSION
 ```
 
+如果依赖清单需要整理，应在打标签前单独执行对应命令（如 `go mod tidy`、`npm install`、`poetry lock`），并审阅产生的 diff 后再继续。
+
 ## ⚠️ Constraints
 
-- ❌ 不把 `go mod tidy` 当成只读检查；任何会改写依赖文件的操作都需要先审阅 diff。
+- ❌ 不把依赖整理、锁文件更新或格式化命令当成只读检查；任何会改写文件的操作都需要先审阅 diff。
 - ❌ 不在工作区存在未确认改动时直接打标签发布。
-- ✅ 版本号、`go.mod` 主版本路径与 pkg.go.dev 校验地址必须保持一致。
+- ✅ 版本号、包名或模块路径与发布渠道校验地址必须保持一致。
 - ✅ 如发现 breaking change，必须在版本判断与 Release Notes 中明确标记。
 
 ## 🔗 Related Skills
