@@ -1,0 +1,4 @@
+interface:
+  display_name: "项目规范初始化"
+  short_description: "依据仓库事实与 Tibishu 笔记生成项目规范文档"
+  default_prompt: "使用 $project-standards-init 为当前仓库初始化或更新项目协作文档。"

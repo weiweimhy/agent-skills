@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tibishu Note Search"
+  short_description: "Find Tibishu notes through a layered fast search"
+  default_prompt: "Use $tibishu-note-search to find notes about HTTPS in F:\\Tibishu."
