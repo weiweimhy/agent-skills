@@ -82,6 +82,32 @@ pwsh ./scripts/validate-skills.ps1
 - `name` 与目录名一致。
 - `description` 足够具体，适合 Codex 触发。
 
+## 跨电脑同步个人技能
+
+`tibishu-notes`、`tibishu-note-search` 和 `project-standards-init` 由这套脚本维护。
+在编辑它们的主电脑运行：
+
+```powershell
+pwsh ./scripts/Publish-PersonalSkills.ps1
+```
+
+发布脚本也会提交这两个同步脚本本身，确保从属电脑可从同一仓库取得安装脚本。
+
+首次在另一台电脑运行（可从本仓库目录直接执行，也可将脚本复制过去执行）：
+
+```powershell
+pwsh ./scripts/Install-PersonalSkills.ps1
+```
+
+安装脚本将仓库克隆到 `~/.codex/skill-source/agent-skills`，并在
+`~/.codex/skills` 中为每个技能建立目录联接。后续重复运行安装脚本即可：
+它先在临时 worktree 中校验远端版本，只在校验通过后才 fast-forward 更新
+实际被 Codex 使用的版本；不会覆盖普通目录或指向其他位置的现有联接。
+
+在从属电脑不要直接修改这些联接中的技能文件，应始终在主电脑修改并发布。
+`tibishu-*` 技能依赖的 `TIBISHU_NOTES_PATH`（或桌面端的笔记库路径）仍需在每台
+电脑单独配置。
+
 ## 维护规则
 
 - 新技能优先用官方 `skill-creator` 设计。
