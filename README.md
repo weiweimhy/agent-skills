@@ -11,13 +11,23 @@
 - 技能优先覆盖跨项目高频工作流；窄栈、低频、可由系统/插件技能直接覆盖的能力不放入本仓库。
 - 官方或插件技能不复制成本地空壳，只在需要时安装和启用。
 
-## 安装与更新
+## 源仓库与部署目录
+
+`E:\\agents-skills` 是此电脑上唯一允许直接编辑的源工作仓库。修改技能后，在此目录完成校验、提交和推送。
+
+`C:\\Users\\mhy\\.agents\\skills` 是部署用 clone，不直接编辑；只从远端快进更新：
 
 ```powershell
-git clone <repo-url> ~/.agents/skills
+git -C C:\\Users\\mhy\\.agents\\skills pull --ff-only
 ```
 
-后续更新：
+其他电脑首次安装时，克隆同一远端：
+
+```powershell
+git clone git@github.com:weiweimhy/agent-skills.git ~/.agents/skills
+```
+
+后续更新同样只执行：
 
 ```powershell
 git -C ~/.agents/skills pull --ff-only

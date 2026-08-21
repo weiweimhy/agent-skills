@@ -31,6 +31,7 @@
 | --- | --- | --- |
 | Go 业务代码或服务 | `go.md` | 包边界、context、错误、并发、测试 |
 | Vue 与 TypeScript | `vue-typescript.md` | 页面、组件、组合式函数、状态、类型 |
+| React 与 TypeScript | `react-typescript.md` | 页面/模块、组件、Hooks、状态、异步、类型、无障碍、测试 |
 | Node.js 工具链 | `nodejs.md` | 包管理、脚本、环境变量、构建 |
 | Tailwind 或同等设计系统 | `tailwind-ui.md` | 令牌、组件复用、响应式、状态展示 |
 | Unity 与 C# | `unity-csharp.md` | 生命周期、资源、事件、对象池、性能 |
@@ -49,6 +50,9 @@
 
 - Go API 服务通常需要 Go、接口与数据、质量规范；Nginx 与 Redis 仅在已确认时加入。
 - Vue Web 项目通常需要 Vue/TypeScript、Node.js、质量规范；Tailwind/UI 与接口数据按依赖和通信事实决定。
+- React Web 项目通常需要 React/TypeScript、Node.js 和质量规范。Tailwind/UI、接口与数据文档仅在仓库依赖、代码或已确认项目事实证明需要时加入。
+- React 项目不默认生成 Vue、Tailwind、Next.js、Redux、Zustand、React Router
+  或 TanStack Query 的专属规则；每项均需由仓库事实证实。
 - Unity 项目需要 Unity/C#；Lua 及协作边界仅在 Lua 运行时和绑定关系存在时加入。
 - Go + Wails 桌面项目需要 Go 与 Wails；Vue、Tailwind 和 Node.js 规范只在前端实际使用时加入。
 - Python 工具通常需要 Python、通用架构和质量规范；API 与数据文档以外部通信或存储为条件。

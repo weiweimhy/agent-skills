@@ -18,6 +18,8 @@ description: Initialize or refresh project-specific AGENTS.md and engineering do
 
 1. 先检查根目录、现有 `AGENTS.md`、README、目录结构、依赖与构建配置、启动入口、测试和现有文档。记录可验证的项目事实、已有有效约定和待确认信息；不要从文件名或用户预期推断技术已被采用。
 2. 使用 `tibishu-note-search` 按项目类型、技术名、笔记名称和标签精确检索工程规范库。先看名称和 Blog front matter，只有无法判断时才阅读候选正文。仅选择已由仓库事实证实的规范。
+   例如，依赖、源码或构建配置证实 React 时，检索 `React`、`TypeScript` 及实际采用的生态技术；
+   不能因为笔记存在而假设 React Router、TanStack Query、Zustand、Redux 或 Next.js 已被采用。
 3. 在任何写入前输出简短的“适用规范、项目事实、待确认项、文档计划”。
    若缺少会影响文档范围的关键事实，保留“待确认”而不编造。
    仅在无法安全继续时请求用户补充。
