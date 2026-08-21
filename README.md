@@ -44,6 +44,10 @@ git -C ~/.agents/skills pull --ff-only
 - `release`: 版本号、Release Notes、标签和发布检查。
 - `markdown`: Markdown 写作、格式和 lint 规则。
 
+### 工具配置
+
+- `semi-mcp-setup`: Semi Design MCP 的项目级配置、验证与故障排查。
+
 ### 需求、文档与 AI 协作
 
 - `product-manager`: 模糊需求转 User Story、PRD 和验收标准。

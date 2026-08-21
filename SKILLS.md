@@ -9,6 +9,10 @@
 - `release` - 语义化版本、Release Notes、标签和发布检查。
 - `markdown` - Markdown 格式、lint 和文档结构。
 
+## Tooling Setup
+
+- `semi-mcp-setup` - Semi Design MCP 的项目级配置、验证与故障排查。
+
 ## Product, Docs, AI
 
 - `product-manager` - 模糊需求转 PRD、User Story 和验收标准。
