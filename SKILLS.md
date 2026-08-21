@@ -29,6 +29,24 @@
 - `typescript-review` - TypeScript/TSX 代码审查。
 - `react` - React/Next.js 组件、Hooks、状态和性能边界。
 - `vue` - Vue 3、Composition API、Pinia、Vite 和 SSR 边界。
+- `nodejs` - Node.js 运行时、包管理、异步、配置和流式 I/O。
+- `tailwindcss` - Tailwind CSS token、响应式状态、无障碍与可维护样式。
+
+## Game, Infrastructure, And Quality
+
+- `unity-csharp` - Unity C# 生命周期、序列化、性能和测试边界。
+- `lua` - Lua 模块、table、协程和宿主语言互操作。
+- `redis` - Redis key/TTL 契约、原子性、缓存、锁和故障退化。
+- `nginx` - Nginx 代理、TLS、缓存、WebSocket 和安全变更。
+- `test-engineering` - 跨技术栈的测试分层、隔离、异步可靠性和回归验证。
+
+## Delivery, Operations, And Security
+
+- `observability` - 日志、指标、链路追踪、健康信号和遥测隐私边界。
+- `containers` - Dockerfile、Compose、镜像构建、依赖就绪和运行时配置。
+- `ci-cd` - 构建/测试门禁、制品追溯、最小权限交付和回退策略。
+- `security-baseline` - 信任边界、输入处理、密钥、依赖和安全审查基线。
+- `database-migrations` - Schema/数据迁移、兼容发布、锁风险、恢复和验证。
 
 ## Not Included By Default
 

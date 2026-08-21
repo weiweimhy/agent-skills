@@ -1,6 +1,8 @@
 # Codex Skills
 
-个人通用 Codex skill 库。这个仓库可以直接作为子仓库挂到不同项目的 `.codex/skills` 目录下使用，不绑定 Go、Python、前端或文档项目。
+个人通用 Codex skill 库，适用于多个项目且不绑定 Go、Python、前端或文档项目。将本仓库直接克隆到 `~/.agents/skills/`，供当前用户的所有项目使用；不要将它作为项目子模块，也不要复制到单个项目中。
+
+当前个人技术栈覆盖 Unity/C#/Lua、Go/Python/Redis/Nginx，以及 React/Vue/Tailwind CSS/Node.js；本库仅沉淀这些方向中跨项目重复出现的工程工作流。
 
 ## 设计原则
 
@@ -9,14 +11,19 @@
 - 技能优先覆盖跨项目高频工作流；窄栈、低频、可由系统/插件技能直接覆盖的能力不放入本仓库。
 - 官方或插件技能不复制成本地空壳，只在需要时安装和启用。
 
-## 推荐安装路径
+## 安装与更新
 
 ```powershell
-git submodule add <repo-url> .codex/skills
-git submodule update --init --recursive
+git clone <repo-url> ~/.agents/skills
 ```
 
-也可以把本仓库作为普通目录放到 `~/.codex/skills` 或项目级 `.codex/skills` 下。
+后续更新：
+
+```powershell
+git -C ~/.agents/skills pull --ff-only
+```
+
+更新后请新建或重新打开 Codex 任务，以重新发现技能。仅适用于某个项目的技能，应直接提交到该项目的 `.agents/skills/`；项目级规则则保留在该项目的 `AGENTS.md`。
 
 ## 本地保留技能
 
@@ -48,6 +55,24 @@ git submodule update --init --recursive
 - `react`: React/Next.js 组件、Hooks、状态和性能边界。
 - `vue`: Vue 3、Composition API、Pinia、Vite 和 SSR 边界。
 
+### 游戏、Web 与基础设施
+
+- `unity-csharp`: Unity 生命周期、序列化、性能与测试边界。
+- `lua`: Lua 模块、table、协程与宿主语言互操作。
+- `nodejs`: Node.js 运行时、包管理、异步、配置与流式 I/O。
+- `tailwindcss`: Tailwind token、响应式状态、无障碍与组件样式边界。
+- `redis`: Redis key/TTL 契约、原子性、缓存、锁与故障退化。
+- `nginx`: Nginx 反向代理、TLS、缓存、WebSocket 与安全变更。
+- `test-engineering`: 跨技术栈的测试分层、隔离、异步可靠性与回归验证。
+
+### 交付、运维与安全
+
+- `observability`: 结构化日志、指标、链路追踪、健康信号与隐私边界。
+- `containers`: Dockerfile、Compose、镜像构建、依赖就绪和运行时配置。
+- `ci-cd`: 构建与测试门禁、制品追溯、最小权限交付和回退策略。
+- `security-baseline`: 信任边界、输入处理、密钥、依赖和安全审查基线。
+- `database-migrations`: Schema/数据迁移、兼容发布、锁风险、恢复与验证。
+
 ## 删减策略
 
 本次整理删除了这些类型的技能：
@@ -62,6 +87,7 @@ git submodule update --init --recursive
 这些技能建议通过 Codex 系统/插件安装，不复制到本仓库：
 
 - `skill-creator`: 创建和重构本仓库技能时使用。
+- `skill-installer`: 从受支持来源安装额外技能时使用。
 - `browser:control-in-app-browser`: 前端和网页验收。
 - `github:github`, `github:gh-fix-ci`, `github:gh-address-comments`, `github:yeet`: GitHub、CI、PR 和发布协作。
 - `openai-docs`: OpenAI/Codex 官方文档查询。
@@ -82,35 +108,15 @@ pwsh ./scripts/validate-skills.ps1
 - `name` 与目录名一致。
 - `description` 足够具体，适合 Codex 触发。
 
-## 跨电脑同步个人技能
+## 跨电脑同步
 
-`tibishu-notes`、`tibishu-note-search` 和 `project-standards-init` 由这套脚本维护。
-在编辑它们的主电脑运行：
+每台电脑都将本仓库克隆到 `~/.agents/skills/`。修改技能后，在本仓库提交并推送；其他电脑执行上述更新命令即可获得相同版本。
 
-```powershell
-pwsh ./scripts/Publish-PersonalSkills.ps1
-```
-
-发布脚本也会提交这两个同步脚本本身，确保从属电脑可从同一仓库取得安装脚本。
-
-首次在另一台电脑运行（可从本仓库目录直接执行，也可将脚本复制过去执行）：
-
-```powershell
-pwsh ./scripts/Install-PersonalSkills.ps1
-```
-
-安装脚本将仓库克隆到 `~/.codex/skill-source/agent-skills`，并在
-`~/.codex/skills` 中为每个技能建立目录联接。后续重复运行安装脚本即可：
-它先在临时 worktree 中校验远端版本，只在校验通过后才 fast-forward 更新
-实际被 Codex 使用的版本；不会覆盖普通目录或指向其他位置的现有联接。
-
-在从属电脑不要直接修改这些联接中的技能文件，应始终在主电脑修改并发布。
-`tibishu-*` 技能依赖的 `TIBISHU_NOTES_PATH`（或桌面端的笔记库路径）仍需在每台
-电脑单独配置。
+`tibishu-*` 技能依赖的 `TIBISHU_NOTES_PATH`（或桌面端的笔记库路径）仍需在每台电脑单独配置。
 
 ## 维护规则
 
 - 新技能优先用官方 `skill-creator` 设计。
 - 新技能目录名使用 kebab-case，并与 `name` 一致。
 - 不新增 README、安装说明、变更日志等技能内辅助文档，除非该文件是技能执行必需资源。
-- 如果一个能力只适用于单个项目，优先放到该项目自己的 `.codex/skills`，不要放进这个通用库。
+- 如果一个能力只适用于单个项目，优先放到该项目自己的 `.agents/skills`，不要放进这个通用库。
