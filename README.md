@@ -47,6 +47,7 @@ git -C ~/.agents/skills pull --ff-only
 ### 工具配置
 
 - `semi-mcp-setup`: Semi Design MCP 的项目级配置、验证与故障排查。
+- `relay-imagegen`: 通过 Codex 已配置的 OpenAI 兼容中转端点生成或编辑图片。
 
 ### 需求、文档与 AI 协作
 
@@ -106,7 +107,8 @@ git -C ~/.agents/skills pull --ff-only
 - `github:github`, `github:gh-fix-ci`, `github:gh-address-comments`, `github:yeet`: GitHub、CI、PR 和发布协作。
 - `openai-docs`: OpenAI/Codex 官方文档查询。
 - `pdf:pdf`, `documents:documents`, `spreadsheets:Spreadsheets`, `presentations:Presentations`: 文档型项目和交付物处理。
-- `imagegen`: 前端、产品页或游戏素材生成。
+- `imagegen`: 使用内置端点生成前端、产品页或游戏素材；需要使用已配置
+  中转端点时改用本库的 `relay-imagegen`。
 - `plugin-creator`: 需要把技能、工具和 MCP 封装成插件时使用。
 
 ## 校验

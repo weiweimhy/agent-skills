@@ -1,0 +1,4 @@
+interface:
+  display_name: "Relay ImageGen"
+  short_description: "Generate images through the configured relay endpoint"
+  default_prompt: "Use $relay-imagegen to generate an image through my configured relay."

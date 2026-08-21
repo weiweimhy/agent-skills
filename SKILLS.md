@@ -12,6 +12,7 @@
 ## Tooling Setup
 
 - `semi-mcp-setup` - Semi Design MCP 的项目级配置、验证与故障排查。
+- `relay-imagegen` - 通过 Codex 已配置的 OpenAI 兼容中转端点生成或编辑图片。
 
 ## Product, Docs, AI
 
@@ -57,4 +58,5 @@
 - `skill-builder`: 使用官方 `skill-creator` 替代。
 - `git-commit`: 合并进 `git-workflow`。
 - `mongodb-master`, `csharp-review`, `lua-review`: 过窄或低频，适合按项目需要单独添加。
-- PDF、Office、GitHub、browser、imagegen、OpenAI docs 等能力：使用系统或插件技能。
+- PDF、Office、GitHub、browser、OpenAI docs 和普通 imagegen 等能力：使用系统或
+  插件技能；中转端点图片生成使用本库的 `relay-imagegen`。
