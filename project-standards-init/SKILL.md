@@ -1,6 +1,6 @@
 ---
 name: project-standards-init
-description: Initialize or refresh project-specific AGENTS.md and engineering documentation from repository facts and matching Tibishu standards. Use for new-project setup, onboarding, or rebuilding project conventions; not for routine feature work.
+description: Initialize or refresh project-specific AGENTS.md and concise engineering documentation from repository facts and matching Tibishu standards. Use for new-project setup, onboarding, or rebuilding project conventions; not for routine feature work.
 ---
 
 # 项目规范初始化
@@ -17,24 +17,25 @@ description: Initialize or refresh project-specific AGENTS.md and engineering do
 ## 工作流
 
 1. 先检查根目录、现有 `AGENTS.md`、README、目录结构、依赖与构建配置、启动入口、测试和现有文档。记录可验证的项目事实、已有有效约定和待确认信息；不要从文件名或用户预期推断技术已被采用。
-2. 使用 `tibishu-note-search` 按项目类型、技术名、笔记名称和标签精确检索工程规范库。先看名称和 Blog front matter，只有无法判断时才阅读候选正文。仅选择已由仓库事实证实的规范。
+2. 使用 `tibishu-note-search` 精确检索工程规范库。将工程规范库使用说明、项目初始化、通用架构、质量保障和 AI 协作交付闭环作为初始化时的流程基线；再仅按仓库事实选择语言、UI、运行时、接口与部署规范。先看名称和 Blog front matter，只有需要落地规则时才阅读候选正文。
    例如，依赖、源码或构建配置证实 React 时，检索 `React`、`TypeScript` 及实际采用的生态技术；
-   不能因为笔记存在而假设 React Router、TanStack Query、Zustand、Redux 或 Next.js 已被采用。
-3. 在任何写入前输出简短的“适用规范、项目事实、待确认项、文档计划”。
+   不能因为笔记存在而假设 React Router、TanStack Query、Zustand、Redux、Next.js、Wails 或特定 UI 组件库已被采用。
+3. 在任何写入前输出简短的“适用规范、项目事实、待确认项、文档计划和交付准备度”。交付准备度只记录已经存在的设计来源、范式和验证能力，以及阻止可靠交付的缺口；不要把通用建议伪装成项目已有能力。对于已确认 UI，额外列出设计来源、可复用范式、关键状态和视觉或设备验收方式；若这些输入缺失，明确标记为待确认而不是补造方案。
    若缺少会影响文档范围的关键事实，保留“待确认”而不编造。
    仅在无法安全继续时请求用户补充。
 4. 根据已选规范和仓库事实创建或更新项目文档。保留已有有效约定，说明真实冲突。
    选择维护成本更低、与当前项目更一致的方案。
    交付物的选择条件和内容边界见 [文档契约](references/document-contract.md)。
-5. 通过仓库实际提供的命令验证安装、启动、格式化、测试和构建说明。
+5. 通过仓库实际提供的命令验证安装、启动、格式化、测试和构建说明。对已确认存在交互 UI 且具备足够事实的项目，验证文档是否说明设计来源、关键交互状态和视觉或设备验收方式；没有自动化工具时明确记录人工验收边界，而不是承诺尚未建立的截图或端到端门禁。
    未知命令标记为“待补充”，不得捏造。
    对新增或修改的 Markdown 使用可用 lint 工具检查；没有工具时做人工检查并说明限制。
-6. 汇总采用的知识库笔记、创建或更新的项目文件、关键架构约定、待确认事项和推荐的后续开发顺序。
+6. 汇总采用的知识库笔记、创建或更新的项目文件、已确认的交付护栏、待确认事项和推荐的下一步。按影响把待办分为“阻止开发”“下一项功能前补齐”和“可在真实重复出现后再沉淀”，避免以大而全的初始规范阻塞项目。
 
 ## 约束
 
-- `AGENTS.md` 必须简洁、直接可执行，并针对当前仓库改写；不得机械复制通用笔记全文。
+- `AGENTS.md` 必须简洁、直接可执行，并针对当前仓库改写；不得机械复制通用笔记全文。它可要求代理修改前检查事实、同类实现、契约与测试，并在修改后报告真实验证；对新流程、公开契约、持久化数据或设计来源等高影响选择，要求先说明方案并在缺少已批准证据时等待确认。它不得取代详细设计或测试文档。
 - 仅创建实际采用的语言、框架、服务和存储的规范文件；不创建空的 ADR，也不凭空假设接口、数据库、Redis、Nginx、Tailwind、Lua 或 Wails。
 - 文档必须区分项目专属事实与通用经验。除非用户明确要求且规则已证实具有普适价值，否则不修改 Tibishu 工程规范库。
 - 不修改或记录 `.env`、`.evn`、令牌、密钥、个人数据和其他敏感信息。
 - 不覆盖用户已有文档；需要改写时保留有价值内容，删除过时或重复内容，并说明影响。
+- 不因 AI 协作闭环而默认创建项目级 Skill、组件库、设计系统、截图测试、CI 工作流、模板或新依赖；这些能力必须由仓库事实或用户明确授权支持。
