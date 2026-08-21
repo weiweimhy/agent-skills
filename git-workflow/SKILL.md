@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Git workflow guidance for inspecting diffs, splitting changes, staging, Conventional Commit messages, commit safety, branch hygiene, and PR preparation. Use when asked to summarize changes, prepare commits, write commit messages, or decide how to split a diff.
+description: Git workflow guidance for reviewing diffs, staging focused batches, and preparing Chinese Conventional Commit messages. Use when asked to summarize changes, prepare commits, write commit messages, or decide how to split a diff.
 ---
 
 # Skill: git-workflow
@@ -23,9 +23,10 @@ description: Git workflow guidance for inspecting diffs, splitting changes, stag
 ## 🧩 Capabilities
 
 - **总结变更**：分析代码 diff 并总结本次改动内容。
+- **提交前审查**：在暂存和提交前分别检查工作区与暂存区差异，确认改动完整、相关且不含意外文件。
 - **判断类型**：识别变更类型（feat / fix / refactor / docs / chore 等）。
-- **生成消息**：生成符合规范的 Commit Message。
-- **拆分建议**：根据变更规模和逻辑关系提示是否需要拆分提交。
+- **生成消息**：生成符合规范的中文 Commit Message；提交类型和范围保持 Conventional Commit 格式。
+- **拆分建议**：按独立目的和可审查性尽可能拆分为原子提交，并给出每批的文件或改动归属。
 
 ## 🔍 能力溯源 (Source Mapping)
 
@@ -62,8 +63,18 @@ description: Git workflow guidance for inspecting diffs, splitting changes, stag
 - **拆分说明**：如果建议拆分，给出拆分方案。
 - **Release Notes**：在发版环节，基于 Commit History 生成分类清晰的变更日志。
 
+## 🧭 提交流程
+
+1. **先审查再暂存**：检查 `git status`、未暂存 diff 和已暂存 diff；识别无关、意外或敏感文件，并确认每项改动的目的。
+2. **尽可能分批**：按单一目的、可独立审查和可回滚的原则划分提交；使用指定文件或分块暂存。不要为了拆分而拆分紧密耦合、无法独立工作的改动。
+3. **使用中文日志**：提交标题使用 `type(scope): 中文摘要`。仅 Conventional Commit 的 `type` 和可选 `scope` 保持规范形式；摘要、正文和脚注均使用中文，且准确说明当前这一批改动。
+4. **提交前复核**：对每一批再次审查暂存 diff，确认其只包含对应目的的改动，再请求用户确认并提交。
+
 ## ⚠️ Constraints
 
+- 提交前必须审查改动；未审查的工作区或暂存区差异不能直接提交。
+- 除提交类型和范围外，Commit Message 使用中文。
+- 有可独立审查的改动时，尽可能拆分为多次原子提交；不混入无关文件。
 - 不在未经用户确认的情况下直接执行 `git commit`。
 - 不修改源代码逻辑。
 
