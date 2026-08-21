@@ -1,0 +1,4 @@
+interface:
+  display_name: "Semi MCP Setup"
+  short_description: "Configure and verify project-scoped Semi MCP"
+  default_prompt: "Use $semi-mcp-setup to configure and verify Semi MCP for this project."
