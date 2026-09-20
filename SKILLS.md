@@ -1,6 +1,7 @@
 # Skill Inventory
 
-本文件是人工维护的通用技能清单。每个技能都是 Codex 官方形态：`<skill-name>/SKILL.md`，frontmatter 仅包含 `name` 和 `description`。
+本文件是人工维护的通用技能清单。每个技能都是 Codex 官方形态：`<skill-name>/SKILL.md`，
+frontmatter 仅包含 `name` 和 `description`。
 
 ## Core Workflow
 
@@ -16,6 +17,7 @@
 
 ## Product, Docs, AI
 
+- `project-standards-init` - 工程规范初始化，包含前端风格、组件、图标、动效及后续交付契约。
 - `product-manager` - 模糊需求转 PRD、User Story 和验收标准。
 - `doc-generator` - README、API 文档、注释、Changelog 和交接文档。
 - `architecture-consultant` - 架构方案、技术选型、权衡分析和 ADR。

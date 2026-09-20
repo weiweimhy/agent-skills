@@ -33,7 +33,8 @@ git clone git@github.com:weiweimhy/agent-skills.git ~/.agents/skills
 git -C ~/.agents/skills pull --ff-only
 ```
 
-更新后请新建或重新打开 Codex 任务，以重新发现技能。仅适用于某个项目的技能，应直接提交到该项目的 `.agents/skills/`；项目级规则则保留在该项目的 `AGENTS.md`。
+更新后请新建或重新打开 Codex 任务，以重新发现技能。仅适用于某个项目的技能，
+应直接提交到该项目的 `.agents/skills/`；项目级规则保留在该项目的 `AGENTS.md`。
 
 ## 本地保留技能
 
@@ -51,6 +52,7 @@ git -C ~/.agents/skills pull --ff-only
 
 ### 需求、文档与 AI 协作
 
+- `project-standards-init`: 初始化工程规范；有前端时提炼或建立视觉、组件、图标与动效契约。
 - `product-manager`: 模糊需求转 User Story、PRD 和验收标准。
 - `doc-generator`: README、API 文档、注释、Changelog 和交接文档。
 - `architecture-consultant`: 架构设计、技术选型、权衡分析和 ADR。
@@ -104,12 +106,28 @@ git -C ~/.agents/skills pull --ff-only
 - `skill-creator`: 创建和重构本仓库技能时使用。
 - `skill-installer`: 从受支持来源安装额外技能时使用。
 - `browser:control-in-app-browser`: 前端和网页验收。
-- `github:github`, `github:gh-fix-ci`, `github:gh-address-comments`, `github:yeet`: GitHub、CI、PR 和发布协作。
+- `github:github`, `github:gh-fix-ci`, `github:gh-address-comments`,
+  `github:yeet`: GitHub、CI、PR 和发布协作。
 - `openai-docs`: OpenAI/Codex 官方文档查询。
-- `pdf:pdf`, `documents:documents`, `spreadsheets:Spreadsheets`, `presentations:Presentations`: 文档型项目和交付物处理。
+- `pdf:pdf`, `documents:documents`, `spreadsheets:Spreadsheets`,
+  `presentations:Presentations`: 文档型项目和交付物处理。
 - `imagegen`: 使用内置端点生成前端、产品页或游戏素材；需要使用已配置
   中转端点时改用本库的 `relay-imagegen`。
 - `plugin-creator`: 需要把技能、工具和 MCP 封装成插件时使用。
+
+## 前端项目初始化
+
+使用 `project-standards-init` 初始化前端时，既有项目提炼现有设计，新项目根据产品目标建立
+具体的风格基线。将语义 token、共享组件及状态、图标用法、动效参数与减少动态效果策略写入
+`docs/ui-design.md`（已有设计文档则沿用），并由项目 `AGENTS.md` 约束后续页面开发。
+`docs/ui-delivery.md` 记录实现状态和视觉、交互验收方式，避免把设计计划当成已实现的能力。
+
+示例：`使用 project-standards-init 初始化这个前端项目，面向中小团队的任务管理，
+要求清晰克制、组件统一、图标一致，按钮反馈和面板切换有轻量动效。`
+
+初始化本身不安装 UI 库或生成产品页面。若需要一并实现，可追加“落实主题 token、共享组件与
+代表页面并验收”。后续功能开发会读取已生成的规范；美观和动效仍需在真实页面中验证。
+参考来源与适用边界见 [GitHub 前端设计参考](project-standards-init/references/frontend-sources.md)。
 
 ## 校验
 
