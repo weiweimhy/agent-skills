@@ -1,6 +1,6 @@
 ---
 name: project-standards-init
-description: Initialize or refresh project-specific AGENTS.md and engineering documentation from repository facts and Tibishu standards, including a consistent frontend visual, component, icon, and motion contract when UI is in scope. Use for project setup or rebuilding conventions; not routine feature work.
+description: Initialize or refresh project-specific AGENTS.md and engineering documentation from repository facts and Tibishu standards, including native Android Kotlin/Compose templates and consistent UI contracts. Use for project setup, reusable initialization templates, or rebuilding conventions; not routine feature work.
 ---
 
 # 项目规范初始化
@@ -11,10 +11,25 @@ description: Initialize or refresh project-specific AGENTS.md and engineering do
 
 - 用户要求初始化新项目、补齐或重建 `AGENTS.md`、架构文档、开发文档或项目技术规范。
 - 仓库已经存在，或用户已提供足以确认技术栈、项目目标和输出位置的项目说明。
+- 用户明确要求设计可复用的初始化文档模板时，可在指定位置维护模板资源；
+  区分模板建议与目标项目事实，不把存放模板的仓库当作已采用目标技术的应用。
 
 不用于日常功能修改、单篇文档润色，或尚未提供仓库与项目事实的纯技术选型讨论。
 用户限定只更新某个文件（例如仅 `AGENTS.md`）时，交付物条件不扩大授权范围；
 其它文档仅在汇总中建议，不自动创建。
+
+## Android 原生项目与模板
+
+当仓库证实使用 Android/Kotlin，或用户明确选择 Android/Kotlin 初始化模板时，
+读取 [Android 初始化模板](references/android-project-template.md)。
+该参考连接可裁剪的 `AGENTS.md`、工程与原生 UI 文档资产；只读取适用的资产。
+按目标项目事实改写，并沿用文档契约的生成条件，不整套复制。
+仅要求可复用模板时，交付模板资源，不生成 Android 工程、安装 SDK 或运行虚构构建。
+
+新项目可建议 Kotlin、Jetpack Compose 与稳定 Material 3；未确认的建议不写成已选定。
+“最新 UI”按具体组件与 API 核对 Material 3 Expressive 的稳定性和适用性，
+不自动升级至预览版本。原生尺寸、系统导航、无障碍和设备验收遵循 Android 参考，
+不套用 Web 的 CSS、断点或浏览器验收。
 
 ## 前端初始化分支
 

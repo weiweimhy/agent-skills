@@ -52,7 +52,7 @@ git -C ~/.agents/skills pull --ff-only
 
 ### 需求、文档与 AI 协作
 
-- `project-standards-init`: 初始化工程规范；有前端时提炼或建立视觉、组件、图标与动效契约。
+- `project-standards-init`: 初始化工程规范；支持 Android/Kotlin 文档模板，并提炼或建立 UI 的视觉、组件、图标与动效契约。
 - `product-manager`: 模糊需求转 User Story、PRD 和验收标准。
 - `doc-generator`: README、API 文档、注释、Changelog 和交接文档。
 - `architecture-consultant`: 架构设计、技术选型、权衡分析和 ADR。
@@ -128,6 +128,21 @@ git -C ~/.agents/skills pull --ff-only
 初始化本身不安装 UI 库或生成产品页面。若需要一并实现，可追加“落实主题 token、共享组件与
 代表页面并验收”。后续功能开发会读取已生成的规范；美观和动效仍需在真实页面中验证。
 参考来源与适用边界见 [GitHub 前端设计参考](project-standards-init/references/frontend-sources.md)。
+
+## Android 项目初始化
+
+使用 `project-standards-init` 规划 Kotlin 原生 Android 项目时，可从
+[Android 初始化模板](project-standards-init/references/android-project-template.md) 选择文档资产。
+基线建议为 Kotlin、Jetpack Compose、稳定 Material 3；Material 3 Expressive 按具体 API
+核对稳定性。规范覆盖状态管理、模块边界、构建兼容、原生自适应布局、无障碍与设备验收。
+默认从单 app 模块起步，Hilt、持久化、网络和多模块随项目需求选择。
+
+示例：`使用 project-standards-init 初始化这个 Kotlin Android 项目的规范，UI 采用
+Jetpack Compose 与稳定 Material 3，参考 Material 3 Expressive；先检查仓库事实，
+生成 AGENTS.md 和适用文档，核实版本兼容、真实 Gradle 任务和设备验收方式。`
+
+这些资源是文档模板。用于具体项目时，替换产品与工程事实、裁剪条件章节，保留
+尚未实现或验证的状态；初始化规范本身不安装依赖或生成可运行应用。
 
 ## 校验
 
