@@ -13,13 +13,9 @@
 
 ## 源仓库与部署目录
 
-`E:\\agents-skills` 是此电脑上唯一允许直接编辑的源工作仓库。修改技能后，在此目录完成校验、提交和推送。
+在独立的源工作仓库中修改、校验、提交并推送技能。可用 `git rev-parse --show-toplevel` 确认当前仓库根目录。
 
-`C:\\Users\\mhy\\.agents\\skills` 是部署用 clone，不直接编辑；只从远端快进更新：
-
-```powershell
-git -C C:\\Users\\mhy\\.agents\\skills pull --ff-only
-```
+个人技能目录是部署 clone。推送后先检查该目录的工作区状态，再依照本仓库 [AGENTS.md](AGENTS.md) 同步。
 
 其他电脑首次安装时，克隆同一远端：
 
@@ -105,9 +101,8 @@ git -C ~/.agents/skills pull --ff-only
 
 - `skill-creator`: 创建和重构本仓库技能时使用。
 - `skill-installer`: 从受支持来源安装额外技能时使用。
-- `browser:control-in-app-browser`: 前端和网页验收。
-- `github:github`, `github:gh-fix-ci`, `github:gh-address-comments`,
-  `github:yeet`: GitHub、CI、PR 和发布协作。
+- 浏览器控制按环境启用，用于交互和视觉验收。需要可重复的浏览器操作时，可按需安装 [Playwright CLI 技能](https://github.com/microsoft/playwright-cli)。
+- GitHub 集成按需启用，处理 CI、PR 或审查评论时，以当前环境提供的插件和技能为准。
 - `openai-docs`: OpenAI/Codex 官方文档查询。
 - `pdf:pdf`, `documents:documents`, `spreadsheets:Spreadsheets`,
   `presentations:Presentations`: 文档型项目和交付物处理。

@@ -43,7 +43,7 @@ description: Go code review guidance for idiomatic Go, Effective Go, concurrency
 
 当以下情况发生时调用：
 
-- 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 Go 代码进行深度评估。
+- 作为 [code-review](../code-review/SKILL.md) 中按需参考的专项规则，检查并发、资源释放或错误传播等 Go 问题。
 - 提交 Go 代码 PR 前进行的自我审查或交叉审查。
 - 自动化流水线捕获到 Lint 或 Staticcheck 异常时。
 - 针对高性能或高并发模块的代码审阅。
@@ -55,7 +55,7 @@ description: Go code review guidance for idiomatic Go, Effective Go, concurrency
 
 ## 📤 Output
 
-结构化的 Go 审查报告（参见 [code-review](../code-review/SKILL.md) 的 Output 格式），并增加：
+将 Go 发现纳入同一份审查报告（参见 [code-review](../code-review/SKILL.md) 的 Output 格式），并增加：
 
 - **Idiomatic Examples**: 展示如何用更地道的方式重写非 Go 风格的代码。
 - **Optimization Suggestions**: 具体的代码性能优化建议。

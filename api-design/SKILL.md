@@ -28,7 +28,7 @@ description: Design resource-oriented APIs, REST paths, request/response contrac
 - **资源建模规范**：合理设计资源层级（嵌套 vs 扁平化）。
 - **RESTful 结构设计**：利用正确的 HTTP 动词 (GET, POST, PUT, PATCH, DELETE) 进行状态转换，并合理使用 HTTP 状态码。
 - **查询参数标准化**：制定统一的过滤 (filtering)、排序 (sorting) 及分页 (pagination) 参数规范（如 `?limit=20&offset=100`）。
-- **返回格式规范**：统一的 JSON 响应封装，包含数据信封、元数据 (Meta) 及分页对象。
+- **返回格式规范**：统一的 JSON 响应封装，沿用项目的数据和元数据结构，分页接口提供翻页信息。
 - **错误码设计**：设计具备自解释性的错误响应（错误码 + 错误信息 + 指引），确保错误链路可追踪。
 
 ## 🔍 能力溯源 (Source Mapping)
@@ -68,7 +68,7 @@ description: Design resource-oriented APIs, REST paths, request/response contrac
 - ✅ 优先考虑开发者的集成体验。
 - ✅ 强制执行资源导向 (Resource-Oriented) 准则。
 - ✅ **命名一致性**：整个 API 集合必须使用统一的命名风格（推荐 snake_case）。
-- ✅ **分页必选**：对于可能返回列表的接口，必须设计分页参数。
+- ✅ **集合分页**：固定枚举或数量有明确小上限的配置项可一次返回。对持续增长或单次读取成本高的集合设计分页，约定稳定排序、默认及最大页大小和结束条件。已有接口引入分页时，先检查依赖完整列表的调用方，提供兼容的迁移方式。
 - ✅ 错误码必须全局唯一且有明确分类。
 - ✅ **破坏性变更显式化**：任何 Breaking Change 必须在变更描述中明确标记。
 
