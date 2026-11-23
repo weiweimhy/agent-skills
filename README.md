@@ -53,6 +53,7 @@ git -C ~/.agents/skills pull --ff-only
 - `doc-generator`: README、API 文档、注释、Changelog 和交接文档。
 - `architecture-consultant`: 架构设计、技术选型、权衡分析和 ADR。
 - `prompt-design`: Prompt、system prompt、few-shot 和评测方案设计。
+- `gpt-agy-collaboration`：GPT 与 agy 分工开发、交接改动和交叉审查。
 
 ### 后端与接口
 

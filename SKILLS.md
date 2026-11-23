@@ -22,6 +22,7 @@ frontmatter 仅包含 `name` 和 `description`。
 - `doc-generator` - README、API 文档、注释、Changelog 和交接文档。
 - `architecture-consultant` - 架构方案、技术选型、权衡分析和 ADR。
 - `prompt-design` - Prompt、system prompt、few-shot、评测和安全边界。
+- `gpt-agy-collaboration` - GPT 与 agy 的任务单、交接回执和验收流程。
 
 ## Backend
 
