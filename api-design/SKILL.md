@@ -24,7 +24,6 @@ description: Design or revise external API contracts, including resource paths, 
 ## 相关技能
 
 - [backend-patterns](../backend-patterns/SKILL.md)：设计会影响服务模块边界的实现方案。
-- [doc-generator](../doc-generator/SKILL.md)：将已确定的契约整理为项目文档。
 
 ## 参考资料
 

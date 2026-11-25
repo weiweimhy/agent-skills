@@ -23,7 +23,6 @@ frontmatter 仅包含 `name` 和 `description`。
 
 - `project-standards-init` - 工程规范初始化，包含前端风格、组件、图标、动效及后续交付契约。
 - `product-manager` - 模糊需求转 PRD、User Story 和验收标准。
-- `doc-generator` - 从代码校准 README、API 示例、变更记录和交接说明。
 - `architecture-consultant` - 架构方案、技术选型、权衡分析和 ADR。
 - `prompt-design` - Prompt、system prompt、few-shot、评测和安全边界。
 - `gpt-agy-collaboration` - 跨宿主分工、独立审查、交接和长任务恢复。
@@ -35,9 +34,7 @@ frontmatter 仅包含 `name` 和 `description`。
 
 ## Language And Frontend
 
-- `frontend-implementation` - 从用户交互组织前端实现，按框架加载专项。
-- `react` - React/Next.js 组件、Hooks、状态和性能边界。
-- `vue` - Vue 3、Composition API、Pinia、Vite 和 SSR 边界。
+- `frontend-implementation` - 从用户交互组织前端实现，按项目技术栈验证受影响的行为。
 - `nodejs` - Node.js 运行时、包管理、异步、配置和流式 I/O。
 - `tailwindcss` - Tailwind CSS token、响应式状态、无障碍与可维护样式。
 

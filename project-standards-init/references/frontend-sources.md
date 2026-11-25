@@ -32,7 +32,7 @@ Anthropic 仓库 API 未提供统一许可证标识，技能正文指向其 `LIC
 ## 配套技能与冲突处理
 
 已安装时可按需使用 Impeccable 做产品 UI 设计与检查，Taste Skill 做落地页或作品集风格探索，
-Emil animate 做专项动效实现，React/Vue/Tailwind 技能处理对应技术栈。
+Emil animate 做专项动效实现，框架和样式实现沿用项目约定。
 它们缺失时直接依据 [前端设计契约](frontend-design-contract.md) 完成初始化，不阻塞工作。
 不要仅为初始化安装新技能、组件库或动效库。
 

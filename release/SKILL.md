@@ -35,4 +35,3 @@ description: Release workflow guidance for project version conventions, release 
 ## Related Skills
 
 - [git-workflow](../git-workflow/SKILL.md)：整理待发布变更与提交历史。
-- [doc-generator](../doc-generator/SKILL.md)：更新 Changelog、README 或发布文档。

@@ -24,4 +24,4 @@ description: Build, refactor, or review Node.js services, CLIs, and tooling with
 ## 交付与边界
 
 说明使用的包管理器、Node 版本假设、配置变更、兼容性影响和实际执行的验证。Express、NestJS、Vite、
-Next.js 等框架约定以项目事实为准；前端组件问题分别交由 React、Vue 或 Tailwind 技能处理。
+Next.js 等框架约定以项目事实为准。
