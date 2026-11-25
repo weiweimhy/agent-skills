@@ -17,10 +17,9 @@ frontmatter 仅包含 `name` 和 `description`。
 - `tibishu-note-search` - 分层检索已有个人笔记。
 - `tibishu-notes` - 按笔记库约定编写、整理和验证笔记。
 
-## Project Setup And Collaboration
+## Project Setup
 
 - `project-standards-init` - 工程规范初始化，包含前端风格、组件、图标、动效及后续交付契约。
-- `gpt-agy-collaboration` - 跨宿主分工、独立审查、交接和长任务恢复。
 
 ## Backend
 
