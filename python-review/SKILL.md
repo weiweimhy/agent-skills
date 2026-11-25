@@ -1,89 +1,48 @@
 ---
 name: python-review
-description: Python code review guidance for Pythonic style, type hints, async correctness, resource handling, exceptions, tests, Ruff/Black/Mypy, and modern Python. Use when reviewing or refactoring .py files or Python project code.
+description: Python code review guidance for correctness, typing, async behavior, resource handling, exceptions, and project conventions. Use when reviewing Python changes, .py files, or Python-specific risks.
 ---
 
-# Skill: Python Review
+# Python Code Review
 
-针对 Python 代码进行深度审查，确保其符合 [The Zen of Python](https://peps.python.org/pep-0020/) 哲学、[PEP 8](https://peps.python.org/pep-0008/) 规范及现代 Pythonic 编程准则。
+审查 Python 改动的行为和风险。PEP、格式化及惯用法是项目约定的参考，不是独立的缺陷标准。
 
-## 🎯 触发条件
+## 触发条件
 
-当以下情况发生时启用：
+- “审查这段 Python 代码”
+- “这段代码符合项目约定吗？”
+- “帮我重构这段 Python 逻辑”
+- “检查这段异步代码是否会阻塞”
 
-- "审查这段 Python 代码"
-- "这段代码符合 PEP 8 吗？"
-- "帮我重构成更 Pythonic 的写法"
-- "检查这段异步代码是否有阻塞调用"
+## 审查重点
 
-👉 自动启用本 Skill
+先从项目配置确认支持的 Python 版本、依赖和工具约定；不要默认要求 Python 3.10+ 或额外的格式化、类型检查工具。根据 diff 检查：
 
-## 🎯 Purpose
+- 输入校验、业务分支、异常传播和公共接口的实际行为。
+- 文件、锁、连接等资源的所有权与释放；宽泛异常捕获是否会吞掉可恢复或需要上报的错误。
+- async 路径是否执行阻塞操作、取消是否能传递、并发结果是否按调用方预期处理。
+- 类型标注与运行时边界是否一致；只在类型错误可能导致真实误用时提出。
+- 命名、注释和格式仅在违反仓库约定、遮蔽行为或增加维护风险时提出。
 
-提供地道的 (Pythonic) 代码审查，重点关注可读性、简洁性、类型安全、资源管理及现代特性应用。
+## 输入与交付
 
-## 🧩 Capabilities
+输入可为 Python 文件、diff、项目配置及必要的行为背景。
+将可定位的发现按 [code-review](../code-review/SKILL.md) 的风险报告格式交付。重构示例、
+Ruff 或类型检查建议仅在能解决已指出的问题且符合项目工具链时提供；不输出主观 Pythonic 评分或纯格式意见。
 
-- **Pythonic 惯用法校验**：
-  - **列表推导式与推导式**：审查是否合理使用 List/Dict/Set 推导式以增强简洁性，同时避免过度复杂的推导式。
-  - **内置函数应用**：优先使用 `enumerate`, `zip`, `any`, `all`, `sorted` 等高效内置工具。
-  - **解构赋值**：利用元组拆解、`*` 运算符进行优雅的变量赋值与参数整流。
-- **现代特性审查 (3.10+)**：
-  - **类型提示 (Type Hinting)**：确保公共 API 具备完善的类型标注，使用 Python 3.10+ 的联合类型语法 (`X | Y`)。
-  - **Match-Case**：在复杂的条件分支逻辑中建议使用结构化模式匹配。
-  - **Data Classes**：建议使用 `dataclasses` 替代笨重的自定义类。
-- **可读性与命名 (PEP 8)**：
-  - **命名约定**：强制执行 `snake_case` (变量/函数) 和 `PascalCase` (类)。
-  - **文档字符串**：确保模块、类和函数具备 [PEP 257](https://peps.python.org/pep-0257/) 格式的 Docstrings。
-- **资源与错误处理**：
-  - **上下文管理器**：强制使用 `with` 语句管理文件、锁及网络连接等资源。
-  - **异常处理**：严禁捕获过于宽泛的异常（如 `except Exception:`），提倡具体的 `Exception` 类型。
-- **并发与异步**：
-  - **AsyncIO 规范**：针对 `async/await` 路径下的阻塞调用进行预警，确保并发调用的正确性（如 `asyncio.gather`）。
+## 边界
 
-## 🧠 Usage
+- 不将某种推导式、f-string、命名或 docstring 格式写成普遍强制要求。
+- 不因项目未采用某项 lint 或类型工具而建议将其加入；如需核实，先按现有配置选择对应命令。
+- 只依据项目实际支持版本评价语法和标准库 API。
 
-当以下情况发生时调用：
-
-- 作为 [code-review](../code-review/SKILL.md) 流程的第二阶段，针对 Python 代码进行深度评估。
-- 提交 Python 项目 PR 前进行的代码质量检查。
-- 重构旧版 Python (2.x/3.6) 代码至现代 Python 架构时。
-
-## 📥 Input
-
-- 待审查的 `.py` 文件或代码片段。
-- 项目的 `pyproject.toml` 或 `requirements.txt`（可选，用于识别依赖环境）。
-
-## 📤 Output
-
-结构化的效果报告（参见 [code-review](../code-review/SKILL.md) 的建议格式），特别增加：
-
-- **Pythonic Refactoring**: 具体的代码重构对比，展示如何将“普通的”代码转化为“Pythonic”代码。
-- **Linter Recommendations**: 建议使用的特定 Linter 规则（如 Black, Ruff, MyPy 指令）。
-
-## ⚠️ Constraints
-
-- ❌ **严禁使用过时的特性**：如 `format()` (除非必要) 优先使用 f-strings；避免 `old-style` 字符串拼接。
-- ❌ **避免“非 Pythonic”倾向**：例如在 Python 中强制使用 Java 风格的 `get/set`。
-- ✅ **优先考虑可读性**：Readability counts.
-- ✅ **显式胜于隐式**：Explicit is better than implicit.
-
-## 🔍 能力溯源 (Source Mapping)
-
-| 能力 | 来源 | 类型 |
-| :--- | :--- | :--- |
-| Pythonic 惯用法 | `the-zen-of-python` | ✅ 语言哲学核心准则 |
-| 命名与风格规范 | `pep-8` | ✅ 官方代码风格指南 |
-| 现代特性 (3.10+) | `python-release-notes` | ✅ 语言官方演进特性 |
-| 类型提示与安全 | `google-python-style` | ✅ 工业界安全编程实践 |
-
-## 📚 参考资料 (References)
+## 参考
 
 - [The Zen of Python (PEP 20)](https://peps.python.org/pep-0020/)
-- [PEP 8 – Style Guide for Python Code](https://peps.python.org/pep-0008/)
+- [PEP 8](https://peps.python.org/pep-0008/)
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
-- [Ruff: Fast Python Linter Guidelines](https://docs.astral.sh/ruff/)
+- [Ruff](https://docs.astral.sh/ruff/)
 
-## 🔗 Related Skills
+## Related Skills
 
-- [code-review](../code-review/SKILL.md): 基础审查哲学与流程。
+- [code-review](../code-review/SKILL.md)：通用审查流程。

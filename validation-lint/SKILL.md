@@ -1,84 +1,32 @@
 ---
 name: validation-lint
-description: Validate backend inputs, DTOs, response envelopes, config files, schema consistency, and lint-style contract issues. Use when checking parameters, validation rules, JSON/YAML/TOML config, or API consistency.
+description: Check configuration syntax, schemas, cross-field meaning, and environment consistency, or verify code and DTOs against an established API contract. Use for concrete validation and audit tasks; use api-design to define or change the external API contract itself.
 ---
 
-# Skill: Validation Lint
+# 配置与契约校验
 
-本 Skill 专注于后端系统的契约与配置质量，确保参数设计合理、接口对外表现一致，并且各种配置文件（Config）满足语法与业务逻辑约束。
+负责检查已有规则是否被配置和实现遵守。配置字段的语义、字段间约束及环境差异由本技能归口；
+API 契约由 [api-design](../api-design/SKILL.md) 设计，本技能核对路由、DTO 和响应是否符合已确定的契约。
 
-## 🎯 触发条件
+## 校验配置
 
-当以下情况发生时启用：
+- 按项目实际的 schema、默认值和文档检查键名、类型、必填项、取值范围及字段间依赖。
+- 除语法外检查配置是否有合理含义，例如互斥选项、引用目标存在性、超时关系和环境间关键差异。只将能从项目规则、代码或用户提供的约束中证明的条件报告为错误；不把猜测写成规则。
+- 报告敏感配置时避免回显密钥或个人数据。区分语法错误、语义错误、可疑差异和缺少规则无法判定的项目。
 
-- "定义一个请求参数结构体"
-- "校验一下这个 API 的参数设计"
-- "检查配置文件格式是否正确"
-- "为这个 DTO 添加校验规则"
+## 核对 API 契约
 
-👉 自动启用本 Skill
+- 对照已批准的 API 文档或约定，检查路由、方法、字段名与类型、可选/空值语义、边界、状态码和错误结构。
+- 确认兼容性变更及主要调用方影响；不要自行引入新契约或要求所有 API 采用同一种封装。
+- 只在用户要求验证或代码改动确需验证时检查具体实现；不是 API 设计和一般代码审查的替代品。
 
-## 🎯 Purpose
+## 结果格式
 
-通过自动化的 Lint 与校验思维，减少因参数理解歧义、接口不规范或配置错误导致的线上问题。
+列出问题位置、观察到的证据、影响和建议修复。明确哪些检查通过、哪些规则未定义或无法验证；除非用户要求，不把未执行的工具检查描述为已通过。
 
-## 🧩 Capabilities
+可显式使用 `validation-lint` 执行上述配置或契约检查。一般输入校验实现应由相应的语言或后端技能处理。
 
-- **校验参数设计**：
-  - **命名规范**：检查请求参数是否符合项目定义的命名风格（如 `snake_case` 或 `camelCase`）。
-  - **类型合理性**：验证字段类型是否最优化（例如：UUID 使用 string，金额使用 long/decimal 而非 float）。
-  - **约束完备性**：检查是否定义了必要的校验注解（如 `required`, `length`, `range`, `pattern`）。
-- **校验接口一致性**：
-  - **路径与动词**：确保 API 路径结构符合 RESTful 规范（联动 `api-design` 技能）。
-  - **响应结构**：验证所有接口返回的 JSON 结构是否遵循统一的数据信封（Data Envelope）模式。
-  - **错误语义**：检查错误返回是否包含预定义的错误码（Error Code）及其对应的可读信息。
-- **校验配置格式 (Config Checker)**：
-  - **语法校验**：静态检查 YAML, JSON, Toml 等配置文件的基本语法。
-  - **模式校验 (Schema Validation)**：根据预定义的 Schema 验证配置项的键值对是否合法。
-  - **环境一致性**：识别并校验不同环境（Dev/Staging/Prod）之间的关键配置项差异是否合理。
-
-## 🔍 能力溯源 (Source Mapping)
-
-| 能力 | 来源 | 说明 |
-| :--- | :--- | :--- |
-| 参数 Lint | `lint-and-validate` | ✅ 参考经典 API 校验哲学 |
-| 接口一致性 | `api-design` | ✅ 继承项目现有的接口规范 |
-| 配置检查 | `config-checker` | ✅ 整合配置语义化检查能力 |
-
-## 📚 参考资料 (References)
+## 参考资料
 
 - [OWASP Input Validation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
-- [Google API Improvement Proposals (AIPs)](https://google.aip.dev/)
-- [JSON Schema Standard](https://json-schema.org/)
-
-## 🧠 Usage
-
-当以下情况发生时调用：
-
-- 正在定义新的 DTO (Data Transfer Object) 或请求/响应结构时。
-- 审核现有 API 的命名或结构变更时。
-- 修改 `.yaml`, `.json` 等全局配置文件或环境变量模板时。
-
-## 📥 Input
-
-- API 定义文档（Swagger/OpenAPI/Markdown）。
-- 代码中的结构体或参数定义。
-- 配置文件内容。
-
-## 📤 Output
-
-- 发现的不一致项或潜在风险列表。
-- 建议的修改方案。
-- 校验报告（包含通过项与待修复项）。
-
-## ⚠️ Constraints
-
-- ✅ **安全性优先**：所有输入参数必须有明确的边界定义。
-- ✅ **一致性强制**：新接口必须对齐现有的错误码体系。
-- ✅ **配置零容忍**：配置文件中的语法错误必须作为阻断性问题（Blocker）指出。
-- ✅ **联动 API 设计**：任何违反 `api-design` 规范的行为都应被记录。
-
-## 🔗 Related Skills
-
-- [api-design](../api-design/SKILL.md)
-- [backend-patterns](../backend-patterns/SKILL.md)
+- [JSON Schema](https://json-schema.org/)

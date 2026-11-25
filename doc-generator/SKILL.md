@@ -5,210 +5,38 @@ description: Generate and update project documentation, including README, API do
 
 # Skill: Doc Generator
 
-帮助自动生成高质量的项目文档，涵盖多种文档类型和格式。
+从代码、接口契约和项目约定生成或更新文档，并核对内容与实现一致。
 
-## 🎯 Purpose
+## 触发条件
 
-从代码和项目结构自动生成清晰、规范的文档，减少手动编写工作量，保持文档与代码同步。
+- “帮我生成 API 文档”
+- “写一下这个函数的注释”
+- “生成 README”
+- “更新 Changelog”
+- “生成接口说明”
 
-## 🎯 触发条件
+## 工作方式
 
-当用户说：
+1. 确认文档类型、读者、目标位置和格式；读取相关实现、契约、配置、测试及已有文档。
+2. 以用户提供的需求和当前有效契约为准。区分已实现行为与计划行为；不从名称或示例臆造参数、默认值、权限、错误码或兼容性。
+3. 沿用项目结构、术语和模板。若文档、实现与明确需求互相冲突，指出差异并说明采用的依据，不静默改写其中一方来掩盖问题。
+4. 核对命令、链接、示例和版本信息。能在当前环境安全运行时验证关键示例；否则标为示意或待验证，不声称已执行。
 
-- "帮我生成 API 文档"
-- "写一下这个函数的注释"
-- "生成 README"
-- "更新 Changelog"
-- "生成接口说明"
+## 文档类型
 
-👉 自动启用本 Skill
+- **API 文档**：按适用情况说明认证、端点/操作、参数与校验、响应模型、错误、兼容性和示例；不要为了模板虚构不适用章节。
+- **README**：按项目读者提供概述、经过核实的 Quick Start、功能、配置、运维或贡献信息。
+- **代码注释**：说明非显而易见的原因、契约、限制和边界行为；避免复述代码，也不推测函数意图。
+- **Changelog**：遵循项目现有版本与分类格式；若无约定，可用 Keep a Changelog。只列出从代码或提交记录证实的用户可见变化。
+- **ADR**：记录背景、决策、考虑过的方案及后果，沿用已有编号和模板。
+- **交接文档**：标明适用版本/提交、实际状态、已验证内容与未完成事项。
 
-## 🧩 Capabilities
+## 交付与校准
 
-- **API 文档生成**：从代码生成 OpenAPI/Swagger 格式的接口文档
-- **代码注释生成**：函数/类/模块级别的注释（JSDoc、GoDoc、docstring 等）
-- **README 生成**：项目说明文档，包含 Quick Start、Features、Configuration
-- **Changelog 生成**：版本变更日志，遵循 Keep a Changelog 规范
-- **ADR 生成**：架构决策记录 (Architecture Decision Record)
+交付可继续编辑的文档，以及必要的依据、缺口和未验证项。文档有代码示例时，优先使用真实接口或配置；只有在受众受益且环境允许时才要求每个接口都有可运行示例。改动代码时同步检查受影响文档；改动文档时回到实现或测试核对事实。
 
-## 🧠 Usage
+## Related Skills
 
-- 在准备补齐或重写项目文档时使用。
-- 在代码完成后同步输出 API、README、注释或 Changelog 时使用。
-- 在对外交付、发版或交接前整理文档资产时使用。
-
-## 📥 Input
-
-- 代码、接口定义或项目结构。
-- 目标文档类型、受众和格式要求。
-- 已有文档、模板或术语约定。
-
-## 📤 Output
-
-- 可继续编辑的结构化文档草稿。
-- 与代码一致的注释、示例和说明结构。
-- 文档缺口、风险点和维护建议。
-
-## 🔄 文档类型与模板
-
-### 1. API 文档结构
-
-标准 API 文档应包含：
-
-| 章节 | 内容 |
-| :--- | :--- |
-| **Introduction** | API 概述、Base URL、版本、联系方式 |
-| **Authentication** | 认证方式、Token 管理、安全实践 |
-| **Quick Start** | 快速开始示例 |
-| **Endpoints** | 按资源组织的接口详情 |
-| **Data Models** | Schema 定义、字段描述、校验规则 |
-| **Error Handling** | 错误码参考、排错指南 |
-| **Changelog** | API 版本历史 |
-
-### 2. 接口文档模板
-
-```markdown
-## GET /users/:id
-
-获取指定用户信息。
-
-**Parameters:**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| id | string | Yes | 用户 ID |
-
-**Response:**
-
-- 200: 用户对象
-- 404: 用户不存在
-
-**Example:**
-
-[Request and response example]
-```
-
-### 3. README 模板
-
-```markdown
-# Project Name
-
-一句话描述。
-
-## Quick Start
-
-[最小化运行步骤]
-
-## Features
-
-- Feature 1
-- Feature 2
-
-## Configuration
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| PORT | 服务端口 | 3000 |
-
-## License
-
-MIT
-```
-
-### 4. Code Comment Guidelines
-
-| ✅ 应该注释 | ❌ 不应注释 |
-| :--- | :--- |
-| Why (业务逻辑) | What (显而易见的) |
-| 复杂算法 | 每一行代码 |
-| 非显而易见的行为 | 自解释的代码 |
-| API 契约 | 实现细节 |
-
-### 5. Changelog 模板 (Keep a Changelog)
-
-```markdown
-# Changelog
-
-## [Unreleased]
-
-### Added
-
-- New feature
-
-## [1.0.0] - 2025-01-01
-
-### Added
-
-- Initial release
-
-### Changed
-
-- Updated dependency
-
-### Fixed
-
-- Bug fix
-```
-
-## ⚙️ 生成流程
-
-### API 文档生成流程
-
-1. **分析代码结构**：识别路由、HTTP 方法、参数、响应
-2. **生成接口描述**：为每个 endpoint 生成标准文档
-3. **添加使用指南**：Quick Start、认证说明、最佳实践
-4. **文档化错误处理**：列出所有错误码和解决方案
-5. **创建示例**：cURL、JavaScript、Python 代码示例
-
-### 代码注释生成流程
-
-1. **分析函数签名**：参数类型、返回值
-2. **推断函数用途**：从命名和实现推断
-3. **生成规范注释**：按语言规范（JSDoc/GoDoc/docstring）
-4. **补充边缘情况**：异常、限制、注意事项
-
-## ✅ Best Practices
-
-1. **保持同步**：文档应随代码一起更新
-2. **示例优先**：每个接口都应有可运行的示例
-3. **渐进式详情**：简单 → 复杂的信息层次
-4. **可扫描**：使用表格、列表、标题便于快速查找
-
-## ❌ Common Pitfalls
-
-| 问题 | 解决方案 |
-| :--- | :--- |
-| 文档与代码不同步 | 在 CI 中添加文档检查 |
-| 缺少错误文档 | 为每个错误码提供说明 |
-| 示例无法运行 | 使用真实可测试的示例 |
-| 参数要求不清晰 | 明确标注 required/optional 和校验规则 |
-
-## ⚠️ Constraints
-
-- 不用空泛描述替代真实行为说明。
-- 不输出与当前代码状态不一致的接口、参数或命令。
-- 不省略错误路径、前置条件或兼容性说明。
-
-## 🔍 能力溯源 (Source Mapping)
-
-| 能力 | 来源 | 说明 |
-| :--- | :--- | :--- |
-| API 文档结构 | `api-documentation-generator` (外部) | ✅ 整合 5 步生成流程 |
-| 文档模板系统 | `documentation-templates` (外部) | ✅ 整合 README/API/注释/Changelog 模板 |
-| Changelog 规范 | `release` (本地) | ✅ 复用 Release Notes 生成规范 |
-| AI-Friendly 文档 | `documentation-templates` (外部) | ✅ 整合 llms.txt 和 MCP-Ready 规范 |
-
-## 📚 参考资料 (References)
-
-- [Keep a Changelog](https://keepachangelog.com/) - Changelog 规范
-- [OpenAPI Specification](https://swagger.io/specification/) - API 文档标准
-- [JSDoc](https://jsdoc.app/) - JavaScript 文档注释
-- [GoDoc](https://go.dev/blog/godoc) - Go 文档规范
-- [antigravity-awesome-skills/api-documentation-generator](https://github.com/sickn33/antigravity-awesome-skills/tree/main/skills/api-documentation-generator)
-- [antigravity-awesome-skills/documentation-templates](https://github.com/sickn33/antigravity-awesome-skills/tree/main/skills/documentation-templates)
-
-## 🔗 Related Skills
-
-- [release](../release/SKILL.md): Release Notes 生成
-- [api-design](../api-design/SKILL.md): API 设计规范
-- [code-review](../code-review/SKILL.md): 代码审查（含注释检查）
+- [release](../release/SKILL.md)：Changelog 与发布说明。
+- [api-design](../api-design/SKILL.md)：API 契约设计。
+- [code-review](../code-review/SKILL.md)：审查文档与行为是否相符。

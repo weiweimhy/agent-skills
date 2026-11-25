@@ -5,178 +5,53 @@ description: Design and improve prompts for LLM workflows, system prompts, few-s
 
 # Skill: Prompt Design
 
-帮助设计和优化 LLM Prompts，使模型产出更准确、一致且符合预期的结果。
+帮助设计和优化 LLM prompts，使模型产出更准确、一致且符合预期。把 prompt 改动当作行为改动评估。
 
-## 🎯 Purpose
+## 触发条件
 
-将用户意图转化为 LLM 能准确执行的指令。Prompt 设计需要如同代码一样严谨——小改动可能带来大影响，直觉判断往往不可靠，需要系统化评估。
+- “帮我设计一个 prompt”
+- “优化这个 prompt”
+- “写一个 system prompt”
+- “这个 prompt 怎么改进”
 
-## 🎯 触发条件
+## 工作方式
 
-当用户说：
+1. 明确任务、受众、输入边界、成功条件、输出格式和目标模型实际支持的配置。
+2. 优先使用直接指令；只添加能解决已观察问题的上下文、约束和示例。保留用户已有的安全、隐私和授权边界。
+3. 为可复用模板说明可变字段、默认值和输入来源；把不可信输入标记为数据，避免让其覆盖更高优先级的指令。
+4. 对需要可靠性的 prompt 设计回归评估，避免仅凭措辞直觉判断效果。
 
-- "帮我设计一个 prompt"
-- "优化这个 prompt"
-- "写一个 system prompt"
-- "这个 prompt 怎么改进"
-- `/optimize-prompt` (workflow 触发)
+## Prompt 回归检查
 
-👉 自动启用本 Skill
+- 保存当前版本或基线行为，并挑选代表性输入：正常用例、关键边界、已知失败；仅在相关时加入格式逃逸或注入用例。
+- 为每例写明要观察的行为和可接受差异，不把无关的逐字匹配当作成功标准。
+- 在可比的模型与配置下运行修改前后的同一组输入，比较任务完成度、格式、约束遵循、安全行为和回归。报告实际运行的用例、结果与未测项。
+- 无法运行时交付可执行的评测用例和验收条件，并明确标记为待测。高风险 prompt 上线前应由适用的自动或人工检查确认。
+- prompt、模型或配置变化后保留已发现的反例，防止同一失败重新出现；不过度扩充无关用例。
 
-## 🧩 Capabilities
+## 常见模式
 
-- **Prompt 结构设计**：构建清晰的 Role/Context/Instructions/Constraints/Output 架构
-- **Few-Shot Learning**：通过示例教会模型预期行为
-- **Chain-of-Thought**：引导模型进行逐步推理
-- **Template Systems**：构建可复用的 Prompt 模板
-- **System Prompt 架构**：设计持久化的全局行为约束
-- **Progressive Disclosure**：渐进式增加 Prompt 复杂度
+- **结构化指令**：按需明确角色、上下文、任务、约束和输出，不要求每个 prompt 都套用全部章节。
+- **Few-shot 示例**：用与目标分布相符的少量正反例澄清歧义；示例数量由任务决定。
+- **渐进披露**：先测试简单版本，只有评估显示缺口时再增加复杂度。
+- **指令层级**：明确区分系统/任务要求与用户提供的数据；不可信输入不能成为新指令。
 
-## 🧠 Usage
+## 输入与输出
 
-- 在模型输出不稳定、格式跑偏或理解不准时使用。
-- 在设计 system prompt、任务模板或 few-shot 示例时使用。
-- 在需要把 prompt 变成可评估、可迭代资产时使用。
+输入包括当前 prompt、目标任务、失败样例、模型能力、安全要求和评测条件。交付可直接使用的 prompt、关键设计理由、回归用例与结果、风险和未验证假设。
 
-## 📥 Input
+## 边界
 
-- 当前 prompt、任务目标和失败样例。
-- 期望输出格式、限制条件和评测方法。
-- 所用模型能力、安全要求和上下文限制。
+- 不把未评估的 prompt 宣称为生产就绪。
+- 不要求模型披露隐藏推理；需要可审查性时要求结论、依据摘要或结构化结果。
+- 不为复杂而复杂，也不忽视输入注入、格式逃逸或示例偏差等适用风险。
 
-## 📤 Output
+## 参考
 
-- 优化后的 prompt 结构与示例。
-- 风险点、评测方案和迭代建议。
-- 是否需要拆成多层提示的判断。
+- [Prompt Engineering Guide](https://www.promptingguide.ai/)
+- [OpenAI Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering)
+- [Anthropic Prompt Design Guide](https://docs.anthropic.com/claude/docs/prompt-design)
 
-## 🔄 Core Patterns
+## Related Skills
 
-### 1. Structured System Prompt
-
-结构化的系统提示词设计：
-
-```markdown
-[Role]       谁 - 模型扮演的角色
-[Context]    什么 - 相关背景信息
-[Instructions] 怎么做 - 具体任务指令
-[Constraints]  不做什么 - 明确限制
-[Output]     输出格式 - 期望的结构
-[Examples]   示例 - 正确行为的演示
-```
-
-### 2. Few-Shot Learning
-
-通过示例教会模型：
-
-```markdown
-提取支持工单中的关键信息：
-
-Input: "登录失败，一直报 403 错误"
-Output: {"issue": "authentication", "error_code": "403", "priority": "high"}
-
-Input: "希望能在设置中添加深色模式"
-Output: {"issue": "feature_request", "error_code": null, "priority": "low"}
-
-现在处理: "上传超过 10MB 的文件时超时"
-```
-
-> [!TIP]
-> 包含 2-5 个多样化示例，涵盖边缘情况，保持格式一致
-
-### 3. Chain-of-Thought
-
-请求逐步推理：
-
-```markdown
-分析这个 Bug 报告并确定根本原因。
-
-请逐步思考：
-1. 预期行为是什么？
-2. 实际行为是什么？
-3. 最近有什么变更可能导致此问题？
-4. 涉及哪些组件？
-5. 最可能的根本原因是什么？
-
-Bug: "昨天部署缓存更新后，用户无法保存草稿"
-```
-
-### 4. Progressive Disclosure
-
-从简单开始，按需增加复杂度：
-
-| 级别 | 策略 | 示例 |
-| :--- | :--- | :--- |
-| L1 | 直接指令 | "总结这篇文章" |
-| L2 | 添加约束 | "用 3 个要点总结这篇文章，聚焦核心发现" |
-| L3 | 添加推理 | "阅读文章，识别主要发现，然后用 3 个要点总结" |
-| L4 | 添加示例 | 包含 2-3 个输入输出示例 |
-
-### 5. Instruction Hierarchy
-
-标准指令层次结构：
-
-```text
-[System Context] → [Task Instruction] → [Examples] → [Input Data] → [Output Format]
-```
-
-## ✅ Best Practices
-
-1. **具体明确**：模糊的 Prompt 产生不一致的结果
-2. **示例优于描述**：Show, Don't Tell
-3. **充分测试**：在多样化、有代表性的输入上评估
-4. **快速迭代**：小改动可能有大影响
-5. **监控性能**：在生产环境中跟踪指标
-6. **版本控制**：像代码一样管理 Prompt 版本
-7. **记录意图**：解释为什么这样设计 Prompt
-
-## ❌ Anti-Patterns
-
-| 问题 | 严重性 | 解决方案 |
-| :--- | :--- | :--- |
-| 使用不精确的语言 | 🔴 高 | 明确具体："列出 3 个要点" vs "列出一些要点" |
-| 期望特定格式但未指定 | 🔴 高 | 明确指定输出格式 |
-| 只说做什么，不说不做什么 | 🟡 中 | 包含明确的限制条件 |
-| 修改 Prompt 但不测量影响 | 🟡 中 | 系统化评估对比 |
-| "以防万一"包含无关上下文 | 🟡 中 | 精心筛选上下文内容 |
-| 示例有偏差或不具代表性 | 🟡 中 | 使用多样化示例 |
-| 所有任务使用默认 temperature | 🟡 中 | 根据任务调整 temperature |
-| 未考虑用户输入的 Prompt 注入 | 🔴 高 | 防御注入攻击 |
-
-## ⚠️ Common Pitfalls
-
-- **过度工程化**：在尝试简单方案前就使用复杂 Prompt
-- **示例污染**：使用与目标任务不匹配的示例
-- **上下文溢出**：过多示例超出 Token 限制
-- **指令歧义**：留有多种解释的空间
-- **忽视边缘情况**：未在异常或边界输入上测试
-
-## ⚠️ Constraints
-
-- 不把未评估的提示词直接当成生产方案。
-- 不忽视 prompt 注入、格式逃逸和示例偏置风险。
-- 不为了“看起来聪明”而增加无证据的复杂度。
-
-## 🔍 能力溯源 (Source Mapping)
-
-| 能力 | 来源 | 说明 |
-| :--- | :--- | :--- |
-| Prompt 结构设计 | `prompt-engineer` (外部) | ✅ 整合 Role/Context/Instructions 架构 |
-| Few-Shot Learning | `prompt-engineering` (外部) | ✅ 整合核心技术与示例 |
-| Chain-of-Thought | `prompt-engineering` (外部) | ✅ 整合推理引导技术 |
-| Template Systems | `prompt-engineering` (外部) | ✅ 整合模板系统设计 |
-| Progressive Disclosure | `prompt-engineering` (外部) | ✅ 整合渐进式复杂度模式 |
-| Best Practices | `Prompt Engineering Guide` | ✅ 参考行业最佳实践 |
-
-## 📚 参考资料 (References)
-
-- [Prompt Engineering Guide](https://www.promptingguide.ai/) - 全面的 Prompt 工程指南
-- [antigravity-awesome-skills/prompt-engineer](https://github.com/sickn33/antigravity-awesome-skills/tree/main/skills/prompt-engineer) - 外部 Prompt 工程师 Skill
-- [antigravity-awesome-skills/prompt-engineering](https://github.com/sickn33/antigravity-awesome-skills/tree/main/skills/prompt-engineering) - 外部 Prompt 工程模式 Skill
-- [OpenAI Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering) - OpenAI 官方指南
-- [Anthropic Prompt Design Guide](https://docs.anthropic.com/claude/docs/prompt-design) - Anthropic 官方指南
-
-## 🔗 Related Skills
-
-- [code-review](../code-review/SKILL.md): 可用 Prompt 设计优化审查反馈格式
-- [product-manager](../product-manager/SKILL.md): 可配合澄清任务目标、受众和验收标准
+- [product-manager](../product-manager/SKILL.md)：澄清目标、受众和验收条件。

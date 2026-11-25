@@ -1,90 +1,48 @@
 ---
 name: go-review
-description: Go code review guidance for idiomatic Go, Effective Go, concurrency safety, error handling, resource leaks, tests, and performance. Use when reviewing .go files, Go diffs, goroutines, channels, APIs, or Go tooling output.
+description: Go code review guidance for idiomatic Go, concurrency safety, error handling, resource ownership, and performance risks. Use when reviewing Go changes, goroutines, APIs, or Go-specific defects.
 ---
 
-# Skill: Go Review
+# Go Code Review
 
-针对 Go 语言代码进行深度审查，确保其符合 [Effective Go](https://go.dev/doc/effective_go) 哲学及 [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments) 规范。
+审查 Go 变更时，以可复现的行为风险为主；语言惯例仅在影响正确性、维护或项目约定时提出。
 
-## 🎯 触发条件
+## 触发条件
 
-当以下情况发生时启用：
+- “审查这段 Go 代码”
+- “这段代码够不够 Idiomatic Go？”
+- “帮我看看这个并发处理有没有死锁风险”
+- “优化这个 Go 函数的性能”
 
-- "审查这段 Go 代码"
-- "这段代码够不够 Idiomatic Go？"
-- "帮我看看这个并发处理有没有死锁风险"
-- "优化这个 Go 函数的性能"
+## 审查重点
 
-👉 自动启用本 Skill
+先看此次 diff、调用方、Go 版本及项目约定，再按改动涉及的风险检查：
 
-## 🎯 Purpose
+- 错误传播、错误包装和调用方是否能区分失败；检查忽略错误或 panic 是否会造成实际故障。
+- goroutine 的所有权、退出和取消路径；共享状态是否同步；channel 是否可能阻塞或造成泄漏。
+- 文件、连接、锁等资源的释放，以及 API、数据格式和兼容性。
+- 只有在有证据表明会影响关键路径、延迟或资源上限时，才提出性能问题。
 
-提供地道的 (Idiomatic) Go 代码审查，识别潜在的 Bug、性能隐患、并发不安全模式及可读性问题。
+## 输入与交付
 
-## 🧩 Capabilities
+输入可为 Go 文件、diff 和必要的行为背景。将发现放入 [code-review](../code-review/SKILL.md) 的风险排序报告；
+每项指出位置、触发条件、后果、证据和可行修复。只有示例能说明某项修复时，才补充更地道的 Go 写法。没有可操作发现时，说明检查范围和相关验证缺口。
 
-- **Idiomatic Go 校验**：
-  - **命名规范**：审查变量、函数、包名是否符合 Go 惯例（简洁、避免 Stuttering）。
-  - **接口设计**：遵循“接收接口，返回结构”原则；只在必要时定义接口。
-  - **错误处理**：确保错误被恰当包装（Wrap）而非仅返回；严禁静默忽略错误。
-- **并发安全审查**：
-  - **Goroutine 生命周期**：每个 Goroutine 必须有明确的生命周期管理（Context 取消或退出信号）。
-  - **竞态检测**：识别对共享资源的未同步访问。
-  - **Channel 使用**：审查 Channel 是否有缓冲需求，避免阻塞导致的 Goroutine 泄漏。
-- **性能与资源评估**：
-  - **内存分配**：识别高频路径下的对象逃逸、切片容量预分配不足等问题。
-  - **标准库应用**：优先使用标准库提供的同步原语（Sync 库）及原子操作。
-- **测试质量检查**：
-  - **表格驱动测试**：推荐使用 Table-Driven Tests 模式以增强测试覆盖面及清晰度。
-  - **竞态测试**：确认是否执行了 `-race` 检测。
+## 边界
 
-## 🧠 Usage
+- 不把个人风格或可由 gofmt、goimports 自动修正的问题列为缺陷。
+- 不强制引入第三方库；遵循仓库已采用的依赖和标准库能力。
+- 不要求每个 goroutine 都使用同一种取消机制；按实际生命周期和所有权判断。
 
-当以下情况发生时调用：
-
-- 作为 [code-review](../code-review/SKILL.md) 中按需参考的专项规则，检查并发、资源释放或错误传播等 Go 问题。
-- 提交 Go 代码 PR 前进行的自我审查或交叉审查。
-- 自动化流水线捕获到 Lint 或 Staticcheck 异常时。
-- 针对高性能或高并发模块的代码审阅。
-
-## 📥 Input
-
-- 待审查的 `.go` 文件或 Diff。
-- 如果涉及业务逻辑，需提供背景说明。
-
-## 📤 Output
-
-将 Go 发现纳入同一份审查报告（参见 [code-review](../code-review/SKILL.md) 的 Output 格式），并增加：
-
-- **Idiomatic Examples**: 展示如何用更地道的方式重写非 Go 风格的代码。
-- **Optimization Suggestions**: 具体的代码性能优化建议。
-
-## ⚠️ Constraints
-
-- ❌ **不得强制要求特定第三方库**（如强制要求使用 sonic 等），应优先保证对标准库的兼容性，除非项目有明确约定。
-- ❌ **不重复 Lint 任务**：不指正 `gofmt` 或 `goimports` 能够自动解决的格式问题。
-- ✅ **优先考虑简洁性**：Go 的设计哲学是 Simple & Explicit。
-- ✅ **关注 Panic 风险**：严禁在未恢复的情况下产生非预期的 Panic。
-
-## 能力溯源 (Source Mapping)
-
-| 能力 | 来源 | 类型 |
-| :--- | :--- | :--- |
-| Idiomatic Go 校验 | `effective-go` | ✅ 语言官方地道指南 |
-| 并发安全审计 | `go-code-review-comments` | ✅ 核心团队审查准则 |
-| 性能与内存评估 | `uber-go-style-guide` | ✅ 工业界高性能实践 |
-| 接口设计准则 | `effective-go` | ✅ 语言官方架构建议 |
-
-## 📚 参考资料 (References)
+## 参考
 
 - [Effective Go](https://go.dev/doc/effective_go)
 - [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
 - [Google Go Style Guide](https://google.github.io/styleguide/go/)
 - [Uber Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md)
 
-## 🔗 Related Skills
+## Related Skills
 
-- [code-review](../code-review/SKILL.md): 基础审查哲学与流程。
-- [api-design](../api-design/SKILL.md): 涉及 API 层面的设计审查。
-- [backend-patterns](../backend-patterns/SKILL.md): 涉及后端架构层面的设计审查。
+- [code-review](../code-review/SKILL.md)：通用审查流程。
+- [api-design](../api-design/SKILL.md)：涉及 API 契约时参考。
+- [backend-patterns](../backend-patterns/SKILL.md)：涉及后端边界或服务结构时参考。

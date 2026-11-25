@@ -18,6 +18,10 @@ description: Build, refactor, or review Node.js services, CLIs, and tooling with
 - 修改 `package.json` 的 scripts、exports、bin、engines 或 workspace 配置前，检查它们的调用者和发布影响。开发工具与运行时依赖保持恰当分层。
 - 复用项目现有测试命令，并覆盖异步失败、取消、资源清理和 CLI 非零退出码。需要真实服务的集成测试必须隔离端口、数据和凭据。
 
+修改 CLI 入口或 exports 时，用项目现有打包命令生成制品，在临时消费项目安装该制品，再运行实际命令或导入公开模块。记录制品版本和退出码，
+避免本地 workspace 链接掩盖漏打包的文件。
+
 ## 交付与边界
 
-说明使用的包管理器、Node 版本假设、配置变更、兼容性影响和实际执行的验证。Express、NestJS、Vite、Next.js 等框架约定以项目事实为准；前端组件问题分别交由 React、Vue 或 Tailwind 技能处理。
+说明使用的包管理器、Node 版本假设、配置变更、兼容性影响和实际执行的验证。Express、NestJS、Vite、
+Next.js 等框架约定以项目事实为准；前端组件问题分别交由 React、Vue 或 Tailwind 技能处理。

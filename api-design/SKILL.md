@@ -1,79 +1,31 @@
 ---
 name: api-design
-description: Design resource-oriented APIs, REST paths, request/response contracts, pagination, error formats, and compatibility plans. Use when creating or reviewing API endpoints, DTOs, OpenAPI specs, or integration contracts.
+description: Design or revise external API contracts, including resource paths, HTTP methods, request and response schemas, pagination, errors, and compatibility. Use when callers need a new or changed API agreement; use validation-lint to check an implementation or configuration against an established contract.
 ---
 
-# Skill: API Design
+# API 契约设计
 
-本 Skill 专注于后端 API 的外在接口设计，确保接口的一致性、易用性及符合行业标准的 RESTful 准则。
+为 API 调用方和实现方定义清楚、可兼容的外部契约。这里负责契约本身；配置语义检查归 `validation-lint`，服务内部模块和数据访问架构归 `backend-patterns`。
 
-## 🎯 触发条件
+## 设计时关注
 
-当以下情况发生时启用：
+- 先查看项目已有路径、字段命名、认证、响应和错误约定，并确认主要调用方。延续已有约定；确需改变时说明原因。
+- 用资源和 HTTP 方法表达常见读写操作。若领域动作不能自然映射为资源操作，可采用清楚的动作端点，不为形式强行套 REST。
+- 约定请求字段的类型、必填性、空值语义、边界和校验失败行为；响应说明数据形状、状态码及错误信息。
+- 集合接口说明排序稳定性、默认及最大页大小和结束条件。引入分页或改动响应时，检查依赖完整集合或旧字段的调用方。
+- 对不兼容变更说明影响范围、迁移路径，以及是否需要版本或过渡期。
 
-- "设计一个 RESTful 接口"
-- "帮我规范一下 API 路径"
-- "这个接口的返回格式该怎么写？"
-- "统一定义一下项目错误码"
+## 交付
 
-👉 自动启用本 Skill
+按任务规模提供端点与方法、请求/响应示例、错误和边界规则，以及兼容性说明。只展开会影响调用方决策的选项，遵循项目既有命名风格；不要把 snake_case、固定响应信封或全局错误码当成未经确认的普遍要求。
 
-## 🎯 Purpose
+## 相关技能
 
-提供专业的接口设计指导，减少前后端集成成本，建立清晰的资源导向型架构。
+- [validation-lint](../validation-lint/SKILL.md)：检查代码和 DTO 是否符合既定 API 契约，或检查配置语义。
+- [backend-patterns](../backend-patterns/SKILL.md)：设计会影响服务模块边界的实现方案。
+- [doc-generator](../doc-generator/SKILL.md)：将已确定的契约整理为项目文档。
 
-## 🧩 Capabilities
-
-- **API 命名建议**：遵循资源导向命名规范（名词、复数形式、避免动词进入路径，如 `/api/v1/markets` 代替 `/api/v1/getMarkets`）。
-- **资源建模规范**：合理设计资源层级（嵌套 vs 扁平化）。
-- **RESTful 结构设计**：利用正确的 HTTP 动词 (GET, POST, PUT, PATCH, DELETE) 进行状态转换，并合理使用 HTTP 状态码。
-- **查询参数标准化**：制定统一的过滤 (filtering)、排序 (sorting) 及分页 (pagination) 参数规范（如 `?limit=20&offset=100`）。
-- **返回格式规范**：统一的 JSON 响应封装，沿用项目的数据和元数据结构，分页接口提供翻页信息。
-- **错误码设计**：设计具备自解释性的错误响应（错误码 + 错误信息 + 指引），确保错误链路可追踪。
-
-## 🔍 能力溯源 (Source Mapping)
-
-| 能力 | 来源 | 类型 |
-| :--- | :--- | :--- |
-| RESTful 准则 | `cc-skill-backend-patterns` | ✅ 整合 GitHub 优质模式 |
-| 分页与查询标准化 | `google-api-design-guide` | ✅ 参考行业顶级实践 |
-| 响应格式封装 | `json-api-spec` | ✅ 参考行业标准规范 |
-
-## 📚 参考资料 (References)
+## 参考资料
 
 - [Google API Design Guide](https://cloud.google.com/apis/design)
-- [RESTful Web Services Best Practices](https://github.com/Microsoft/api-guidelines)
-
-## 🧠 Usage
-
-当以下情况发生时调用：
-
-- 设计新功能或模块的对外接口时。
-- 优化现有 API 的路径结构或参数设计时。
-- 定义全局统一的响应与错误处理规范时。
-
-## 📥 Input
-
-- 业务资源模型描述。
-- 交互流（Action Flow）。
-
-## 📤 Output
-
-- 详细的 API 路径结构图。
-- 响应报文与错误报文的示例。
-- API 变更（Breaking Changes）的影响分析。
-
-## ⚠️ Constraints
-
-- ✅ 优先考虑开发者的集成体验。
-- ✅ 强制执行资源导向 (Resource-Oriented) 准则。
-- ✅ **命名一致性**：整个 API 集合必须使用统一的命名风格（推荐 snake_case）。
-- ✅ **集合分页**：固定枚举或数量有明确小上限的配置项可一次返回。对持续增长或单次读取成本高的集合设计分页，约定稳定排序、默认及最大页大小和结束条件。已有接口引入分页时，先检查依赖完整列表的调用方，提供兼容的迁移方式。
-- ✅ 错误码必须全局唯一且有明确分类。
-- ✅ **破坏性变更显式化**：任何 Breaking Change 必须在变更描述中明确标记。
-
-## 🔗 Related Skills
-
-- [backend-patterns](../backend-patterns/SKILL.md): API 边界通常需要和模块边界一起设计。
-- [validation-lint](../validation-lint/SKILL.md): 参数与响应结构落地后需要继续做一致性校验。
-- [doc-generator](../doc-generator/SKILL.md): 接口设计完成后可继续生成文档与示例。
+- [Microsoft REST API Guidelines](https://github.com/microsoft/api-guidelines)
