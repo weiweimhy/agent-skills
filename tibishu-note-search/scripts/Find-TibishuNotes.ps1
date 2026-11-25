@@ -91,7 +91,7 @@ function Get-MatchScore {
 }
 
 function Get-NameMatches {
-    param([Parameter(Mandatory)][string[]]$Paths)
+    param([Parameter(Mandatory)][AllowEmptyCollection()][string[]]$Paths)
 
     foreach ($path in $Paths) {
         $relativePath = Get-RelativePath -Path $path
@@ -144,7 +144,7 @@ function Get-FrontMatterValue {
 }
 
 function Select-Results {
-    param([Parameter(Mandatory)][object[]]$Results)
+    param([Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Results)
 
     return @(
         $Results |

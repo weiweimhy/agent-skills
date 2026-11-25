@@ -86,6 +86,71 @@ v1 套件保持原有语义：每个案例仍将 `selected_route` 与 `expected_
 python -m unittest discover -s agent-evals/tests -v
 ```
 
+### 重复尝试与组间比较（可选）
+
+若要比较自然任务在 skill 开启/关闭时的表现，或比较主模型直做与委派，保留每次尝试的
+v2 单次 run 文件，再用清单分组汇总。自然任务实验可只选 `natural_task` 案例；汇总器也支持
+含明确调用或混合模式的 v2 套件，并逐题沿用 `score_v2` 的路由与行为规则。清单中的路径
+相对清单文件解析；组名由评测者定义，因此也可加入 `delegated+independent-review` 等第三组。
+
+```json
+{
+  "schema_version": 1,
+  "suite_id": "my-natural-task-suite",
+  "comparison_name": "skill availability",
+  "groups": ["skill-disabled", "skill-enabled"],
+  "runs": [
+    {"group": "skill-disabled", "run_file": "runs/off-01.json"},
+    {"group": "skill-enabled", "run_file": "runs/on-01.json"}
+  ]
+}
+```
+
+从仓库根目录运行：
+
+```powershell
+python agent-evals/scripts/summarize_repeats.py `
+  --cases cases.json `
+  --key answer-key.json `
+  --runs manifest.json
+```
+
+每个清单条目引用一个现有 v2 单次 run；每个 run 对每道题贡献一次尝试。单次
+`evaluate.py` 接口和已有数据保持不变，仍只负责行为和路由评分；环境门槛与实测指标由
+汇总器读取。可在 run 的 `case_results` 项上添加实测字段：
+
+```json
+{
+  "human_intervention": true,
+  "human_intervention_minutes": 2.5,
+  "cost_usd": 0.12,
+  "time_to_acceptance_seconds": 185,
+  "environment_assertions": [
+    {"name": "python", "expected": "3.13", "actual": "3.13"}
+  ]
+}
+```
+
+`cost_usd` 是该次尝试中模型、工具、失败调用和返工的总支出；按组的平均通过成本用所有
+尝试总支出除以通过数，因此失败尝试的开销也计入。币种固定为 USD。
+`time_to_acceptance_seconds` 记录该题从开始到验收的实际墙钟耗时；汇总按通过尝试取平均，
+不把并行 worker 的各自耗时相加。成功/尝试数按行为要求、计分路由策略和环境断言共同
+判定。使用环境断言时，将以下字段写入答案键中对应的题目，以固定各组的预期值。
+
+```json
+{
+  "required_environment_assertions": [
+    {"name": "python", "expected": "3.13"}
+  ]
+}
+```
+
+缺少必需断言或 `actual: null` 会记为未知并使该次不通过；实际值不符也会使该次不通过。
+任何 run 中的环境断言都必须先在答案键定义；未定义的断言会报输入错误，避免某组的记录
+决定其他组的预期。可选实测字段缺失一律显示为未知，不作为零值。live 和 fixture 结果分开
+展示；`--require-live` 仅核对声明，不能证明来源。汇总入口返回 `0` 表示输入有效并完成
+汇总，不代表任务通过。
+
 运行记录中的行为是评测员或明确规则检查器对原始响应作出的结构化标注；工具不会解析自然语言或替代语义裁判。反馈给 Agent 的评测结果不得包含尚未公开的答案键或隐藏判分线索。
 
 ## 交付

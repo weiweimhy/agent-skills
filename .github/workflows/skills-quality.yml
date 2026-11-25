@@ -18,6 +18,10 @@ jobs:
         shell: pwsh
         run: ./scripts/validate-skills.ps1
 
+      - name: Check note search against a temporary notebook
+        shell: pwsh
+        run: ./tibishu-note-search/scripts/Test-Find-TibishuNotes.ps1
+
       - name: Verify the agent evaluation fixture
         run: python agent-evals/scripts/evaluate.py
 
