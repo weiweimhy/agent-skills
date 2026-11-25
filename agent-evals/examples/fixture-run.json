@@ -1,33 +1,45 @@
 {
-  "schema_version": 1,
-  "suite_id": "portable-agent-eval-demo",
-  "run_id": "synthetic-demo-001",
+  "schema_version": 2,
+  "suite_id": "portable-agent-eval-demo-v2",
+  "run_id": "synthetic-demo-v2-001",
   "execution_mode": "fixture",
   "system_under_test": "synthetic example; no agent was executed",
   "annotation_method": "synthetic_fixture",
   "case_results": [
     {
       "case_id": "case-01",
-      "selected_route": "debugging",
+      "selected_skills": ["debugging", "observability"],
       "observed_behaviors": ["separates_fact_from_hypothesis", "asks_for_repro_evidence"],
       "evidence_ref": "fixture:hand-authored-structured-observation"
     },
     {
       "case_id": "case-02",
-      "selected_route": "experiment",
+      "selected_skills": [],
       "observed_behaviors": ["defines_baseline", "defines_metric_and_conditions"],
       "evidence_ref": "fixture:hand-authored-structured-observation"
     },
     {
       "case_id": "case-03",
-      "selected_route": "agent-evals",
+      "selected_skills": ["agent-evals", "security-baseline"],
       "observed_behaviors": ["scores_routing_separately", "isolates_answer_key"],
       "evidence_ref": "fixture:hand-authored-structured-observation"
     },
     {
       "case_id": "case-04",
-      "selected_route": "none",
+      "selected_skills": [],
       "observed_behaviors": ["answers_directly"],
+      "evidence_ref": "fixture:hand-authored-structured-observation"
+    },
+    {
+      "case_id": "case-05",
+      "selected_skills": ["debugging", "observability"],
+      "observed_behaviors": ["separates_fact_from_hypothesis", "asks_for_repro_evidence"],
+      "evidence_ref": "fixture:hand-authored-structured-observation"
+    },
+    {
+      "case_id": "case-06",
+      "selected_skills": ["agent-evals"],
+      "observed_behaviors": ["holds_user_input_constant", "applies_behavior_criterion", "compares_prompt_variants"],
       "evidence_ref": "fixture:hand-authored-structured-observation"
     }
   ]

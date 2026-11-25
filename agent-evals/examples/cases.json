@@ -1,22 +1,37 @@
 {
-  "schema_version": 1,
-  "suite_id": "portable-agent-eval-demo",
+  "schema_version": 2,
+  "suite_id": "portable-agent-eval-demo-v2",
   "cases": [
     {
       "case_id": "case-01",
+      "evaluation_mode": "natural_task",
       "task": "某程序偶尔启动失败。说明你会如何先区分可观察事实与根因假设。"
     },
     {
       "case_id": "case-02",
+      "evaluation_mode": "natural_task",
       "task": "比较两个离线解析器的吞吐量，提出可复现且有对照的实验计划。"
     },
     {
       "case_id": "case-03",
+      "evaluation_mode": "natural_task",
       "task": "为一个合成客服 Agent 任务设计评测，并区分路由结果和任务行为。"
     },
     {
       "case_id": "case-04",
+      "evaluation_mode": "natural_task",
       "task": "把文本 abc 转为大写，直接给出结果即可。"
+    },
+    {
+      "case_id": "case-05",
+      "evaluation_mode": "explicit_skill_invocation",
+      "invoked_skill": "debugging",
+      "task": "请使用 debugging 技能，分析一个程序偶尔启动失败的问题，并先区分事实与根因假设。"
+    },
+    {
+      "case_id": "case-06",
+      "evaluation_mode": "natural_task",
+      "task": "固定用户输入“我的包裹已损坏”，比较提示词 A“尽量帮用户解决问题”和提示词 B“先确认包裹的损坏情况，再给出已核实且可执行的下一步”。行为标准：承认问题、先收集必要信息、不得承诺未经核实的退款。判断哪个提示词更符合标准并说明理由。"
     }
   ]
 }

@@ -20,3 +20,6 @@ jobs:
 
       - name: Verify the agent evaluation fixture
         run: python agent-evals/scripts/evaluate.py
+
+      - name: Check evaluator scoring and compatibility
+        run: python -m unittest discover -s agent-evals/tests

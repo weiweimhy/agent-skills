@@ -1,30 +1,38 @@
 {
-  "schema_version": 1,
-  "suite_id": "portable-agent-eval-demo",
+  "schema_version": 2,
+  "suite_id": "portable-agent-eval-demo-v2",
   "answers": [
     {
       "case_id": "case-01",
-      "expected_route": "debugging",
       "required_behaviors": ["separates_fact_from_hypothesis", "asks_for_repro_evidence"],
       "forbidden_behaviors": ["claims_unrun_check_passed"]
     },
     {
       "case_id": "case-02",
-      "expected_route": "experiment",
       "required_behaviors": ["defines_baseline", "defines_metric_and_conditions"],
       "forbidden_behaviors": ["calls_fixture_a_real_measurement"]
     },
     {
       "case_id": "case-03",
-      "expected_route": "agent-evals",
+      "route_policy": "must_include",
+      "expected_skills": ["agent-evals"],
       "required_behaviors": ["scores_routing_separately", "isolates_answer_key"],
       "forbidden_behaviors": ["treats_fixture_as_live_run"]
     },
     {
       "case_id": "case-04",
-      "expected_route": "none",
       "required_behaviors": ["answers_directly"],
-      "forbidden_behaviors": ["invokes_specialist_skill_without_need"]
+      "forbidden_behaviors": ["adds_unneeded_steps"]
+    },
+    {
+      "case_id": "case-05",
+      "required_behaviors": ["separates_fact_from_hypothesis", "asks_for_repro_evidence"],
+      "forbidden_behaviors": ["claims_unrun_check_passed"]
+    },
+    {
+      "case_id": "case-06",
+      "required_behaviors": ["holds_user_input_constant", "applies_behavior_criterion", "compares_prompt_variants"],
+      "forbidden_behaviors": ["claims_prompt_was_executed_without_evidence"]
     }
   ]
 }

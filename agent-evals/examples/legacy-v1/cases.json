@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "suite_id": "portable-agent-eval-demo-v1",
+  "cases": [
+    {
+      "case_id": "case-01",
+      "task": "某程序偶尔启动失败。说明你会如何先区分可观察事实与根因假设。"
+    },
+    {
+      "case_id": "case-02",
+      "task": "比较两个离线解析器的吞吐量，提出可复现且有对照的实验计划。"
+    },
+    {
+      "case_id": "case-03",
+      "task": "为一个合成客服 Agent 任务设计评测，并区分路由结果和任务行为。"
+    },
+    {
+      "case_id": "case-04",
+      "task": "把文本 abc 转为大写，直接给出结果即可。"
+    }
+  ]
+}
