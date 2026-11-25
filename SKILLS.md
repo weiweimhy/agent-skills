@@ -11,7 +11,6 @@ frontmatter 仅包含 `name` 和 `description`。
 - `code-review` - 跨语言代码审查入口。
 - `git-workflow` - diff 总结、提交拆分、提交信息和 PR 前整理。
 - `release` - 语义化版本、Release Notes、标签和发布检查。
-- `markdown` - 显式处理 Markdown lint、渲染和格式问题。
 
 ## Tooling Setup
 
@@ -33,7 +32,6 @@ frontmatter 仅包含 `name` 和 `description`。
 
 - `api-design` - REST/API 设计、请求响应、分页和错误格式。
 - `backend-patterns` - 模块边界、服务层、缓存、重试、事务和观测性。
-- `validation-lint` - 校验既有契约与配置的跨字段、跨环境语义。
 
 ## Language And Frontend
 
