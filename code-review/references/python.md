@@ -1,20 +1,4 @@
----
-name: python-review
-description: Python code review guidance for correctness, typing, async behavior, resource handling, exceptions, and project conventions. Use when reviewing Python changes, .py files, or Python-specific risks.
----
-
 # Python Code Review
-
-审查 Python 改动的行为和风险。PEP、格式化及惯用法是项目约定的参考，不是独立的缺陷标准。
-
-## 触发条件
-
-- “审查这段 Python 代码”
-- “这段代码符合项目约定吗？”
-- “帮我重构这段 Python 逻辑”
-- “检查这段异步代码是否会阻塞”
-
-## 审查重点
 
 先从项目配置确认支持的 Python 版本、依赖和工具约定；不要默认要求 Python 3.10+ 或额外的格式化、类型检查工具。根据 diff 检查：
 
@@ -23,12 +7,6 @@ description: Python code review guidance for correctness, typing, async behavior
 - async 路径是否执行阻塞操作、取消是否能传递、并发结果是否按调用方预期处理。
 - 类型标注与运行时边界是否一致；只在类型错误可能导致真实误用时提出。
 - 命名、注释和格式仅在违反仓库约定、遮蔽行为或增加维护风险时提出。
-
-## 输入与交付
-
-输入可为 Python 文件、diff、项目配置及必要的行为背景。
-将可定位的发现按 [code-review](../code-review/SKILL.md) 的风险报告格式交付。重构示例、
-Ruff 或类型检查建议仅在能解决已指出的问题且符合项目工具链时提供；不输出主观 Pythonic 评分或纯格式意见。
 
 ## 边界
 
@@ -42,7 +20,3 @@ Ruff 或类型检查建议仅在能解决已指出的问题且符合项目工具
 - [PEP 8](https://peps.python.org/pep-0008/)
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
 - [Ruff](https://docs.astral.sh/ruff/)
-
-## Related Skills
-
-- [code-review](../code-review/SKILL.md)：通用审查流程。

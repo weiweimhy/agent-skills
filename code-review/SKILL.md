@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Cross-language code review workflow focused on correctness, maintainability, security, performance, tests, and actionable findings. Use when asked to review code, inspect diffs, organize PR feedback, or assess implementation risk.
+description: Cross-language code review workflow focused on correctness, maintainability, security, performance, tests, and actionable findings. Use when asked to review code, inspect diffs, organize PR feedback, or assess implementation risk, including Go concurrency, Python async behavior, and TypeScript runtime type boundaries.
 ---
 
 # 代码审查
@@ -12,9 +12,13 @@ description: Cross-language code review workflow focused on correctness, maintai
 1. 确认预期行为和审查范围；读取 diff、相关调用方、配置、数据/API 契约及项目约定。
 2. 沿着高风险路径检查改动：权限与信任边界、输入、失败和恢复、并发状态、资源、兼容性、持久化和部署影响。只检查本次变更实际涉及的维度。
 3. 用代码路径、现有测试或适用的项目命令核实关键发现。无法验证时说明证据缺口，不把假设写成已证实问题。
-4. 先报告影响大且容易触发的问题，合并同一根因，避免重复项。必要时参考对应专项规则，例如 [Go 审查](../go-review/SKILL.md)、
-   [Python 审查](../python-review/SKILL.md) 或
-   [TypeScript 审查](../typescript-review/SKILL.md)。
+4. 先报告影响大且容易触发的问题，合并同一根因，避免重复项。
+
+按变更涉及的风险读取专项参考：
+
+- [Go](references/go.md)：goroutine 退出、channel 阻塞、资源释放和错误传播。
+- [Python](references/python.md)：事件循环阻塞、取消传递、异常处理和资源所有权。
+- [TypeScript](references/typescript.md)：外部输入与运行时校验、类型收窄，以及公共类型兼容性。
 
 ## 输出
 

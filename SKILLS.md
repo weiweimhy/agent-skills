@@ -8,7 +8,7 @@ frontmatter 仅包含 `name` 和 `description`。
 - `debugging` - 从故障现象设计区分性实验，复现并验证修复。
 - `experiment` - 对固定基线运行受控实验并复测候选方案。
 - `agent-evals` - 对照任务路由与产物，用独立证据评估智能体。
-- `code-review` - 跨语言代码审查入口。
+- `code-review` - 跨语言代码审查入口，按需加载 Go、Python 和 TypeScript 专项参考。
 - `git-workflow` - diff 总结、提交拆分、提交信息和 PR 前整理。
 - `release` - 语义化版本、Release Notes、标签和发布检查。
 
@@ -36,9 +36,6 @@ frontmatter 仅包含 `name` 和 `description`。
 ## Language And Frontend
 
 - `frontend-implementation` - 从用户交互组织前端实现，按框架加载专项。
-- `go-review` - Go 代码审查。
-- `python-review` - Python 代码审查。
-- `typescript-review` - TypeScript/TSX 代码审查。
 - `react` - React/Next.js 组件、Hooks、状态和性能边界。
 - `vue` - Vue 3、Composition API、Pinia、Vite 和 SSR 边界。
 - `nodejs` - Node.js 运行时、包管理、异步、配置和流式 I/O。
