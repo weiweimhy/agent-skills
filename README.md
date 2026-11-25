@@ -47,8 +47,7 @@ git -C ~/.agents/skills pull --ff-only
 - `openai-docs`: OpenAI/Codex 官方文档查询。
 - `pdf:pdf`, `documents:documents`, `spreadsheets:Spreadsheets`,
   `presentations:Presentations`: 文档型项目和交付物处理。
-- `imagegen`: 使用内置端点生成前端、产品页或游戏素材；需要使用已配置
-  中转端点时改用本库的 `relay-imagegen`。
+- `imagegen`: 使用内置端点生成前端、产品页或游戏素材。
 - `plugin-creator`: 需要把技能、工具和 MCP 封装成插件时使用。
 
 ## 前端项目初始化
@@ -58,8 +57,8 @@ git -C ~/.agents/skills pull --ff-only
 `docs/ui-design.md`（已有设计文档则沿用），并由项目 `AGENTS.md` 约束后续页面开发。
 `docs/ui-delivery.md` 记录实现状态和视觉、交互验收方式，避免把设计计划当成已实现的能力。
 
-示例：`使用 project-standards-init 初始化这个前端项目，面向中小团队的任务管理，
-要求清晰克制、组件统一、图标一致，按钮反馈和面板切换有轻量动效。`
+示例：`使用 project-standards-init 初始化这个前端项目，面向独立摄影师的作品网站，
+根据横竖构图和系列顺序组织浏览，保留照片说明，验证窄屏阅读与键盘翻页。`
 
 初始化本身不安装 UI 库或生成产品页面。若需要一并实现，可追加“落实主题 token、共享组件与
 代表页面并验收”。后续功能开发会读取已生成的规范；美观和动效仍需在真实页面中验证。
@@ -91,7 +90,7 @@ pwsh ./scripts/validate-skills.ps1
 - 发现的每个 `SKILL.md` 均位于一级技能目录。
 - frontmatter 只使用 `name` 和 `description`。
 - `name` 与目录名一致。
-- `description` 足够具体，达到本库设定的最小长度；实际触发效果需在宿主中验证。
+- `description` 不能为空；实际触发效果需在宿主中验证。
 
 ## 跨电脑同步
 

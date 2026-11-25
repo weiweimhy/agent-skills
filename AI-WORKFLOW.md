@@ -38,9 +38,7 @@ pwsh ./scripts/connect-antigravity.ps1
 
 共享范围包括技能正文、相对路径下的参考资料、脚本和模板。
 MCP、凭据和工具授权由各自的宿主管理。
-例如 `semi-mcp-setup` 配置的是 Codex 项目；
-`relay-imagegen` 使用本机已授权的 Codex 中转配置；
-笔记搜索要求该宿主可读取笔记目录。切换宿主时先确认依赖。
+例如笔记搜索要求该宿主可读取笔记目录。切换宿主时先确认依赖。
 
 官方参考：[Codex Skills](https://developers.openai.com/codex/skills/)、
 [Antigravity 发现清单](https://antigravity.google/docs/customization-discovery/)。
@@ -66,7 +64,7 @@ MCP、凭据和工具授权由各自的宿主管理。
 
 ## 持续改进
 
-从仓库根目录运行以下命令，可检查评测器能否分别判定路由与行为。内置数据是合成夹具。
+从仓库根目录运行以下命令，可检查显式调用与自然任务的验收逻辑。内置数据是合成夹具。
 评测真实模型时，用实际轨迹独立标注观察结果，并把答案键留在评分端。
 输入格式和退出码见 [agent-evals](agent-evals/SKILL.md)。
 

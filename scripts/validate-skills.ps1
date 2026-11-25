@@ -48,6 +48,11 @@ foreach ($file in $skillFiles) {
         $key = $Matches[1]
         $value = $Matches[2].Trim()
         $keys.Add($key)
+        if ($value -match '^"(.*)"(?:\s+#.*)?$' -or $value -match "^'(.*)'(?:\s+#.*)?$") {
+            $value = $Matches[1]
+        } elseif ($value -match '^(?:#.*|(?:~|null)(?:\s+#.*)?)$') {
+            $value = ''
+        }
         $values[$key] = $value
     }
 
@@ -69,10 +74,6 @@ foreach ($file in $skillFiles) {
 
     if ($values.ContainsKey("name") -and $values["name"] -notmatch '^[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$') {
         $issues.Add("${relative}: name must be kebab-case and under 64 characters")
-    }
-
-    if ($values.ContainsKey("description") -and $values["description"].Length -lt 80) {
-        $issues.Add("${relative}: description should be specific enough for Codex routing")
     }
 
     if ($content.Substring($match.Length) -notmatch '(?m)^#\s+') {

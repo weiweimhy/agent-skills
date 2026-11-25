@@ -5,7 +5,7 @@ description: Design or revise external API contracts, including resource paths, 
 
 # API 契约设计
 
-为 API 调用方和实现方定义清楚、可兼容的外部契约。这里负责契约本身；配置语义、服务内部模块和数据访问架构归 `backend-patterns`。
+为调用方和实现方定义可兼容的外部契约，并核对接口的实际行为。
 
 ## 设计时关注
 
@@ -23,7 +23,7 @@ description: Design or revise external API contracts, including resource paths, 
 
 ## 相关技能
 
-- [backend-patterns](../backend-patterns/SKILL.md)：设计会影响服务模块边界的实现方案。
+- [backend-patterns](../backend-patterns/SKILL.md)：核对重试请求的幂等性、部分失败后的恢复或服务配置的生效行为。
 
 ## 参考资料
 

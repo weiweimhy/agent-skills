@@ -1,16 +1,20 @@
 ---
 name: code-review
-description: Cross-language code review workflow focused on correctness, maintainability, security, performance, tests, and actionable findings. Use when asked to review code, inspect diffs, organize PR feedback, or assess implementation risk, including Go concurrency, Python async behavior, and TypeScript runtime type boundaries.
+description: Cross-language review workflow focused on correctness, security, compatibility, tests, and actionable findings. Use for diff/PR reviews or explicitly requested module audits, including Go concurrency, Python async behavior, and TypeScript runtime type boundaries.
 ---
 
 # 代码审查
 
-围绕用户目标和本次变更，找出有证据支持、会造成实际影响且可采取行动的问题。审查深度随风险调整；不要把风格偏好或无关重构混入发现。
+围绕用户目标和本次审查范围，找出有证据支持、会造成实际影响且可采取行动的问题。审查深度随风险调整；不要把风格偏好或无关重构混入发现。
+
+## 审查范围
+
+先区分变更审查与模块审计。未特别说明时，按 diff 审查：检查改动及理解其影响所必需的邻近调用方、契约和配置，不把整模块审计当作默认范围。用户明确要求模块审计时，再覆盖该模块的实现、公开边界、关键调用方和相关测试，并在结果中说明检查边界。只有证据支持时才归因于当前改动或历史问题；无法确认时直接报告缺陷，不推断其来源。用户指定文件或范围时遵守该范围。
 
 ## 工作方式
 
-1. 确认预期行为和审查范围；读取 diff、相关调用方、配置、数据/API 契约及项目约定。
-2. 沿着高风险路径检查改动：权限与信任边界、输入、失败和恢复、并发状态、资源、兼容性、持久化和部署影响。只检查本次变更实际涉及的维度。
+1. 确认预期行为与审查类型；读取对应范围的代码、调用方、配置、数据/API 契约及项目约定。
+2. 沿高风险路径检查：diff 审查覆盖变更实际涉及的权限与信任边界、输入、失败恢复、并发、资源、兼容性、持久化或部署影响；模块审计检查所定模块内与其风险相关的维度。
 3. 用代码路径、现有测试或适用的项目命令核实关键发现。无法验证时说明证据缺口，不把假设写成已证实问题。
 4. 先报告影响大且容易触发的问题，合并同一根因，避免重复项。
 
@@ -22,7 +26,7 @@ description: Cross-language code review workflow focused on correctness, maintai
 
 ## 输出
 
-按风险从高到低列出可操作发现。每项包含：
+先注明实际审查范围，再按风险从高到低列出可操作发现。每项包含：
 
 - 文件位置；
 - 触发条件；
@@ -33,6 +37,6 @@ description: Cross-language code review workflow focused on correctness, maintai
 
 ## 边界
 
-- 只把本次变更引入或扩大、且有实际后果的问题列为发现；仅在与改动交互时扩展到邻近代码。
+- Diff 审查只把本次变更引入或扩大的实际问题列为发现；模块审计可报告所定范围内的实际问题。仅在证据充分时说明缺陷是否由当前变更引入，无法归因时不作历史判断。仅在判断因果或风险所需时扩展到相邻代码。
 - 不报告纯主观偏好、无影响的重构建议、自动格式化问题或未核实的猜测。
 - 不把计划执行的测试、工具或检查描述成已运行。

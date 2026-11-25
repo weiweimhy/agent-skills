@@ -12,31 +12,21 @@ frontmatter 仅包含 `name` 和 `description`。
 - `git-workflow` - diff 总结、提交拆分、提交信息和 PR 前整理。
 - `release` - 语义化版本、Release Notes、标签和发布检查。
 
-## Tooling Setup
+## Personal Notes
 
 - `tibishu-note-search` - 分层检索已有个人笔记。
 - `tibishu-notes` - 按笔记库约定编写、整理和验证笔记。
-- `semi-mcp-setup` - Semi Design MCP 的项目级配置、验证与故障排查。
-- `relay-imagegen` - 通过 Codex 已配置的 OpenAI 兼容中转端点生成或编辑图片。
 
-## Product, Docs, AI
+## Project Setup And Collaboration
 
 - `project-standards-init` - 工程规范初始化，包含前端风格、组件、图标、动效及后续交付契约。
-- `product-manager` - 模糊需求转 PRD、User Story 和验收标准。
-- `architecture-consultant` - 架构方案、技术选型、权衡分析和 ADR。
-- `prompt-design` - Prompt、system prompt、few-shot、评测和安全边界。
 - `gpt-agy-collaboration` - 跨宿主分工、独立审查、交接和长任务恢复。
 
 ## Backend
 
 - `api-design` - REST/API 设计、请求响应、分页和错误格式。
-- `backend-patterns` - 模块边界、服务层、缓存、重试、事务和观测性。
-
-## Language And Frontend
-
-- `frontend-implementation` - 从用户交互组织前端实现，按项目技术栈验证受影响的行为。
-- `nodejs` - Node.js 运行时、包管理、异步、配置和流式 I/O。
-- `tailwindcss` - Tailwind CSS token、响应式状态、无障碍与可维护样式。
+- `backend-patterns` - 部分失败后的恢复、重试幂等性与运行时配置生效验证。
+- `nodejs` - Node 包与 CLI 入口的打包、安装与消费端兼容验证。
 
 ## Game, Infrastructure, And Quality
 
@@ -60,4 +50,4 @@ frontmatter 仅包含 `name` 和 `description`。
 - `git-commit`: 合并进 `git-workflow`。
 - `mongodb-master`, `csharp-review`, `lua-review`: 过窄或低频，适合按项目需要单独添加。
 - PDF、Office、GitHub、browser、OpenAI docs 和普通 imagegen 等能力：使用系统或
-  插件技能；中转端点图片生成使用本库的 `relay-imagegen`。
+  插件技能。
