@@ -9,6 +9,26 @@
 - Deployment paths vary by user and machine. Resolve the target from the
   environment or the repository README; do not record personal paths here.
 
+## Finding and Introducing Skills
+
+When asked whether a skill exists or before authoring a new skill, always search
+in this order:
+
+1. **Local first**: check this source repository (`SKILLS.md` and `<skill>/SKILL.md`),
+   the deployment clone, and host built-in/plugin/marketplace skills.
+2. **GitHub second**: search GitHub repositories for mature existing `SKILL.md`
+   implementations or reference wrappers covering the requested workflow.
+   Prefer the authenticated `gh` CLI (`gh search repos`, `gh search code`,
+   `gh api`) for exact repository and `SKILL.md` inspection when available, and
+   fall back to web search if `gh` is unavailable or network-restricted.
+   Evaluate coverage, maintenance, cross-host/OS compatibility (including Windows
+   PowerShell), and security boundaries before deciding whether to adopt,
+   adapt, or build from scratch.
+3. **Author locally only when needed**: if neither local nor GitHub options fit
+   cleanly (or require multi-host adaptation), create or adapt the skill in this
+   source repository, cite any inspected GitHub references, and avoid duplicating
+   official/plugin skills.
+
 ## Changing and Deploying Skills
 
 1. Make every skill, script, or documentation change in this source repository.
