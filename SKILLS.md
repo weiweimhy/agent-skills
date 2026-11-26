@@ -10,7 +10,9 @@
 - `git-workflow` - diff 总结、提交拆分、中文 Conventional Commit 信息与授权边界。
 - `release` - 版本约定、Release Notes、标签、制品与消费者侧验证（含 Node.js 包/CLI 兼容参考）及回退说明。
 - `frontend-verify` - 前端改动后的真实浏览器端到端验收闭环（真实交互、Console/Network、刷新回读与视口检查）。
+- `agent-browser` - 跨宿主无头/有头浏览器自动化 CLI 工作流：基于 `snapshot -i` 与 `@eN` 的交互闭环、多子 Agent/多账号 `--session` 与 `state` 隔离，以及强制读图核查的前端视觉验收。
 - `session-handoff` - 跨会话与跨宿主（Codex / Antigravity）结构化交接，附带 Git 工作区快照采集脚本。
+- `cross-agent-invoke` - 跨 Agent 交叉调用工作流：通过统一脚本在 Codex、Antigravity (`agy`)、WorkBuddy/CodeBuddy (`codebuddy`/`cbc`) 与 Claude Code 间进行非交互调用，含 CLI 自动发现、只读/写权限映射与防递归回环护栏。
 - `retro-to-guardrail` - 人工纠正沉淀路由：按优先级将经验落入自动化测试、项目文档、共享 Skill 或评测回归集。
 - `agent-evals` - 对照任务路由、行为与验收成本，用独立证据评估智能体与技能收益。
 
@@ -33,4 +35,4 @@
 - `skill-builder`：使用官方 `skill-creator` 替代。
 - `git-commit`：已合并进 `git-workflow`。
 - `mongodb-master`、`csharp-review`、`lua-review`：过窄或低频，按项目需要单独放入项目 `.agents/skills/`。
-- PDF、Office、GitHub、browser、OpenAI docs 和普通 imagegen 等能力：使用系统或插件技能。
+- PDF、Office、GitHub、宿主内置交互式 browser 插件、OpenAI docs 和普通 imagegen 等能力：使用系统或插件技能。

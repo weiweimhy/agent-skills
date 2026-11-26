@@ -1,6 +1,6 @@
 ---
 name: frontend-verify
-description: End-to-end real-browser verification workflow for frontend changes, checking user flows, console/network errors, reload persistence, and responsive layouts across Antigravity browser tools or Playwright CLI. Use after implementing or fixing UI behavior and before declaring frontend work done.
+description: End-to-end real-browser verification workflow for frontend changes, checking user flows, console/network errors, reload persistence, and responsive layouts across Antigravity browser tools, agent-browser CLI, or Playwright CLI. Use after implementing or fixing UI behavior and before declaring frontend work done.
 ---
 
 # 前端真实浏览器验收闭环
@@ -12,7 +12,7 @@ description: End-to-end real-browser verification workflow for frontend changes,
 1. 从仓库 `package.json`、文档或现有脚本确认真实的开发服务器启动命令、监听地址与测试账号/前置条件；不臆造端口或命令。
 2. 按当前宿主选择可用浏览器入口：
    - **Antigravity**：优先委托内置 `browser` 子代理执行页面操作与视觉检查。
-   - **Codex / 其他宿主**：使用项目既有 E2E 工具（如 Playwright / Cypress）或按需安装的 Playwright CLI。
+   - **Codex / 其他宿主**：优先使用 `agent-browser` CLI（详见 `agent-browser` 技能，支持显式 `--session` 隔离、截图/视觉 Diff 与 Console/Network 检查），或使用项目既有 E2E 工具（如 Playwright / Cypress）及 Playwright CLI。
    - 若当前环境无法启动服务或无可用浏览器工具，明确标注为“未做浏览器实测”并说明阻塞原因，绝不伪造已验收结果。
 
 ## 必查五项闭环
