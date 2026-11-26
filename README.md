@@ -100,7 +100,26 @@ pwsh ./scripts/sync-deployment.ps1 -CheckAntigravity
 
 ## 跨电脑同步
 
-每台电脑都将本仓库克隆到 `~/.agents/skills/`。修改技能后，在本仓库提交并推送；其他电脑执行上述更新命令即可获得相同版本。
+每台电脑都将本仓库克隆到 `~/.agents/skills/`。修改技能后，在本仓库提交并推送；其他电脑执行
+一键同步脚本即可拉取最新提交并按本机已安装的宿主自动对齐技能接入：
+
+```powershell
+pwsh ~/.agents/skills/scripts/sync-machine.ps1
+```
+
+该脚本默认先检查 `~/.agents/skills/` 工作区干净并执行 `git pull --ff-only`，然后按宿主发现
+机制幂等处理：
+
+- **Codex / DSH**：原生读取 `~/.agents/skills/`，仅做状态与同名覆盖体检，绝不修改
+  `~/.codex/skills/`（若某版 DSH 需要联接到 `~/.dsh/skills/`，可追加 `-LinkDsh`）。
+- **Antigravity**：幂等注册 `~/.gemini/config/skills.json`，已有其他条目时保留原文件并给出
+  追加片段。
+- **WorkBuddy / CodeBuddy / Claude Code**：自动检测本机存在的 `~/.workbuddy`、`~/.codebuddy`、
+  `~/.claude`，按一级含 `SKILL.md` 的技能目录逐个维护 Directory Junction（新增技能自动补链，
+  已删技能自动清理失效链接，宿主自带或本地真实目录自动保留不覆盖）。
+
+常用选项：加 `-WhatIf` 预演变更，加 `-SkipPull` 跳过 `git pull`（适合手动拉取后再同步），
+加 `-Hosts codex,antigravity,workbuddy,claude,dsh` 显式指定目标宿主。
 
 `tibishu-notes` 技能依赖的 `TIBISHU_NOTES_PATH`（或桌面端的笔记库路径）仍需在每台电脑单独配置。
 

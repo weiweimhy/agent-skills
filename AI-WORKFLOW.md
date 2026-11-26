@@ -19,7 +19,15 @@
 Codex 从个人目录 `~/.agents/skills` 发现技能。
 项目特有技能放在项目的 `.agents/skills`。
 
-在部署 clone 就绪的机器上，从本仓库运行：
+在部署 clone 就绪的机器上，可运行跨宿主一键同步脚本（自动快进拉取、注册 Antigravity 清单，
+并为本机已安装的 WorkBuddy / CodeBuddy / Claude 增量维护按技能目录的 Junction，同时体检
+Codex 与 DSH）：
+
+```powershell
+pwsh ~/.agents/skills/scripts/sync-machine.ps1
+```
+
+如果只需单独注册 Antigravity，也可以从本仓库运行：
 
 ```powershell
 pwsh ./scripts/connect-antigravity.ps1
