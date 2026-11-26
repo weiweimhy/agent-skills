@@ -20,7 +20,15 @@ jobs:
 
       - name: Check note search against a temporary notebook
         shell: pwsh
-        run: ./tibishu-note-search/scripts/Test-Find-TibishuNotes.ps1
+        run: ./tibishu-notes/scripts/Test-Find-TibishuNotes.ps1
+
+      - name: Check note front matter and Markdown validator
+        shell: pwsh
+        run: ./tibishu-notes/scripts/Test-Validate-TibishuNote.ps1
+
+      - name: Check session handoff snapshot helper
+        shell: pwsh
+        run: ./session-handoff/scripts/Test-Get-HandoffSnapshot.ps1
 
       - name: Verify the agent evaluation fixture
         run: python agent-evals/scripts/evaluate.py

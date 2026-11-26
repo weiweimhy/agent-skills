@@ -79,7 +79,7 @@ Jetpack Compose 与稳定 Material 3，参考 Material 3 Expressive；先检查�
 这些资源是文档模板。用于具体项目时，替换产品与工程事实、裁剪条件章节，保留
 尚未实现或验证的状态；初始化规范本身不安装依赖或生成可运行应用。
 
-## 校验
+## 校验与同步
 
 ```powershell
 pwsh ./scripts/validate-skills.ps1
@@ -88,15 +88,21 @@ pwsh ./scripts/validate-skills.ps1
 校验脚本会检查：
 
 - 发现的每个 `SKILL.md` 均位于一级技能目录。
-- frontmatter 只使用 `name` 和 `description`。
-- `name` 与目录名一致。
-- `description` 不能为空；实际触发效果需在宿主中验证。
+- frontmatter 只使用 `name` 和 `description`，且 `name` 与目录名一致。
+- `SKILL.md` 行数不超预算（防止提示词膨胀），且 `SKILL.md` 与 `agents/*.yaml` 不含硬编码的个人绝对路径。
+- `SKILLS.md` 活跃清单与实际技能目录完全一致。
+
+源仓库推送到远端后，可用安全同步脚本快进更新个人部署 clone（遵循 [AGENTS.md](AGENTS.md)，遇到与源库不同的本地改动会自动中止保护）：
+
+```powershell
+pwsh ./scripts/sync-deployment.ps1 -CheckAntigravity
+```
 
 ## 跨电脑同步
 
 每台电脑都将本仓库克隆到 `~/.agents/skills/`。修改技能后，在本仓库提交并推送；其他电脑执行上述更新命令即可获得相同版本。
 
-`tibishu-*` 技能依赖的 `TIBISHU_NOTES_PATH`（或桌面端的笔记库路径）仍需在每台电脑单独配置。
+`tibishu-notes` 技能依赖的 `TIBISHU_NOTES_PATH`（或桌面端的笔记库路径）仍需在每台电脑单独配置。
 
 ## 维护规则
 

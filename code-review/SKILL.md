@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Cross-language review workflow focused on correctness, security, compatibility, tests, and actionable findings. Use for diff/PR reviews or explicitly requested module audits, including Go concurrency, Python async behavior, and TypeScript runtime type boundaries.
+description: Cross-language review workflow focused on correctness, security, data/concurrency safety, compatibility, tests, and actionable findings. Use for diff/PR reviews or explicitly requested module audits, including Go, Python, TypeScript, security boundaries, and stateful backend/migration changes.
 ---
 
 # 代码审查
@@ -23,6 +23,10 @@ description: Cross-language review workflow focused on correctness, security, co
 - [Go](references/go.md)：goroutine 退出、channel 阻塞、资源释放和错误传播。
 - [Python](references/python.md)：事件循环阻塞、取消传递、异常处理和资源所有权。
 - [TypeScript](references/typescript.md)：外部输入与运行时校验、类型收窄，以及公共类型兼容性。
+- [Security](references/security.md)：资源级授权、注入/SSRF/路径遍历边界、凭据泄露和供应链风险。
+- [Data & Concurrency](references/data-and-concurrency.md)：数据库兼容迁移与锁风险、Redis 锁租约竞争、部分失败重试和配置预算冲突。
+
+检查回归测试时，确认新增或修改的测试从可观察的用户/调用方入口验证行为（理想情况下先在修复前复现失败），避免只断言内部实现或 mock 掉被测规则。
 
 ## 输出
 

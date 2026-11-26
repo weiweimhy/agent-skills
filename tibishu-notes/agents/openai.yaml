@@ -1,4 +1,4 @@
 interface:
   display_name: "Tibishu Notes"
-  short_description: "Create and organize lint-clean Tibishu Markdown notes"
-  default_prompt: "Use $tibishu-notes to create a Markdown note in F:\\Tibishu."
+  short_description: "Search, create, organize, and validate Markdown notes in TIBISHU_NOTES_PATH"
+  default_prompt: "Use $tibishu-notes to search or create lint-clean Markdown notes in the knowledge base configured by TIBISHU_NOTES_PATH."

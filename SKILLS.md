@@ -1,52 +1,36 @@
 # Skill Inventory
 
-本文件是人工维护的通用技能清单。每个技能都是 Agent Skills 目录结构：`<skill-name>/SKILL.md`，
-frontmatter 仅包含 `name` 和 `description`。
+本文件是人工维护的通用技能清单，并与 `scripts/validate-skills.ps1` 自动对齐检查。每个技能遵循 Agent Skills 目录结构：`<skill-name>/SKILL.md`，frontmatter 仅包含 `name` 和 `description`。
 
-## Core Workflow
+本库只保留强前沿 Agent 依然需要的高信号能力：**私有资产与脚本、强个人工作流约束、高频翻车的领域防呆，以及可复现的验证/交接闭环**。
 
-- `debugging` - 从故障现象设计区分性实验，复现并验证修复。
-- `experiment` - 对固定基线运行受控实验并复测候选方案。
-- `agent-evals` - 对照任务路由与产物，用独立证据评估智能体。
-- `code-review` - 跨语言代码审查入口，按需加载 Go、Python 和 TypeScript 专项参考。
-- `git-workflow` - diff 总结、提交拆分、提交信息和 PR 前整理。
-- `release` - 语义化版本、Release Notes、标签和发布检查。
+## Core Workflow & Verification
 
-## Personal Notes
+- `code-review` - 跨语言代码审查唯一入口，按需加载 Go、Python、TypeScript、安全边界与有状态变更/迁移专项参考。
+- `git-workflow` - diff 总结、提交拆分、中文 Conventional Commit 信息与授权边界。
+- `release` - 版本约定、Release Notes、标签、制品与消费者侧验证（含 Node.js 包/CLI 兼容参考）及回退说明。
+- `frontend-verify` - 前端改动后的真实浏览器端到端验收闭环（真实交互、Console/Network、刷新回读与视口检查）。
+- `session-handoff` - 跨会话与跨宿主（Codex / Antigravity）结构化交接，附带 Git 工作区快照采集脚本。
+- `retro-to-guardrail` - 人工纠正沉淀路由：按优先级将经验落入自动化测试、项目文档、共享 Skill 或评测回归集。
+- `agent-evals` - 对照任务路由、行为与验收成本，用独立证据评估智能体与技能收益。
 
-- `tibishu-note-search` - 分层检索已有个人笔记。
-- `tibishu-notes` - 按笔记库约定编写、整理和验证笔记。
+## Project Setup & Personal Notes
 
-## Project Setup
+- `project-standards-init` - 按仓库事实初始化或刷新 `AGENTS.md` 与工程文档，按需加载前端设计契约、Android 模板与规范库检索规则。
+- `tibishu-notes` - 读写一体的个人笔记技能：分层只读检索、新建与整理、Blog front matter 与 markdownlint 确定性校验。
 
-- `project-standards-init` - 工程规范初始化，包含前端风格、组件、图标、动效及后续交付契约。
+## Specialized Game Client
 
-## Backend
-
-- `api-design` - REST/API 设计、请求响应、分页和错误格式。
-- `backend-patterns` - 部分失败后的恢复、重试幂等性与运行时配置生效验证。
-- `nodejs` - Node 包与 CLI 入口的打包、安装与消费端兼容验证。
-
-## Game, Infrastructure, And Quality
-
-- `unity-csharp` - Unity C# 生命周期、序列化、性能和测试边界。
-- `lua` - Lua 模块、table、协程和宿主语言互操作。
-- `redis` - Redis key/TTL 契约、原子性、缓存、锁和故障退化。
-- `nginx` - Nginx 代理、TLS、缓存、WebSocket 和安全变更。
-- `test-engineering` - 跨技术栈的测试分层、隔离、异步可靠性和回归验证。
-
-## Delivery, Operations, And Security
-
-- `observability` - 日志、指标、链路追踪、健康信号和遥测隐私边界。
-- `containers` - Dockerfile、Compose、镜像构建、依赖就绪和运行时配置。
-- `ci-cd` - 构建/测试门禁、制品追溯、最小权限交付和回退策略。
-- `security-baseline` - 信任边界、输入处理、密钥、依赖和安全审查基线。
-- `database-migrations` - Schema/数据迁移、兼容发布、锁风险、恢复和验证。
+- `unity-csharp` - Unity C# 生命周期、序列化与 Prefab/Scene 资产兼容性、热点性能与主线程边界。
+- `lua` - Lua 模块导出、table 语义、协程生命周期、热点与宿主语言桥接边界。
 
 ## Not Included By Default
 
-- `skill-builder`: 使用官方 `skill-creator` 替代。
-- `git-commit`: 合并进 `git-workflow`。
-- `mongodb-master`, `csharp-review`, `lua-review`: 过窄或低频，适合按项目需要单独添加。
-- PDF、Office、GitHub、browser、OpenAI docs 和普通 imagegen 等能力：使用系统或
-  插件技能。
+- `debugging`、`api-design`、`containers`、`nginx`、`observability`、`ci-cd`、`test-engineering`、`experiment`：前沿强模型已内化相关通用工程常识，作为常驻全局技能反而增加路由噪音与汇报仪式；具体项目约定写入各仓库 `AGENTS.md`。
+- `security-baseline`、`database-migrations`、`redis`、`backend-patterns`：高危反直觉核查点已浓缩并入 `code-review/references/`（`security.md`、`data-and-concurrency.md`），不再单独占顶层入口。
+- `nodejs`：包与 CLI 消费端兼容验证已下沉至 `release/references/npm-package.md`。
+- `tibishu-note-search`：已合并进读写一体的 `tibishu-notes`。
+- `skill-builder`：使用官方 `skill-creator` 替代。
+- `git-commit`：已合并进 `git-workflow`。
+- `mongodb-master`、`csharp-review`、`lua-review`：过窄或低频，按项目需要单独放入项目 `.agents/skills/`。
+- PDF、Office、GitHub、browser、OpenAI docs 和普通 imagegen 等能力：使用系统或插件技能。
