@@ -13,25 +13,26 @@ description: Search, read, create, organize, revise, and validate Markdown notes
 2. 若均未设置或目录不存在，停止操作并请用户在提笔书桌面端配置 **笔记库 → 笔记路径**。
 3. Markdown 文件属于用户资产，`.noteimg*` 属于编辑器元数据，不作为笔记源文件读写。
 
-## 分层只读检索（先搜后读、先搜后写）
+## 分层只读检索（先导航/先搜后读、先搜后写）
 
-查找已有笔记，或新建/整理笔记前确认现有主题目录与命名约定时，优先使用内置只读脚本，逐层收窄、一旦定位明确即停止，避免整库读入上下文：
+- **查全貌 / 某主题有哪些笔记**：优先直读根目录 `00-知识库导航.md` → 对应一级域 `00-目录.md`（或专栏 `00-学习路线.md`），避免盲搜。
+- **查具体实体、排障记录或跨目录交集**：使用内置只读脚本，逐层收窄、一旦定位明确即停止，避免整库读入上下文：
 
 ```powershell
 & "$PSScriptRoot\scripts\Find-TibishuNotes.ps1" -Stage Names -Query "关键词"
-& "$PSScriptRoot\scripts\Find-TibishuNotes.ps1" -Stage Headers -Query "关键词"
-& "$PSScriptRoot\scripts\Find-TibishuNotes.ps1" -Stage Content -Query "关键词"
+& "$PSScriptRoot\scripts\Find-TibishuNotes.ps1" -Stage Headers -Query "关键词" -Category "项目实践" -Tag "故障复盘" -ExcludeHidden
+& "$PSScriptRoot\scripts\Find-TibishuNotes.ps1" -Stage Content -Query "词1 词2"
 ```
 
-- `Names`：仅匹配目录名与文件名（最高优先级分类）。
-- `Headers`：仅在 `Names` 有多候选或零命中时读取开头 YAML front matter（不读正文）。
-- `Content`：仅在前两层无法定位时用 `rg` 搜索正文命中路径；读正文前先看 front matter 消歧。
+- `Names`：仅匹配目录名与文件名（默认排除 `.git`/`.agents`/根 `AGENTS.md`，入口页同分优先；支持配合 `-Category`/`-Tag`/`-ExcludeHidden`）。
+- `Headers`：综合匹配路径与 YAML front matter（`title`/`categories`/`tags`/`description`），不会被同名文件遮蔽其他同标签笔记；返回含 `Categories`/`Tags`/`Hidden`/`Draft` 的元数据摘要，支持不传 `-Query` 仅按 `-Category`/`-Tag` 列表筛选。
+- `Content`：在前两层无法定位时用 `rg` 搜正文；含空格多词默认按单文件全词命中（AND）交集收窄；读正文前先看 front matter 消歧。
 - 列表请求只返回路径与元数据；问答请求仅读取最小必要集合，引用路径并区分原文事实与推断。
 - 检索阶段严禁修改笔记库或创建持久索引。
 
 ## 新建与修订工作流
 
-1. 先检查笔记库根目录已有主题文件夹与邻近笔记，沿用清晰的既有主题目录、命名习惯与术语，不复制旧格式缺陷；若属于全新独立主题，在根目录下新建一个简洁的中文主题文件夹。
+1. 先检查笔记库根目录是否存在 `AGENTS.md`：若存在，**必须先读取其中的目录路由、分类标签白名单、命名约定与索引更新规则**再决定落盘位置，严禁绕过 `AGENTS.md` 擅自新建顶层目录或发明非受控分类。若根目录无 `AGENTS.md`，再检查既有主题文件夹与邻近笔记并沿用清晰命名习惯。
 2. 绝不静默覆盖既有笔记；同名时以日期或明确限定词消歧。除非用户明确要求，不修改既有笔记正文或其已有 front matter。
 3. 新建笔记必须在文件最开头包含如下 Blog front matter（填写 `title` 与 `date`，未提供值的可选字段保留空字符串或空数组，字符串加引号）：
 
@@ -59,5 +60,6 @@ description: Search, read, create, organize, revise, and validate Markdown notes
 ```
 
 - 修订无历史 Blog header 的既有笔记且用户未要求补 header 时，可省略 `-RequireBlogFrontMatter`。
+- 若笔记库自身包含元数据/链接校验脚本（见库内 `AGENTS.md`），落盘后一并执行确认零错误。
 - 修复报告的全部错误后再交付；若本机未安装 `markdownlint-cli2`，如实向用户说明（不静默安装包），并完成人工核对。
 - 不要仅为清理 lint 而批量格式化无关既有笔记，也不擅自修改笔记库的 lint 配置。
