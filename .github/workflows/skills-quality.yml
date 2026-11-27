@@ -30,8 +30,14 @@ jobs:
         shell: pwsh
         run: ./session-handoff/scripts/Test-Get-HandoffSnapshot.ps1
 
+      - name: Check deepdive note QA helper
+        shell: pwsh
+        run: ./tech-deepdive-note-workflow/scripts/Test-DeepdiveNoteQA.ps1
+
+
       - name: Verify the agent evaluation fixture
         run: python agent-evals/scripts/evaluate.py
 
       - name: Check evaluator scoring and compatibility
         run: python -m unittest discover -s agent-evals/tests
+
