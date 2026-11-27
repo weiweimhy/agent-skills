@@ -15,6 +15,7 @@
 - `cross-agent-invoke` - 跨 Agent 交叉调用工作流：通过统一脚本在 Codex、Antigravity (`agy`)、WorkBuddy/CodeBuddy (`codebuddy`/`cbc`) 与 Claude Code 间进行非交互调用，含 CLI 自动发现、只读/写权限映射与防递归回环护栏。
 - `find-skills` - 技能发现、评估与安全引入工作流：严格按 `项目目录 -> 全局目录 -> find-skills (skills.sh / vercel-labs/skills CLI) -> GitHub` 顺序检索并保护 Git 托管的全局部署目录。
 - `retro-to-guardrail` - 人工纠正沉淀路由：按优先级将经验落入自动化测试、项目文档、共享 Skill 或评测回归集。
+- `svg-craft` - 跨项目原生 SVG 制作与实渲验收工作流：提供三套语义主题、五大图表版式、24×24 工程图标库、交互分层与 SMIL `<animateMotion>` 动效规范，以及零依赖 XML/规范静态检查与无头 Edge/Chrome 高清实渲脚本。
 - `tech-deepdive-note-workflow` - 长周期深度原理/源码解析/逆向笔记全流程工作流：覆盖写作门禁、深色 SVG 动图防双重偏移规范、三路只读终审、自动化全库 QA 脚本及《Lua 源码解析》适配档案。
 - `agent-evals` - 对照任务路由、行为与验收成本，用独立证据评估智能体与技能收益。
 

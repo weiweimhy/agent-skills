@@ -1,0 +1,273 @@
+<svg viewBox="0 0 1280 720" width="1280" height="720" xmlns="http://www.w3.org/2000/svg"
+     font-family="'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system, sans-serif">
+  <defs>
+    <!-- 工程细网格背景 -->
+    <pattern id="line-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#1E293B" stroke-width="0.75" />
+    </pattern>
+
+    <!-- 卡片柔和投影 -->
+    <filter id="soft-shadow" x="-10%" y="-10%" width="125%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#020617" flood-opacity="0.4" />
+    </filter>
+
+    <!-- 顶部微光渐变 -->
+    <linearGradient id="card-sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.00" />
+    </linearGradient>
+
+    <!-- 背景微环境光斑 -->
+    <radialGradient id="ambient-glow" cx="24%" cy="32%" r="50%">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- 语义箭头 -->
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="8.5" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#22D3EE" />
+    </marker>
+    <marker id="arrow-violet" viewBox="0 0 10 10" refX="8.5" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#A78BFA" />
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="8.5" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#FB923C" />
+    </marker>
+
+    <!-- 24x24 标准几何图标 -->
+    <symbol id="ic-table" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M3 9h18M3 15h18M9 3v18" />
+      </g>
+    </symbol>
+    <symbol id="ic-layers" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2" />
+        <polyline points="2 12 12 17 22 12" />
+        <polyline points="2 17 12 22 22 17" />
+      </g>
+    </symbol>
+    <symbol id="ic-link" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      </g>
+    </symbol>
+  </defs>
+
+  <!-- 1. 背景层 -->
+  <g id="layer-bg">
+    <rect x="0" y="0" width="1280" height="720" fill="#0F172A" />
+    <rect x="0" y="0" width="1280" height="720" fill="url(#line-grid)" />
+    <rect x="0" y="0" width="1280" height="720" fill="url(#ambient-glow)" />
+  </g>
+
+  <!-- 2. 页眉标题层 -->
+  <g id="layer-header" data-step="0">
+    <rect x="56" y="44" width="184" height="24" rx="12" fill="rgba(34,211,238,0.12)" stroke="#22D3EE" stroke-width="1" />
+    <text x="148" y="60" text-anchor="middle" font-size="11.5" font-weight="600" fill="#67E8F9"
+          font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" letter-spacing="0.06em">RUNTIME INTERNALS</text>
+    <text x="56" y="106" font-size="28" font-weight="700" fill="#F1F5F9">混合映射表双区内存布局</text>
+    <text x="56" y="132" font-size="14" fill="#94A3B8">连续数组区实现 O(1) 整数索引，哈希表区采用开放寻址 + next 偏移链处理冲突</text>
+  </g>
+
+  <!-- 3. 区域分组层 -->
+  <g id="layer-regions">
+    <g id="region-heap" data-step="1">
+      <rect x="512" y="168" width="712" height="464" rx="16" fill="rgba(15,23,42,0.45)"
+            stroke="#334155" stroke-width="1.25" stroke-dasharray="6 4" />
+      <rect x="532" y="156" width="212" height="24" rx="12" fill="#0F172A" stroke="#475569" stroke-width="1" />
+      <text x="638" y="172" text-anchor="middle" font-size="11.5" font-weight="600" fill="#94A3B8"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">HEAP · SEPARATE ALLOCATIONS</text>
+    </g>
+  </g>
+
+  <!-- 4. 背景跨区连线层（预留） -->
+  <g id="layer-edges" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- 5. 核心节点层 -->
+  <g id="layer-nodes">
+    <!-- 左侧：struct HybridMap 头部块（64-bit 对齐：16 + 8 + 8 + 8 + 8 + 8 = 56 B） -->
+    <g id="node-map-struct" data-step="1" filter="url(#soft-shadow)">
+      <rect x="56" y="196" width="376" height="332" rx="12" fill="#162033" stroke="#60A5FA" stroke-width="1.5" />
+      <rect x="56" y="196" width="376" height="332" rx="12" fill="url(#card-sheen)" />
+      <!-- 顶栏 -->
+      <path d="M 68 196 L 420 196 Q 432 196 432 208 L 432 244 L 56 244 L 56 208 Q 56 196 68 196 Z"
+            fill="rgba(96,165,250,0.16)" />
+      <line x1="56" y1="244" x2="432" y2="244" stroke="rgba(96,165,250,0.4)" stroke-width="1" />
+      <g transform="translate(72, 210)" color="#93C5FD">
+        <use href="#ic-table" width="20" height="20" />
+      </g>
+      <text x="102" y="226" font-size="15" font-weight="700" fill="#F1F5F9"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">struct HybridMap</text>
+      <rect x="358" y="209" width="58" height="22" rx="6" fill="rgba(96,165,250,0.18)" />
+      <text x="387" y="224" text-anchor="middle" font-size="11" font-weight="600" fill="#93C5FD"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">56 B</text>
+
+      <!-- 字段行 -->
+      <g font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="12.5">
+        <!-- Row 1: +0x00 (16B) -->
+        <text x="72" y="274" fill="#64748B">+0x00</text>
+        <text x="132" y="274" fill="#CBD5E1">ObjHeader header</text>
+        <text x="412" y="274" text-anchor="end" fill="#94A3B8">GC / 类型头</text>
+        <line x1="72" y1="288" x2="416" y2="288" stroke="#1E293B" stroke-width="1" />
+
+        <!-- Row 2: +0x10 (8B) -->
+        <text x="72" y="316" fill="#64748B">+0x10</text>
+        <text x="132" y="316" fill="#CBD5E1">arr_cap / log2_h</text>
+        <text x="412" y="316" text-anchor="end" fill="#6EE7B7">4 / 2 (2^2)</text>
+        <line x1="72" y1="330" x2="416" y2="330" stroke="#1E293B" stroke-width="1" />
+
+        <!-- Row 3: +0x18 array* (高亮行，中心 y=374) -->
+        <rect x="64" y="352" width="360" height="44" rx="8" fill="rgba(34,211,238,0.10)" stroke="rgba(34,211,238,0.35)" stroke-width="1" />
+        <text x="72" y="378" fill="#67E8F9">+0x18</text>
+        <text x="132" y="378" fill="#F1F5F9" font-weight="600">Value *array</text>
+        <circle cx="412" cy="374" r="4" fill="#22D3EE" />
+
+        <!-- Row 4: +0x20 buckets* (高亮行，中心 y=422) -->
+        <rect x="64" y="400" width="360" height="44" rx="8" fill="rgba(167,139,250,0.10)" stroke="rgba(167,139,250,0.35)" stroke-width="1" />
+        <text x="72" y="426" fill="#C4B5FD">+0x20</text>
+        <text x="132" y="426" fill="#F1F5F9" font-weight="600">Entry *buckets</text>
+        <circle cx="412" cy="422" r="4" fill="#A78BFA" />
+
+        <!-- Row 5: +0x28 (8B) -->
+        <text x="72" y="474" fill="#64748B">+0x28</text>
+        <text x="132" y="474" fill="#CBD5E1">Entry *free_tail</text>
+        <text x="412" y="474" text-anchor="end" fill="#94A3B8">空闲探测游标</text>
+        <line x1="72" y1="488" x2="416" y2="488" stroke="#1E293B" stroke-width="1" />
+
+        <!-- Row 6: +0x30 (8B) -->
+        <text x="72" y="512" fill="#64748B">+0x30</text>
+        <text x="132" y="512" fill="#CBD5E1">Meta *metatable</text>
+        <text x="412" y="512" text-anchor="end" fill="#94A3B8">元行为指针</text>
+      </g>
+    </g>
+
+    <!-- 右上：Array Part 连续数组区 -->
+    <g id="node-array-part" data-step="2" filter="url(#soft-shadow)">
+      <rect x="556" y="200" width="636" height="156" rx="12" fill="#162033" stroke="#22D3EE" stroke-width="1.5" />
+      <rect x="556" y="200" width="636" height="156" rx="12" fill="url(#card-sheen)" />
+      <g transform="translate(576, 218)" color="#67E8F9">
+        <use href="#ic-layers" width="20" height="20" />
+      </g>
+      <text x="606" y="234" font-size="15" font-weight="700" fill="#F1F5F9">数组区 · Array Part</text>
+      <text x="1172" y="234" text-anchor="end" font-size="12" fill="#67E8F9"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">O(1) 连续内存 · Value[4]</text>
+
+      <!-- 4 个连续槽位 -->
+      <g font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">
+        <rect x="576" y="256" width="136" height="72" rx="8" fill="rgba(34,211,238,0.12)" stroke="#22D3EE" stroke-width="1.25" />
+        <text x="644" y="278" text-anchor="middle" font-size="11" fill="#67E8F9">idx [0]</text>
+        <text x="644" y="306" text-anchor="middle" font-size="14" font-weight="600" fill="#F1F5F9">100 (int)</text>
+
+        <rect x="728" y="256" width="136" height="72" rx="8" fill="rgba(34,211,238,0.12)" stroke="#22D3EE" stroke-width="1.25" />
+        <text x="796" y="278" text-anchor="middle" font-size="11" fill="#67E8F9">idx [1]</text>
+        <text x="796" y="306" text-anchor="middle" font-size="14" font-weight="600" fill="#F1F5F9">"vec" (str)</text>
+
+        <rect x="880" y="256" width="136" height="72" rx="8" fill="rgba(34,211,238,0.12)" stroke="#22D3EE" stroke-width="1.25" />
+        <text x="948" y="278" text-anchor="middle" font-size="11" fill="#67E8F9">idx [2]</text>
+        <text x="948" y="306" text-anchor="middle" font-size="14" font-weight="600" fill="#F1F5F9">true (bool)</text>
+
+        <rect x="1032" y="256" width="136" height="72" rx="8" fill="rgba(148,163,184,0.06)" stroke="#475569" stroke-width="1.25" stroke-dasharray="4 3" />
+        <text x="1100" y="278" text-anchor="middle" font-size="11" fill="#64748B">idx [3]</text>
+        <text x="1100" y="306" text-anchor="middle" font-size="13" fill="#64748B">EMPTY</text>
+      </g>
+    </g>
+
+    <!-- 右下：Hash Part 哈希表区 -->
+    <g id="node-hash-part" data-step="3" filter="url(#soft-shadow)">
+      <rect x="556" y="400" width="636" height="208" rx="12" fill="#162033" stroke="#A78BFA" stroke-width="1.5" />
+      <rect x="556" y="400" width="636" height="208" rx="12" fill="url(#card-sheen)" />
+      <g transform="translate(576, 418)" color="#C4B5FD">
+        <use href="#ic-link" width="20" height="20" />
+      </g>
+      <text x="606" y="434" font-size="15" font-weight="700" fill="#F1F5F9">哈希区 · Hash Part (Entry[4])</text>
+      <text x="1172" y="434" text-anchor="end" font-size="12" fill="#C4B5FD"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">大小恒为 2^k · 内嵌 next 偏移</text>
+
+      <!-- 4 个 Hash 槽位 -->
+      <g font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">
+        <rect x="576" y="456" width="136" height="88" rx="8" fill="rgba(167,139,250,0.14)" stroke="#A78BFA" stroke-width="1.25" />
+        <text x="588" y="476" font-size="10.5" fill="#C4B5FD">slot #0 (主位)</text>
+        <text x="588" y="499" font-size="12.5" font-weight="600" fill="#F1F5F9">k: "name"</text>
+        <text x="588" y="519" font-size="12" fill="#94A3B8">v: "demo"</text>
+        <text x="588" y="536" font-size="10.5" fill="#FDBA74">next: +2</text>
+
+        <rect x="728" y="456" width="136" height="88" rx="8" fill="rgba(148,163,184,0.06)" stroke="#475569" stroke-width="1.25" stroke-dasharray="4 3" />
+        <text x="740" y="476" font-size="10.5" fill="#64748B">slot #1</text>
+        <text x="796" y="510" text-anchor="middle" font-size="12.5" fill="#64748B">empty</text>
+
+        <rect x="880" y="456" width="136" height="88" rx="8" fill="rgba(251,146,60,0.12)" stroke="#FB923C" stroke-width="1.25" />
+        <text x="892" y="476" font-size="10.5" fill="#FDBA74">slot #2 (冲突)</text>
+        <text x="892" y="499" font-size="12.5" font-weight="600" fill="#F1F5F9">k: "ver"</text>
+        <text x="892" y="519" font-size="12" fill="#94A3B8">v: 2.0</text>
+        <text x="892" y="536" font-size="10.5" fill="#94A3B8">next: 0</text>
+
+        <rect x="1032" y="456" width="136" height="88" rx="8" fill="rgba(167,139,250,0.14)" stroke="#A78BFA" stroke-width="1.25" />
+        <text x="1044" y="476" font-size="10.5" fill="#C4B5FD">slot #3</text>
+        <text x="1044" y="499" font-size="12.5" font-weight="600" fill="#F1F5F9">k: 999</text>
+        <text x="1044" y="519" font-size="12" fill="#94A3B8">v: "sparse"</text>
+        <text x="1044" y="536" font-size="10.5" fill="#94A3B8">next: 0</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- 6. 前景指针与容器内连线层（端点精准贴合边框） -->
+  <g id="layer-overlay-edges" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- array* -> Array Part 左边框 (x=556) -->
+    <g id="edge-array-ptr" data-step="2">
+      <path class="anim-edge" pathLength="1"
+            d="M 416 374 L 464 374 Q 476 374 476 362 L 476 284 Q 476 272 488 272 L 555 272"
+            stroke="#22D3EE" stroke-width="2.25" marker-end="url(#arrow-cyan)" />
+      <rect x="444" y="294" width="64" height="22" rx="4" fill="#0F172A" />
+      <text x="476" y="309" text-anchor="middle" font-size="11" font-weight="600" fill="#67E8F9"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">array*</text>
+    </g>
+
+    <!-- buckets* -> Hash Part 左边框 (x=556) -->
+    <g id="edge-buckets-ptr" data-step="3">
+      <path class="anim-edge" pathLength="1"
+            d="M 416 422 L 464 422 Q 476 422 476 434 L 476 472 Q 476 484 488 484 L 555 484"
+            stroke="#A78BFA" stroke-width="2.25" marker-end="url(#arrow-violet)" />
+      <rect x="440" y="438" width="72" height="22" rx="4" fill="#0F172A" />
+      <text x="476" y="453" text-anchor="middle" font-size="11" font-weight="600" fill="#C4B5FD"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">buckets*</text>
+    </g>
+
+    <!-- Hash collision next offset: slot #0 -> slot #2 底边框 (y=544) -->
+    <g id="edge-hash-next" data-step="4">
+      <path class="anim-edge" pathLength="1"
+            d="M 644 545 L 644 574 Q 644 584 654 584 L 938 584 Q 948 584 948 574 L 948 545"
+            stroke="#FB923C" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow-orange)" />
+      <rect x="722" y="572" width="148" height="22" rx="4" fill="#162033" />
+      <text x="796" y="587" text-anchor="middle" font-size="11" font-weight="600" fill="#FDBA74"
+            font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace">next = +2 (冲突链)</text>
+    </g>
+  </g>
+
+  <!-- 7. 关键结论标注层 -->
+  <g id="layer-annotations" data-step="4">
+    <rect x="56" y="560" width="376" height="72" rx="10" fill="rgba(52,211,153,0.10)" stroke="rgba(52,211,153,0.4)" stroke-width="1.25" />
+    <text x="74" y="586" font-size="13" font-weight="700" fill="#6EE7B7">为什么这样设计？</text>
+    <text x="74" y="608" font-size="12" fill="#CBD5E1">
+      <tspan x="74" dy="0">密集整数键免存 Key 省内存；稀疏键自动回落哈希区。</tspan>
+    </text>
+  </g>
+
+  <!-- 8. 右下角图例层 -->
+  <g id="layer-legend" data-step="0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="11.5">
+    <rect x="512" y="652" width="712" height="36" rx="8" fill="rgba(22,32,51,0.85)" stroke="#334155" stroke-width="1" />
+    <circle cx="536" cy="670" r="5" fill="#60A5FA" />
+    <text x="548" y="674" fill="#CBD5E1">Map 头结构体</text>
+    <circle cx="688" cy="670" r="5" fill="#22D3EE" />
+    <text x="700" y="674" fill="#CBD5E1">连续数组区</text>
+    <circle cx="816" cy="670" r="5" fill="#A78BFA" />
+    <text x="828" y="674" fill="#CBD5E1">哈希节点槽位</text>
+    <line x1="956" y1="670" x2="988" y2="670" stroke="#FB923C" stroke-width="2" stroke-dasharray="4 3" />
+    <text x="996" y="674" fill="#CBD5E1">开放寻址 next 冲突链</text>
+  </g>
+</svg>

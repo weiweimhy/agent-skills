@@ -34,6 +34,8 @@ jobs:
         shell: pwsh
         run: ./tech-deepdive-note-workflow/scripts/Test-DeepdiveNoteQA.ps1
 
+      - name: Check svg-craft linter and render helper
+        run: node --test ./svg-craft/scripts/test-svg-craft.mjs
 
       - name: Verify the agent evaluation fixture
         run: python agent-evals/scripts/evaluate.py
@@ -41,3 +43,15 @@ jobs:
       - name: Check evaluator scoring and compatibility
         run: python -m unittest discover -s agent-evals/tests
 
+  svg-craft-cross-platform:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check svg-craft linter and render helper on POSIX
+        run: node --test ./svg-craft/scripts/test-svg-craft.mjs
