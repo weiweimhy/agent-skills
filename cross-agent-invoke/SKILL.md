@@ -33,11 +33,11 @@ pwsh "<skill-dir>/scripts/Invoke-CrossAgent.ps1" `
 pwsh "<skill-dir>/scripts/Invoke-CrossAgent.ps1" `
   -Target workbuddy `
   -Mode read-only `
-  -PromptFile "./tmp/task-brief.md" `
-  -OutputFile "./tmp/wb-result.md"
+  -PromptFile "$env:TEMP/cross-agent-task-brief.md" `
+  -OutputFile "$env:TEMP/cross-agent-wb-result.md"
 ```
 
-- 长任务描述优先用 `-PromptFile` 传入，避免多行文本与引号转义问题；调试新参数可加 `-DryRun` 预检。
+- 长任务描述优先用 `-PromptFile` 传入，避免多行文本与引号转义问题；临时派单/输出/日志文件一律放 `$env:TEMP` 或主控 Artifact 目录，禁止落在目标仓库工作树内（避免污染 `git status`）；调试新参数可加 `-DryRun` 预检。
 - 目标别名：`codex` / `codex-cli`、`antigravity` / `agy`、`workbuddy` / `codebuddy` / `cbc`、`claude` / `claude-code`。
 - **按需排查本机可用 Agent**（无需每次调用前预跑，仅在不确定安装状态或报错找不到 CLI 时使用）：
 
@@ -56,7 +56,7 @@ pwsh "<skill-dir>/scripts/Invoke-CrossAgent.ps1" `
    - 诊断、代码审查、方案咨询、文档归纳保持默认 `-Mode read-only`；仅明确委派写代码时传 `-Mode workspace-write`。
 3. **写操作工作区隔离**：
    - 严禁多个写模式 Agent 并发修改同一工作目录中的重叠文件。
-   - 委派 Codex 写代码优先加 `-Worktree`；委派 Antigravity / WorkBuddy / Claude 并行写代码时，先建独立 `git worktree` 并传给 `-WorkingDir`，完成后再审查合入。
+   - 串行单写（主控暂停写入）可在干净工作区/特性分支直接执行并由主控审 diff；需要并发写隔离时，优先由主控显式建独立 `git worktree` 并传给 `-WorkingDir`（避免 Codex 托管 `-Worktree` 路径不回传导致难合入），完成后再审查合入。
 
 ## 3. 主 Agent 验收与汇报责任
 

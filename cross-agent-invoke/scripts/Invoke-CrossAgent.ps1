@@ -38,8 +38,8 @@ param(
     [string]$OutputFormat = "text",
 
     [Parameter(ParameterSetName = "Invoke")]
-    [ValidateRange(10, 3600)]
-    [int]$TimeoutSeconds = 300,
+    [ValidateRange(10, 7200)]
+    [int]$TimeoutSeconds = 3600,
 
     [Parameter(ParameterSetName = "Invoke")]
     [ValidateRange(1, 5)]
@@ -50,6 +50,9 @@ param(
 
     [Parameter(ParameterSetName = "Invoke")]
     [string]$OutputFile,
+
+    [Parameter(ParameterSetName = "Invoke")]
+    [string]$StderrLog,
 
     [Parameter(ParameterSetName = "Invoke")]
     [switch]$Worktree,
@@ -415,6 +418,16 @@ $promptText
 }
 
 $isGitRepo = Test-IsGitRepo -Path $resolvedWorkingDir
+if ($Worktree) {
+    if ($canonicalTarget -ne "codex") {
+        throw "-Worktree is only supported for target 'codex'. For '$canonicalTarget', create a git worktree manually and pass it via -WorkingDir."
+    }
+    if (-not $isGitRepo) {
+        throw "-Worktree requires -WorkingDir ('$resolvedWorkingDir') to be inside a Git repository."
+    }
+    Write-Warning "-Worktree uses a Codex-managed worktree whose path is not returned in output. Prefer creating an explicit git worktree and passing -WorkingDir."
+}
+
 $tempOutputFile = $null
 $argList = New-Object System.Collections.Generic.List[string]
 $useStdinPrompt = $false
@@ -423,6 +436,9 @@ switch ($canonicalTarget) {
     "codex" {
         $argList.Add("exec")
         if (-not [string]::IsNullOrWhiteSpace($SessionId)) {
+            if ($PSBoundParameters.ContainsKey("Mode")) {
+                Write-Warning "codex exec resume inherits the original session's sandbox policy; -Mode '$Mode' is not re-applied."
+            }
             $argList.Add("resume")
             if (-not [string]::IsNullOrWhiteSpace($Model)) {
                 $argList.Add("--model")
@@ -559,6 +575,7 @@ if ($DryRun) {
         UseStdinPrompt  = $useStdinPrompt
         Arguments       = $displayArgs
         TimeoutSeconds  = $TimeoutSeconds
+        StderrLog       = if ([string]::IsNullOrWhiteSpace($StderrLog)) { $null } else { $StderrLog }
     }
     if ($AsJson) {
         $dryResult | ConvertTo-Json -Depth 4
@@ -601,11 +618,34 @@ $timedOut = $false
 $stdoutText = ""
 $stderrText = ""
 $exitCode = -1
+$stderrLogWriter = $null
 
 try {
+    if (-not [string]::IsNullOrWhiteSpace($StderrLog)) {
+        $logParent = Split-Path -Path $StderrLog -Parent
+        if (-not [string]::IsNullOrWhiteSpace($logParent) -and -not (Test-Path -LiteralPath $logParent)) {
+            New-Item -ItemType Directory -Force -Path $logParent | Out-Null
+        }
+        $logStream = [System.IO.FileStream]::new(
+            $StderrLog,
+            [System.IO.FileMode]::Create,
+            [System.IO.FileAccess]::Write,
+            [System.IO.FileShare]::ReadWrite
+        )
+        $stderrLogWriter = [System.IO.StreamWriter]::new($logStream, [System.Text.UTF8Encoding]::new($false))
+        $stderrLogWriter.AutoFlush = $true
+    }
+
     [void]$proc.Start()
     $stdoutTask = $proc.StandardOutput.ReadToEndAsync()
-    $stderrTask = $proc.StandardError.ReadToEndAsync()
+    $stderrTask = $null
+    $stderrBuilder = $null
+
+    if ($null -eq $stderrLogWriter) {
+        $stderrTask = $proc.StandardError.ReadToEndAsync()
+    } else {
+        $stderrBuilder = [System.Text.StringBuilder]::new()
+    }
 
     if ($useStdinPrompt) {
         $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
@@ -617,19 +657,66 @@ try {
         $proc.StandardInput.Close()
     }
 
-    $finished = $proc.WaitForExit($TimeoutSeconds * 1000)
-    if (-not $finished) {
-        $timedOut = $true
-        try { $proc.Kill($true) } catch {}
+    if ($null -eq $stderrLogWriter) {
+        $finished = $proc.WaitForExit($TimeoutSeconds * 1000)
+        if (-not $finished) {
+            $timedOut = $true
+            try { $proc.Kill($true) } catch {}
+        }
+        $stdoutText = if ($stdoutTask.Wait(3000)) { $stdoutTask.Result } else { "" }
+        $stderrText = if ($stderrTask.Wait(3000)) { $stderrTask.Result } else { "" }
+    } else {
+        $stderrLineTask = $proc.StandardError.ReadLineAsync()
+        $deadlineMs = [double]$TimeoutSeconds * 1000.0
+        while ($true) {
+            if ($stderrLineTask.Wait(200)) {
+                $line = $stderrLineTask.Result
+                if ($null -eq $line) {
+                    break
+                }
+                [void]$stderrBuilder.AppendLine($line)
+                $stderrLogWriter.WriteLine($line)
+                $stderrLineTask = $proc.StandardError.ReadLineAsync()
+                continue
+            }
+            if ($stopwatch.Elapsed.TotalMilliseconds -ge $deadlineMs) {
+                $timedOut = $true
+                try { $proc.Kill($true) } catch {}
+                break
+            }
+            if ($proc.HasExited) {
+                if ($stderrLineTask.Wait(3000)) {
+                    $line = $stderrLineTask.Result
+                    while ($null -ne $line) {
+                        [void]$stderrBuilder.AppendLine($line)
+                        $stderrLogWriter.WriteLine($line)
+                        $nextTask = $proc.StandardError.ReadLineAsync()
+                        if (-not $nextTask.Wait(1000)) { break }
+                        $line = $nextTask.Result
+                    }
+                }
+                break
+            }
+        }
+        if (-not $timedOut) {
+            $remainingMs = [int][Math]::Max(0, $deadlineMs - $stopwatch.Elapsed.TotalMilliseconds)
+            if (-not $proc.WaitForExit($remainingMs)) {
+                $timedOut = $true
+                try { $proc.Kill($true) } catch {}
+            }
+        }
+        $stdoutText = if ($stdoutTask.Wait(3000)) { $stdoutTask.Result } else { "" }
+        $stderrText = $stderrBuilder.ToString()
     }
 
-    $stdoutText = if ($stdoutTask.Wait(3000)) { $stdoutTask.Result } else { "" }
-    $stderrText = if ($stderrTask.Wait(3000)) { $stderrTask.Result } else { "" }
     if (-not $timedOut) {
         $exitCode = $proc.ExitCode
     }
 } finally {
     $stopwatch.Stop()
+    if ($null -ne $stderrLogWriter) {
+        $stderrLogWriter.Dispose()
+    }
     $proc.Dispose()
 }
 
@@ -663,6 +750,7 @@ $result = [PSCustomObject]@{
     Success         = (-not $timedOut -and $exitCode -eq 0)
     DurationSeconds = [Math]::Round($stopwatch.Elapsed.TotalSeconds, 2)
     OutputFile      = if ([string]::IsNullOrWhiteSpace($OutputFile)) { $null } else { $OutputFile }
+    StderrLog       = if ([string]::IsNullOrWhiteSpace($StderrLog)) { $null } else { $StderrLog }
     Output          = $finalOutput
     Stderr          = $stderrText.Trim()
 }

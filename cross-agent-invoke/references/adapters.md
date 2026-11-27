@@ -14,6 +14,7 @@
 补充说明：
 
 - **Codex 非 Git 目录**：脚本自动检测 `-WorkingDir` 是否为 Git 仓库；若不是，自动追加 `--skip-git-repo-check`。
+- **Codex 续聊沙箱**：`codex exec resume` 不支持重设 `--sandbox` / `--cd`，续聊始终沿用原会话的沙箱模式与工作目录。
 - **Codex 输出提取**：脚本自动附加 `-o <tempFile>` 并在 `-OutputFormat text` 时优先返回最后一条纯净消息，避免把中间工具日志混入主输出。
 - **Antigravity (`agy`)**：自动附加 `--disable-slash-commands` 与 `--print-timeout <TimeoutSeconds>s`，避免 Prompt 内斜杠被误展开或超时挂起。
 - **扩展自定义参数**：任意目标特有参数均可通过 `-ExtraArgs @("--flag", "value")` 透传。
@@ -67,7 +68,7 @@ PowerShell 设置持久化环境变量示例（用户级）：
 - **在沙箱中调用失败（无法访问目标认证文件或本地端口）**：
   - 某些宿主默认终端沙箱会阻断访问 `~/.codex`、`~/.gemini` 或网络请求。此时需向用户请求放开该条命令的沙箱/审批，不得绕过权限边界。
 - **网络请求超时 / `Reconnecting...`（常见于直连受限环境调用 Codex / Claude）**：
-  - 子进程会继承当前 Shell 的 `HTTP_PROXY` / `HTTPS_PROXY` / `ALL_PROXY`。如遇 `request timed out`，先在调用终端确认代理环境变量已设置，或用 `-TimeoutSeconds` 适当放宽超时并检查 `Stderr`。
+  - 子进程会继承当前 Shell 的 `HTTP_PROXY` / `HTTPS_PROXY` / `ALL_PROXY`。长任务建议传 `-StderrLog "$env:TEMP/<task>.stderr.log"` 实时观察进度与重连报错；脚本默认 `-TimeoutSeconds 3600`（最高可调至 `7200`），如遇 `request timed out` 优先检查代理环境变量与 `Stderr`。
 - **中文乱码或长 Prompt 截断**：
   - 始终通过 `Invoke-CrossAgent.ps1`（内部使用 UTF-8 进程流）并配合 `-PromptFile` / `-OutputFile` 传递大段中文文本。
 
