@@ -1,39 +1,53 @@
-# Android 项目协作规范
+# Android 项目基座（AGENTS.md 模板）
 
-生成目标仓库中的文件前，先将本模板按目标仓库事实改写。删除全部 `{{占位符}}`、未采用功能和未生成文档入口。
+> 生成目标仓库文件前，按仓库事实替换所有 `{{占位符}}`，删除本提示行、未采用能力与未生成的文档链接。
 
-## 项目事实
+## 项目定位与版本锚点
 
-- 产品目标：{{目标用户与核心任务}}
-- 技术状态：{{已实现技术；本次选定但未安装的技术；待决策项}}
-- 应用包名与发行范围：{{从配置读取或标记待确认}}
-- 目录职责：{{只列仓库中真实存在的目录}}
+- **产品目标**：{{目标用户与核心任务}}
+- **包名与分发范围**：{{applicationId / 设备与发行渠道}}
+- **技术栈与版本锚点**：{{Kotlin / AGP / Gradle / JDK / minSdk-targetSdk / Compose 或 Views；新选定未安装项标明“计划”}}
 
-新项目候选为 Kotlin、Jetpack Compose、稳定 Material 3；目标项目选定后
-写入技术状态。已有项目以当前配置为准，不默认迁移 UI 或导航。
+## 常用命令与验证分层
 
-## 工程约定
+> 只保留通过 Gradle Wrapper 或 IDE 核实存在的变体任务；未运行过标明“未实测”。
 
-- 使用 Kotlin 和目标仓库实际采用的 Android UI、状态、导航及数据方案；以 Gradle 配置和同类实现为准。
-- 新增 UI 前查看实际设计规范、共享主题与同类页面；新增数据或平台能力前查看对应模块、权限及测试。
-- 维持 UDF：界面发送用户意图，状态由相应状态持有者产生。复用实际已有的仓库、依赖注入和组件入口。
-- 不把 Activity、Context 或 View 引用放进屏幕 ViewModel。生命周期相关工作遵循已采用的 AndroidX API。
-- 依赖、模块、权限及数据变更须服务于本轮需求；范围外的架构、导航或全局主题替换先确认。
+| 用途 | 命令 | 说明 |
+| :--- | :--- | :--- |
+| 单测（快检） | `{{./gradlew :app:testDebugUnitTest --tests ...}}` | 日常首选；定向过滤避免全量跑测 |
+| 变体构建 | `{{./gradlew assembleDebug}}` | 确认编译与资源打包 |
+| 静态检查 / 格式化 | `{{./gradlew lintDebug / spotlessApply}}` | 若未配置则删除本行 |
+| 设备 / UI 测试 | `{{./gradlew connectedDebugAndroidTest}}` | 需要真机或模拟器 |
 
-## 文档入口
+## 加速导航（Where to Look First）
 
-<!-- 生成时只为实际存在的文档添加链接；没有对应文件时删除该行。 -->
+- **核心模块与入口**：{{只列真实存在的模块/入口文件，如 app/、feature/、core/}}
+- **标杆样例（Golden Samples）**：{{新增页面/ViewModel/Repository 时优先参照的 2–3 个真实文件路径}}
+- **共享主题与组件**：{{真实 Theme / Design System / 共享组件入口}}
+- **只读或托管产物**：{{如生成代码目录、CI 托管截图基线、version catalog 等注意事项}}
 
-- [Kotlin Android 规范](docs/standards/android-kotlin.md)
-- [架构](docs/architecture.md)
-- [开发与构建](docs/development.md)
-- [测试与质量](docs/testing-and-quality.md)
-- [UI 设计](docs/ui-design.md)
-- [UI 交付](docs/ui-delivery.md)
+## 关键不变量与踩坑提示（Gotchas）
 
-## 变更与验证
+- **UI 与状态边界**：维持 UDF，界面发意图、状态持有者产不可变状态；禁止把 `Activity`/`Context`/`View` 存入 `ViewModel`（防内存泄漏与配置重建崩溃）。
+- **生命周期与协程**：使用项目已采用的生命周期感知收集 API（如 Compose 的 `collectAsStateWithLifecycle()`）；`suspend` 函数保持主线程安全；捕获异常时不吞 `CancellationException`。
+- **工具链与变体兼容**：不要盲跑裸 `./gradlew test`（Android 变体与 source set 差异易误判）；AGP/Kotlin/Compose 编译器插件版本须按官方兼容矩阵配套。
+- **既有架构守恒**：既有 Views/XML 项目沿用现有视图与导航，不因使用 Kotlin 擅自迁移 Compose。
 
-- 修改前检查目标路径、相邻实现、构建配置、相关测试及适用文档；保留已有有效约定。
-- 修改后运行本次涉及的、仓库中真实存在的验证任务。仅报告实际执行的命令、结果和未完成项。
-- 需要更换全局主题、公开数据契约、导航策略或持久化格式时，先给出方案并等待用户决定。
-- 不将建议、计划、可选工具或人工检查写成已安装、已实现或已通过验证。
+## 自主与确认边界
+
+- **Always（直接做）**：按标杆样例实现需求、补齐针对性单测、在授权范围内做可逆细节决策、运行受影响变体的快速验证并如实汇报。
+- **Ask First（先确认）**：更换全局主题/导航框架、修改持久化 Schema/迁移、调整公开数据契约、新增第三方依赖或权限、拆分新 Gradle 模块。
+- **Never（硬红线）**：提交签名密钥/`local.properties` 敏感配置、伪造未执行的构建或设备验收结论、修改无关模块。
+
+## 按需延伸阅读
+
+<!-- 仅保留本仓库真实存在或本轮已生成的文档，删除其余行 -->
+
+| 场景 | 文档 |
+| :--- | :--- |
+| Kotlin / Compose / 生命周期细节 | [Kotlin Android 规范](docs/standards/android-kotlin.md) |
+| 模块边界与数据流 | [架构](docs/architecture.md) |
+| 工具链、配置与排错 | [开发与构建](docs/development.md) |
+| 测试层级与人工设备验收 | [测试与质量](docs/testing-and-quality.md) |
+| 视觉主题、布局与动效 | [UI 设计](docs/ui-design.md) |
+| 页面清单与无障碍交付 | [UI 交付](docs/ui-delivery.md) |

@@ -50,21 +50,19 @@ git -C ~/.agents/skills pull --ff-only
 - `imagegen`: 使用内置端点生成前端、产品页或游戏素材。
 - `plugin-creator`: 需要把技能、工具和 MCP 封装成插件时使用。
 
-## 前端项目初始化
+## 项目基座初始化
 
-使用 `project-standards-init` 初始化前端时，既有项目提炼现有设计，新项目根据产品目标建立
-具体的风格基线。将语义 token、共享组件及状态、图标用法、动效参数与减少动态效果策略写入
-`docs/ui-design.md`（已有设计文档则沿用），并由项目 `AGENTS.md` 约束后续页面开发。
-`docs/ui-delivery.md` 记录实现状态和视觉、交互验收方式，避免把设计计划当成已实现的能力。
+`project-standards-init` 遵循“**做赋能基座，不做思维牢笼**”理念，按仓库事实生成精悍的根 `AGENTS.md`（目标 50–120 行，聚焦版本锚点、快慢验证分层命令、Golden Samples 标杆样例、公共复用入口、只读生成物、非显而易见的 Gotchas 与 Always/Ask First/Never 边界），并在复杂仓库中按需拆分子目录 `AGENTS.md`、`DESIGN.md` 或专题 `docs/`。多领域开源实践与实证取舍见 [GitHub 多领域最佳实践来源](project-standards-init/references/github-best-practices.md)。
 
-示例：`使用 project-standards-init 初始化这个前端项目，面向独立摄影师的作品网站，
-根据横竖构图和系列顺序组织浏览，保留照片说明，验证窄屏阅读与键盘翻页。`
+### 前端项目初始化
 
-初始化本身不安装 UI 库或生成产品页面。若需要一并实现，可追加“落实主题 token、共享组件与
-代表页面并验收”。后续功能开发会读取已生成的规范；美观和动效仍需在真实页面中验证。
-参考来源与适用边界见 [GitHub 前端设计参考](project-standards-init/references/frontend-sources.md)。
+使用 `project-standards-init` 初始化前端时，工程规则与视觉方向正交分离：既有项目提炼设计系统与标杆页面，新项目结合产品任务与信息密度确立清晰、可逆的审美基线，写入独立 `DESIGN.md`（已有设计文档则沿用），并声明“代码是数值真源、新规范优先旧页”，配合真实父容器渲染验收，在保证一致性的同时不限制 AI 的界面表达力。
 
-## Android 项目初始化
+示例：`使用 project-standards-init 初始化这个前端项目，面向独立摄影师的作品网站，根据横竖构图和系列顺序组织浏览，保留照片说明，验证窄屏阅读与键盘翻页。`
+
+初始化本身不安装 UI 库或生成业务页面；若需一并落地实现，可追加“落实主题 token、共享组件与代表页面并验收”。
+
+### Android 项目初始化
 
 使用 `project-standards-init` 规划 Kotlin 原生 Android 项目时，可从
 [Android 初始化模板](project-standards-init/references/android-project-template.md) 选择文档资产。

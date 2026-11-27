@@ -21,7 +21,7 @@
 
 ## Project Setup & Personal Notes
 
-- `project-standards-init` - 按仓库事实初始化或刷新 `AGENTS.md` 与工程文档，按需加载前端设计契约、Android 模板与规范库检索规则。
+- `project-standards-init` - 按仓库事实初始化或刷新“赋能型项目基座”（精悍 `AGENTS.md`、按需 `DESIGN.md`/子目录 `AGENTS.md`/专题文档与快速验证闭环），内置多领域基座手册、前端视觉基座与 Android 模板。
 - `tibishu-notes` - 读写一体的个人笔记技能：分层只读检索、新建与整理、Blog front matter 与 markdownlint 确定性校验。
 - `video-summary` - 本地开源视频解析与总结工作流：支持 B站/YouTube 元数据与字幕提取、超 1 MB 文本自动分段、Antigravity 20 MB 视频压缩与切片、1080P 原画关键帧抽取，以及按需提示安装 `BBDown` 与提笔书入库衔接。
 
